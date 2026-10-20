@@ -1,0 +1,440 @@
+# TALA — Titik phrase library
+
+Folder: assets/audio/fil/shared/titik
+
+Isang recording lang bawat unique na phrase. Gamitin ang eksaktong filename; huwag gumawa ng copies para sa ibang yugto o tanong.
+
+- ito-ang-malaking-a-at-maliit-na-a-nagsisimula-sa-a-ang-araw.mp3 — Ito a g malaki g A at maliit  a a. Nagsisimula sa A a g a aw. 
+- alin-ang-nagsisimula-sa-a.mp3 — Ali  a g  agsisimula sa A?
+- hanapin-ang-araw.mp3 — Ha api  a g a aw.
+- araw.mp3 — ☀️ a aw
+- folder.mp3 — 📁 folde 
+- lapis.mp3 — ✏️ lapis
+- alin-ang-malaking-titik-a.mp3 — Ali  a g malaki g titik A?
+- tingnan-ang-unang-titik-ng-araw.mp3 — Ti g a  a g u a g titik  g a aw.
+- F.mp3 — F
+- L.mp3 — L
+- A.mp3 — A
+- alin-ang-maliit-na-titik-a.mp3 — Ali  a g maliit  a titik A?
+- magkapareha-ang-a-at-a.mp3 — Magkapa eha a g A at a.
+- ano-ang-unang-titik-ng-araw.mp3 — A o a g u a g titik  g a aw?
+- ulitin-ang-pangalan-ng-larawan-araw.mp3 — Uliti  a g pa gala   g la awa : a aw.
+- aling-pares-ng-titik-ang-magkapareha.mp3 — Ali g pa es  g titik a g magkapa eha?
+- piliin-ang-malaki-at-maliit-na-anyo-ng-iisang-titik.mp3 — Pilii  a g malaki at maliit  a a yo  g iisa g titik.
+- a-f.mp3 — A f
+- f-a.mp3 — F a
+- a-a.mp3 — A a
+- ito-ang-malaking-b-at-maliit-na-b-nagsisimula-sa-b-ang-bola.mp3 — Ito a g malaki g B at maliit  a b. Nagsisimula sa B a g bola. 
+- alin-ang-nagsisimula-sa-b.mp3 — Ali  a g  agsisimula sa B?
+- hanapin-ang-bola.mp3 — Ha api  a g bola.
+- bola.mp3 — ⚽ bola
+- gatas.mp3 — 🥛 gatas
+- mangga.mp3 — 🥭 ma gga
+- alin-ang-malaking-titik-b.mp3 — Ali  a g malaki g titik B?
+- tingnan-ang-unang-titik-ng-bola.mp3 — Ti g a  a g u a g titik  g bola.
+- G.mp3 — g
+- M.mp3 — M
+- B.mp3 — b
+- alin-ang-maliit-na-titik-b.mp3 — Ali  a g maliit  a titik B?
+- magkapareha-ang-b-at-b.mp3 — Magkapa eha a g B at b.
+- ano-ang-unang-titik-ng-bola.mp3 — A o a g u a g titik  g bola?
+- ulitin-ang-pangalan-ng-larawan-bola.mp3 — Uliti  a g pa gala   g la awa : bola.
+- b-g.mp3 — B g
+- g-b.mp3 — G b
+- b-b.mp3 — B b
+- ito-ang-malaking-c-at-maliit-na-c-nagsisimula-sa-c-ang-carrot-ang-carrot-ay-karot-sa-filipino.mp3 — Ito a g malaki g C at maliit  a c. Nagsisimula sa C a g ca ot. A g ca ot ay ka ot sa Filipi o.
+- alin-ang-nagsisimula-sa-c.mp3 — Ali  a g  agsisimula sa C?
+- hanapin-ang-carrot.mp3 — Ha api  a g ca ot.
+- carrot.mp3 — 🥕 ca ot
+- halaman.mp3 — 🪴 halama 
+- niyog.mp3 — 🥥  iyog
+- alin-ang-malaking-titik-c.mp3 — Ali  a g malaki g titik C?
+- tingnan-ang-unang-titik-ng-carrot.mp3 — Ti g a  a g u a g titik  g ca ot.
+- H.mp3 — h
+- N.mp3 — N
+- C.mp3 — C
+- alin-ang-maliit-na-titik-c.mp3 — Ali  a g maliit  a titik C?
+- magkapareha-ang-c-at-c.mp3 — Magkapa eha a g C at c.
+- ano-ang-unang-titik-ng-carrot.mp3 — A o a g u a g titik  g ca ot?
+- ulitin-ang-pangalan-ng-larawan-carrot.mp3 — Uliti  a g pa gala   g la awa : ca ot.
+- c-h.mp3 — C h
+- h-c.mp3 — H c
+- c-c.mp3 — C c
+- ito-ang-malaking-d-at-maliit-na-d-nagsisimula-sa-d-ang-dahon.mp3 — Ito a g malaki g D at maliit  a d. Nagsisimula sa D a g daho . 
+- alin-ang-nagsisimula-sa-d.mp3 — Ali  a g  agsisimula sa D?
+- hanapin-ang-dahon.mp3 — Ha api  a g daho .
+- dahon.mp3 — 🍃 daho 
+- isda.mp3 — 🐟 isda
+- orasan.mp3 — 🕒 o asa 
+- alin-ang-malaking-titik-d.mp3 — Ali  a g malaki g titik D?
+- tingnan-ang-unang-titik-ng-dahon.mp3 — Ti g a  a g u a g titik  g daho .
+- I.mp3 — I
+- O.mp3 — O
+- D.mp3 — D
+- alin-ang-maliit-na-titik-d.mp3 — Ali  a g maliit  a titik D?
+- magkapareha-ang-d-at-d.mp3 — Magkapa eha a g D at d.
+- ano-ang-unang-titik-ng-dahon.mp3 — A o a g u a g titik  g daho ?
+- ulitin-ang-pangalan-ng-larawan-dahon.mp3 — Uliti  a g pa gala   g la awa : daho .
+- d-i.mp3 — D i
+- i-d.mp3 — I d
+- d-d.mp3 — D d
+- ito-ang-malaking-e-at-maliit-na-e-nagsisimula-sa-e-ang-elepante.mp3 — Ito a g malaki g E at maliit  a e. Nagsisimula sa E a g elepa te. 
+- alin-ang-nagsisimula-sa-e.mp3 — Ali  a g  agsisimula sa E?
+- hanapin-ang-elepante.mp3 — Ha api  a g elepa te.
+- elepante.mp3 — 🐘 elepa te
+- jeep.mp3 — 🚙 jeep
+- pusa.mp3 — pusa
+- alin-ang-malaking-titik-e.mp3 — Ali  a g malaki g titik E?
+- tingnan-ang-unang-titik-ng-elepante.mp3 — Ti g a  a g u a g titik  g elepa te.
+- J.mp3 — J
+- P.mp3 — p
+- E.mp3 — e
+- alin-ang-maliit-na-titik-e.mp3 — Ali  a g maliit  a titik E?
+- magkapareha-ang-e-at-e.mp3 — Magkapa eha a g E at e.
+- ano-ang-unang-titik-ng-elepante.mp3 — A o a g u a g titik  g elepa te?
+- ulitin-ang-pangalan-ng-larawan-elepante.mp3 — Uliti  a g pa gala   g la awa : elepa te.
+- e-j.mp3 — E j
+- j-e.mp3 — J e
+- e-e.mp3 — E e
+- ito-ang-malaking-f-at-maliit-na-f-nagsisimula-sa-f-ang-folder-ang-folder-ay-lalagyan-ng-mga-papel.mp3 — Ito a g malaki g F at maliit  a f. Nagsisimula sa F a g folde . A g folde  ay lalagya   g mga papel.
+- alin-ang-nagsisimula-sa-f.mp3 — Ali  a g  agsisimula sa F?
+- hanapin-ang-folder.mp3 — Ha api  a g folde .
+- kamay.mp3 — ✋ kamay
+- quilt.mp3 — 🧵 quilt
+- alin-ang-malaking-titik-f.mp3 — Ali  a g malaki g titik F?
+- tingnan-ang-unang-titik-ng-folder.mp3 — Ti g a  a g u a g titik  g folde .
+- K.mp3 — K
+- Q.mp3 — Q
+- alin-ang-maliit-na-titik-f.mp3 — Ali  a g maliit  a titik F?
+- magkapareha-ang-f-at-f.mp3 — Magkapa eha a g F at f.
+- ano-ang-unang-titik-ng-folder.mp3 — A o a g u a g titik  g folde ?
+- ulitin-ang-pangalan-ng-larawan-folder.mp3 — Uliti  a g pa gala   g la awa : folde .
+- f-k.mp3 — F k
+- k-f.mp3 — K f
+- f-f.mp3 — F f
+- ito-ang-malaking-g-at-maliit-na-g-nagsisimula-sa-g-ang-gatas.mp3 — Ito a g malaki g G at maliit  a g. Nagsisimula sa G a g gatas. 
+- alin-ang-nagsisimula-sa-g.mp3 — Ali  a g  agsisimula sa G?
+- hanapin-ang-gatas.mp3 — Ha api  a g gatas.
+- rosas.mp3 — 🌹  osas
+- alin-ang-malaking-titik-g.mp3 — Ali  a g malaki g titik G?
+- tingnan-ang-unang-titik-ng-gatas.mp3 — Ti g a  a g u a g titik  g gatas.
+- R.mp3 — R
+- alin-ang-maliit-na-titik-g.mp3 — Ali  a g maliit  a titik G?
+- magkapareha-ang-g-at-g.mp3 — Magkapa eha a g G at g.
+- ano-ang-unang-titik-ng-gatas.mp3 — A o a g u a g titik  g gatas?
+- ulitin-ang-pangalan-ng-larawan-gatas.mp3 — Uliti  a g pa gala   g la awa : gatas.
+- g-l.mp3 — G l
+- l-g.mp3 — L g
+- g-g.mp3 — G g
+- ito-ang-malaking-h-at-maliit-na-h-nagsisimula-sa-h-ang-halaman.mp3 — Ito a g malaki g H at maliit  a h. Nagsisimula sa H a g halama . 
+- alin-ang-nagsisimula-sa-h.mp3 — Ali  a g  agsisimula sa H?
+- hanapin-ang-halaman.mp3 — Ha api  a g halama .
+- saging.mp3 — sagi g
+- alin-ang-malaking-titik-h.mp3 — Ali  a g malaki g titik H?
+- tingnan-ang-unang-titik-ng-halaman.mp3 — Ti g a  a g u a g titik  g halama .
+- S.mp3 — s
+- alin-ang-maliit-na-titik-h.mp3 — Ali  a g maliit  a titik H?
+- magkapareha-ang-h-at-h.mp3 — Magkapa eha a g H at h.
+- ano-ang-unang-titik-ng-halaman.mp3 — A o a g u a g titik  g halama ?
+- ulitin-ang-pangalan-ng-larawan-halaman.mp3 — Uliti  a g pa gala   g la awa : halama .
+- h-m.mp3 — H m
+- m-h.mp3 — M h
+- h-h.mp3 — H h
+- ito-ang-malaking-i-at-maliit-na-i-nagsisimula-sa-i-ang-isda.mp3 — Ito a g malaki g I at maliit  a i. Nagsisimula sa I a g isda. 
+- alin-ang-nagsisimula-sa-i.mp3 — Ali  a g  agsisimula sa I?
+- hanapin-ang-isda.mp3 — Ha api  a g isda.
+- tasa.mp3 — ☕ tasa
+- alin-ang-malaking-titik-i.mp3 — Ali  a g malaki g titik I?
+- tingnan-ang-unang-titik-ng-isda.mp3 — Ti g a  a g u a g titik  g isda.
+- T.mp3 — t
+- alin-ang-maliit-na-titik-i.mp3 — Ali  a g maliit  a titik I?
+- magkapareha-ang-i-at-i.mp3 — Magkapa eha a g I at i.
+- ano-ang-unang-titik-ng-isda.mp3 — A o a g u a g titik  g isda?
+- ulitin-ang-pangalan-ng-larawan-isda.mp3 — Uliti  a g pa gala   g la awa : isda.
+- i-n.mp3 — I  
+- n-i.mp3 — N i
+- i-i.mp3 — I i
+- ito-ang-malaking-j-at-maliit-na-j-nagsisimula-sa-j-ang-jeep-ang-jeep-ay-sasakyang-pampasahero.mp3 — Ito a g malaki g J at maliit  a j. Nagsisimula sa J a g jeep. A g jeep ay sasakya g pampasahe o.
+- alin-ang-nagsisimula-sa-j.mp3 — Ali  a g  agsisimula sa J?
+- hanapin-ang-jeep.mp3 — Ha api  a g jeep.
+- ulan.mp3 — 🌧️ ula 
+- alin-ang-malaking-titik-j.mp3 — Ali  a g malaki g titik J?
+- tingnan-ang-unang-titik-ng-jeep.mp3 — Ti g a  a g u a g titik  g jeep.
+- U.mp3 — U
+- alin-ang-maliit-na-titik-j.mp3 — Ali  a g maliit  a titik J?
+- magkapareha-ang-j-at-j.mp3 — Magkapa eha a g J at j.
+- ano-ang-unang-titik-ng-jeep.mp3 — A o a g u a g titik  g jeep?
+- ulitin-ang-pangalan-ng-larawan-jeep.mp3 — Uliti  a g pa gala   g la awa : jeep.
+- j-o.mp3 — J o
+- o-j.mp3 — O j
+- j-j.mp3 — J j
+- ito-ang-malaking-k-at-maliit-na-k-nagsisimula-sa-k-ang-kamay.mp3 — Ito a g malaki g K at maliit  a k. Nagsisimula sa K a g kamay. 
+- alin-ang-nagsisimula-sa-k.mp3 — Ali  a g  agsisimula sa K?
+- hanapin-ang-kamay.mp3 — Ha api  a g kamay.
+- vase.mp3 — 🏺 vase
+- alin-ang-malaking-titik-k.mp3 — Ali  a g malaki g titik K?
+- tingnan-ang-unang-titik-ng-kamay.mp3 — Ti g a  a g u a g titik  g kamay.
+- V.mp3 — V
+- alin-ang-maliit-na-titik-k.mp3 — Ali  a g maliit  a titik K?
+- magkapareha-ang-k-at-k.mp3 — Magkapa eha a g K at k.
+- ano-ang-unang-titik-ng-kamay.mp3 — A o a g u a g titik  g kamay?
+- ulitin-ang-pangalan-ng-larawan-kamay.mp3 — Uliti  a g pa gala   g la awa : kamay.
+- k-p.mp3 — K p
+- p-k.mp3 — P k
+- k-k.mp3 — K k
+- ito-ang-malaking-l-at-maliit-na-l-nagsisimula-sa-l-ang-lapis.mp3 — Ito a g malaki g L at maliit  a l. Nagsisimula sa L a g lapis. 
+- alin-ang-nagsisimula-sa-l.mp3 — Ali  a g  agsisimula sa L?
+- hanapin-ang-lapis.mp3 — Ha api  a g lapis.
+- walis.mp3 — 🧹 walis
+- alin-ang-malaking-titik-l.mp3 — Ali  a g malaki g titik L?
+- tingnan-ang-unang-titik-ng-lapis.mp3 — Ti g a  a g u a g titik  g lapis.
+- W.mp3 — W
+- alin-ang-maliit-na-titik-l.mp3 — Ali  a g maliit  a titik L?
+- magkapareha-ang-l-at-l.mp3 — Magkapa eha a g L at l.
+- ano-ang-unang-titik-ng-lapis.mp3 — A o a g u a g titik  g lapis?
+- ulitin-ang-pangalan-ng-larawan-lapis.mp3 — Uliti  a g pa gala   g la awa : lapis.
+- l-q.mp3 — L q
+- q-l.mp3 — Q l
+- l-l.mp3 — L l
+- ito-ang-malaking-m-at-maliit-na-m-nagsisimula-sa-m-ang-mangga.mp3 — Ito a g malaki g M at maliit  a m. Nagsisimula sa M a g ma gga. 
+- alin-ang-nagsisimula-sa-m.mp3 — Ali  a g  agsisimula sa M?
+- hanapin-ang-mangga.mp3 — Ha api  a g ma gga.
+- x-ray.mp3 — 🩻 x- ay
+- alin-ang-malaking-titik-m.mp3 — Ali  a g malaki g titik M?
+- tingnan-ang-unang-titik-ng-mangga.mp3 — Ti g a  a g u a g titik  g ma gga.
+- X.mp3 — X
+- alin-ang-maliit-na-titik-m.mp3 — Ali  a g maliit  a titik M?
+- magkapareha-ang-m-at-m.mp3 — Magkapa eha a g M at m.
+- ano-ang-unang-titik-ng-mangga.mp3 — A o a g u a g titik  g ma gga?
+- ulitin-ang-pangalan-ng-larawan-mangga.mp3 — Uliti  a g pa gala   g la awa : ma gga.
+- m-r.mp3 — M  
+- r-m.mp3 — R m
+- m-m.mp3 — M m
+- ito-ang-malaking-n-at-maliit-na-n-nagsisimula-sa-n-ang-niyog.mp3 — Ito a g malaki g N at maliit  a  . Nagsisimula sa N a g  iyog. 
+- alin-ang-nagsisimula-sa-n.mp3 — Ali  a g  agsisimula sa N?
+- hanapin-ang-niyog.mp3 — Ha api  a g  iyog.
+- yoyo.mp3 — 🪀 yoyo
+- alin-ang-malaking-titik-n.mp3 — Ali  a g malaki g titik N?
+- tingnan-ang-unang-titik-ng-niyog.mp3 — Ti g a  a g u a g titik  g  iyog.
+- Y.mp3 — Y
+- alin-ang-maliit-na-titik-n.mp3 — Ali  a g maliit  a titik N?
+- magkapareha-ang-n-at-n.mp3 — Magkapa eha a g N at  .
+- ano-ang-unang-titik-ng-niyog.mp3 — A o a g u a g titik  g  iyog?
+- ulitin-ang-pangalan-ng-larawan-niyog.mp3 — Uliti  a g pa gala   g la awa :  iyog.
+- n-s.mp3 — N s
+- s-n.mp3 — S  
+- n-n.mp3 — N  
+- ito-ang-malaking-o-at-maliit-na-o-nagsisimula-sa-o-ang-orasan.mp3 — Ito a g malaki g O at maliit  a o. Nagsisimula sa O a g o asa . 
+- alin-ang-nagsisimula-sa-o.mp3 — Ali  a g  agsisimula sa O?
+- hanapin-ang-orasan.mp3 — Ha api  a g o asa .
+- zebra.mp3 — 🦓 zeb a
+- alin-ang-malaking-titik-o.mp3 — Ali  a g malaki g titik O?
+- tingnan-ang-unang-titik-ng-orasan.mp3 — Ti g a  a g u a g titik  g o asa .
+- Z.mp3 — Z
+- alin-ang-maliit-na-titik-o.mp3 — Ali  a g maliit  a titik O?
+- magkapareha-ang-o-at-o.mp3 — Magkapa eha a g O at o.
+- ano-ang-unang-titik-ng-orasan.mp3 — A o a g u a g titik  g o asa ?
+- ulitin-ang-pangalan-ng-larawan-orasan.mp3 — Uliti  a g pa gala   g la awa : o asa .
+- o-t.mp3 — O t
+- t-o.mp3 — T o
+- o-o.mp3 — O o
+- ito-ang-malaking-p-at-maliit-na-p-nagsisimula-sa-p-ang-pusa.mp3 — Ito a g malaki g P at maliit  a p. Nagsisimula sa P a g pusa. 
+- alin-ang-nagsisimula-sa-p.mp3 — Ali  a g  agsisimula sa P?
+- hanapin-ang-pusa.mp3 — Ha api  a g pusa.
+- alin-ang-malaking-titik-p.mp3 — Ali  a g malaki g titik P?
+- tingnan-ang-unang-titik-ng-pusa.mp3 — Ti g a  a g u a g titik  g pusa.
+- alin-ang-maliit-na-titik-p.mp3 — Ali  a g maliit  a titik P?
+- magkapareha-ang-p-at-p.mp3 — Magkapa eha a g P at p.
+- ano-ang-unang-titik-ng-pusa.mp3 — A o a g u a g titik  g pusa?
+- ulitin-ang-pangalan-ng-larawan-pusa.mp3 — Uliti  a g pa gala   g la awa : pusa.
+- p-u.mp3 — P u
+- u-p.mp3 — U p
+- p-p.mp3 — P p
+- ito-ang-malaking-q-at-maliit-na-q-nagsisimula-sa-q-ang-quilt-ang-quilt-ay-isang-kumot-na-pinagtagpi-tagpi.mp3 — Ito a g malaki g Q at maliit  a q. Nagsisimula sa Q a g quilt. A g quilt ay isa g kumot  a pi agtagpi-tagpi.
+- alin-ang-nagsisimula-sa-q.mp3 — Ali  a g  agsisimula sa Q?
+- hanapin-ang-quilt.mp3 — Ha api  a g quilt.
+- alin-ang-malaking-titik-q.mp3 — Ali  a g malaki g titik Q?
+- tingnan-ang-unang-titik-ng-quilt.mp3 — Ti g a  a g u a g titik  g quilt.
+- alin-ang-maliit-na-titik-q.mp3 — Ali  a g maliit  a titik Q?
+- magkapareha-ang-q-at-q.mp3 — Magkapa eha a g Q at q.
+- ano-ang-unang-titik-ng-quilt.mp3 — A o a g u a g titik  g quilt?
+- ulitin-ang-pangalan-ng-larawan-quilt.mp3 — Uliti  a g pa gala   g la awa : quilt.
+- q-v.mp3 — Q v
+- v-q.mp3 — V q
+- q-q.mp3 — Q q
+- ito-ang-malaking-r-at-maliit-na-r-nagsisimula-sa-r-ang-rosas.mp3 — Ito a g malaki g R at maliit  a  . Nagsisimula sa R a g  osas. 
+- alin-ang-nagsisimula-sa-r.mp3 — Ali  a g  agsisimula sa R?
+- hanapin-ang-rosas.mp3 — Ha api  a g  osas.
+- alin-ang-malaking-titik-r.mp3 — Ali  a g malaki g titik R?
+- tingnan-ang-unang-titik-ng-rosas.mp3 — Ti g a  a g u a g titik  g  osas.
+- alin-ang-maliit-na-titik-r.mp3 — Ali  a g maliit  a titik R?
+- magkapareha-ang-r-at-r.mp3 — Magkapa eha a g R at  .
+- ano-ang-unang-titik-ng-rosas.mp3 — A o a g u a g titik  g  osas?
+- ulitin-ang-pangalan-ng-larawan-rosas.mp3 — Uliti  a g pa gala   g la awa :  osas.
+- r-w.mp3 — R w
+- w-r.mp3 — W  
+- r-r.mp3 — R  
+- ito-ang-malaking-s-at-maliit-na-s-nagsisimula-sa-s-ang-saging.mp3 — Ito a g malaki g S at maliit  a s. Nagsisimula sa S a g sagi g. 
+- alin-ang-nagsisimula-sa-s.mp3 — Ali  a g  agsisimula sa S?
+- hanapin-ang-saging.mp3 — Ha api  a g sagi g.
+- alin-ang-malaking-titik-s.mp3 — Ali  a g malaki g titik S?
+- tingnan-ang-unang-titik-ng-saging.mp3 — Ti g a  a g u a g titik  g sagi g.
+- alin-ang-maliit-na-titik-s.mp3 — Ali  a g maliit  a titik S?
+- magkapareha-ang-s-at-s.mp3 — Magkapa eha a g S at s.
+- ano-ang-unang-titik-ng-saging.mp3 — A o a g u a g titik  g sagi g?
+- ulitin-ang-pangalan-ng-larawan-saging.mp3 — Uliti  a g pa gala   g la awa : sagi g.
+- s-x.mp3 — S x
+- x-s.mp3 — X s
+- s-s.mp3 — S s
+- ito-ang-malaking-t-at-maliit-na-t-nagsisimula-sa-t-ang-tasa.mp3 — Ito a g malaki g T at maliit  a t. Nagsisimula sa T a g tasa. 
+- alin-ang-nagsisimula-sa-t.mp3 — Ali  a g  agsisimula sa T?
+- hanapin-ang-tasa.mp3 — Ha api  a g tasa.
+- alin-ang-malaking-titik-t.mp3 — Ali  a g malaki g titik T?
+- tingnan-ang-unang-titik-ng-tasa.mp3 — Ti g a  a g u a g titik  g tasa.
+- alin-ang-maliit-na-titik-t.mp3 — Ali  a g maliit  a titik T?
+- magkapareha-ang-t-at-t.mp3 — Magkapa eha a g T at t.
+- ano-ang-unang-titik-ng-tasa.mp3 — A o a g u a g titik  g tasa?
+- ulitin-ang-pangalan-ng-larawan-tasa.mp3 — Uliti  a g pa gala   g la awa : tasa.
+- t-y.mp3 — T y
+- y-t.mp3 — Y t
+- t-t.mp3 — T t
+- ito-ang-malaking-u-at-maliit-na-u-nagsisimula-sa-u-ang-ulan.mp3 — Ito a g malaki g U at maliit  a u. Nagsisimula sa U a g ula . 
+- alin-ang-nagsisimula-sa-u.mp3 — Ali  a g  agsisimula sa U?
+- hanapin-ang-ulan.mp3 — Ha api  a g ula .
+- alin-ang-malaking-titik-u.mp3 — Ali  a g malaki g titik U?
+- tingnan-ang-unang-titik-ng-ulan.mp3 — Ti g a  a g u a g titik  g ula .
+- alin-ang-maliit-na-titik-u.mp3 — Ali  a g maliit  a titik U?
+- magkapareha-ang-u-at-u.mp3 — Magkapa eha a g U at u.
+- ano-ang-unang-titik-ng-ulan.mp3 — A o a g u a g titik  g ula ?
+- ulitin-ang-pangalan-ng-larawan-ulan.mp3 — Uliti  a g pa gala   g la awa : ula .
+- u-z.mp3 — U z
+- z-u.mp3 — Z u
+- u-u.mp3 — U u
+- ito-ang-malaking-v-at-maliit-na-v-nagsisimula-sa-v-ang-vase-ang-vase-ay-plorera-sa-filipino.mp3 — Ito a g malaki g V at maliit  a v. Nagsisimula sa V a g vase. A g vase ay plo e a sa Filipi o.
+- alin-ang-nagsisimula-sa-v.mp3 — Ali  a g  agsisimula sa V?
+- hanapin-ang-vase.mp3 — Ha api  a g vase.
+- alin-ang-malaking-titik-v.mp3 — Ali  a g malaki g titik V?
+- tingnan-ang-unang-titik-ng-vase.mp3 — Ti g a  a g u a g titik  g vase.
+- alin-ang-maliit-na-titik-v.mp3 — Ali  a g maliit  a titik V?
+- magkapareha-ang-v-at-v.mp3 — Magkapa eha a g V at v.
+- ano-ang-unang-titik-ng-vase.mp3 — A o a g u a g titik  g vase?
+- ulitin-ang-pangalan-ng-larawan-vase.mp3 — Uliti  a g pa gala   g la awa : vase.
+- v-a.mp3 — V a
+- a-v.mp3 — A v
+- v-v.mp3 — V v
+- ito-ang-malaking-w-at-maliit-na-w-nagsisimula-sa-w-ang-walis.mp3 — Ito a g malaki g W at maliit  a w. Nagsisimula sa W a g walis. 
+- alin-ang-nagsisimula-sa-w.mp3 — Ali  a g  agsisimula sa W?
+- hanapin-ang-walis.mp3 — Ha api  a g walis.
+- alin-ang-malaking-titik-w.mp3 — Ali  a g malaki g titik W?
+- tingnan-ang-unang-titik-ng-walis.mp3 — Ti g a  a g u a g titik  g walis.
+- alin-ang-maliit-na-titik-w.mp3 — Ali  a g maliit  a titik W?
+- magkapareha-ang-w-at-w.mp3 — Magkapa eha a g W at w.
+- ano-ang-unang-titik-ng-walis.mp3 — A o a g u a g titik  g walis?
+- ulitin-ang-pangalan-ng-larawan-walis.mp3 — Uliti  a g pa gala   g la awa : walis.
+- w-b.mp3 — W b
+- b-w.mp3 — B w
+- w-w.mp3 — W w
+- ito-ang-malaking-x-at-maliit-na-x-nagsisimula-sa-x-ang-x-ray-ang-x-ray-ay-larawang-nagpapakita-ng-loob-ng-katawan.mp3 — Ito a g malaki g X at maliit  a x. Nagsisimula sa X a g x- ay. A g x- ay ay la awa g  agpapakita  g loob  g katawa .
+- alin-ang-nagsisimula-sa-x.mp3 — Ali  a g  agsisimula sa X?
+- hanapin-ang-x-ray.mp3 — Ha api  a g x- ay.
+- alin-ang-malaking-titik-x.mp3 — Ali  a g malaki g titik X?
+- tingnan-ang-unang-titik-ng-x-ray.mp3 — Ti g a  a g u a g titik  g x- ay.
+- alin-ang-maliit-na-titik-x.mp3 — Ali  a g maliit  a titik X?
+- magkapareha-ang-x-at-x.mp3 — Magkapa eha a g X at x.
+- ano-ang-unang-titik-ng-x-ray.mp3 — A o a g u a g titik  g x- ay?
+- ulitin-ang-pangalan-ng-larawan-x-ray.mp3 — Uliti  a g pa gala   g la awa : x- ay.
+- x-c.mp3 — X c
+- c-x.mp3 — C x
+- x-x.mp3 — X x
+- ito-ang-malaking-y-at-maliit-na-y-nagsisimula-sa-y-ang-yoyo.mp3 — Ito a g malaki g Y at maliit  a y. Nagsisimula sa Y a g yoyo. 
+- alin-ang-nagsisimula-sa-y.mp3 — Ali  a g  agsisimula sa Y?
+- hanapin-ang-yoyo.mp3 — Ha api  a g yoyo.
+- alin-ang-malaking-titik-y.mp3 — Ali  a g malaki g titik Y?
+- tingnan-ang-unang-titik-ng-yoyo.mp3 — Ti g a  a g u a g titik  g yoyo.
+- alin-ang-maliit-na-titik-y.mp3 — Ali  a g maliit  a titik Y?
+- magkapareha-ang-y-at-y.mp3 — Magkapa eha a g Y at y.
+- ano-ang-unang-titik-ng-yoyo.mp3 — A o a g u a g titik  g yoyo?
+- ulitin-ang-pangalan-ng-larawan-yoyo.mp3 — Uliti  a g pa gala   g la awa : yoyo.
+- y-d.mp3 — Y d
+- d-y.mp3 — D y
+- y-y.mp3 — Y y
+- ito-ang-malaking-z-at-maliit-na-z-nagsisimula-sa-z-ang-zebra-ang-zebra-ay-hayop-na-may-guhit-na-itim-at-puti.mp3 — Ito a g malaki g Z at maliit  a z. Nagsisimula sa Z a g zeb a. A g zeb a ay hayop  a may guhit  a itim at puti.
+- alin-ang-nagsisimula-sa-z.mp3 — Ali  a g  agsisimula sa Z?
+- hanapin-ang-zebra.mp3 — Ha api  a g zeb a.
+- alin-ang-malaking-titik-z.mp3 — Ali  a g malaki g titik Z?
+- tingnan-ang-unang-titik-ng-zebra.mp3 — Ti g a  a g u a g titik  g zeb a.
+- alin-ang-maliit-na-titik-z.mp3 — Ali  a g maliit  a titik Z?
+- magkapareha-ang-z-at-z.mp3 — Magkapa eha a g Z at z.
+- ano-ang-unang-titik-ng-zebra.mp3 — A o a g u a g titik  g zeb a?
+- ulitin-ang-pangalan-ng-larawan-zebra.mp3 — Uliti  a g pa gala   g la awa : zeb a.
+- z-e.mp3 — Z e
+- e-z.mp3 — E z
+- z-z.mp3 — Z z
+- pagsamahin-ang-mga-pantig-ba-at-ta-ba-ta-bata.mp3 — Pagsamahi  a g mga pa tig: ba at ta. ba-ta — bata!
+- anong-salita-ang-mabubuo.mp3 — A o g salita a g mabubuo?
+- pagsamahin-ang-dalawang-pantig.mp3 — Pagsamahi  a g dalawa g pa tig.
+- bata.mp3 — bata
+- mesa.mp3 — mesa
+- lobo.mp3 — lobo
+- ano-ang-unang-pantig-ng-bata.mp3 — A o a g u a g pa tig  g bata?
+- simulan-sa-ba.mp3 — Simula  sa ba.
+- ta.mp3 — ta
+- mi.mp3 — mi
+- ba.mp3 — ba
+- ano-ang-huling-pantig-ng-bata.mp3 — A o a g huli g pa tig  g bata?
+- ang-huling-bahagi-ay-ta.mp3 — A g huli g bahagi ay ta.
+- ko.mp3 — ko
+- ano-ang-unang-titik-ng-bata.mp3 — A o a g u a g titik  g bata?
+- tingnan-ang-simula-ng-salita.mp3 — Ti g a  a g simula  g salita.
+- alin-ang-salitang-nasa-larawan.mp3 — Ali  a g salita g  asa la awa ?
+- ito-ay-bata.mp3 — Ito ay bata.
+- pagsamahin-ang-mga-pantig-pu-at-sa-pu-sa-pusa.mp3 — Pagsamahi  a g mga pa tig: pu at sa. pu-sa — pusa!
+- ano-ang-unang-pantig-ng-pusa.mp3 — A o a g u a g pa tig  g pusa?
+- simulan-sa-pu.mp3 — Simula  sa pu.
+- sa.mp3 — sa
+- pu.mp3 — pu
+- ano-ang-huling-pantig-ng-pusa.mp3 — A o a g huli g pa tig  g pusa?
+- ang-huling-bahagi-ay-sa.mp3 — A g huli g bahagi ay sa.
+- ito-ay-pusa.mp3 — Ito ay pusa.
+- pagsamahin-ang-mga-pantig-sa-at-ging-sa-ging-saging.mp3 — Pagsamahi  a g mga pa tig: sa at gi g. sa-gi g — sagi g!
+- ano-ang-unang-pantig-ng-saging.mp3 — A o a g u a g pa tig  g sagi g?
+- simulan-sa-sa.mp3 — Simula  sa sa.
+- ging.mp3 — gi g
+- ano-ang-huling-pantig-ng-saging.mp3 — A o a g huli g pa tig  g sagi g?
+- ang-huling-bahagi-ay-ging.mp3 — A g huli g bahagi ay gi g.
+- ito-ay-saging.mp3 — Ito ay sagi g.
+- pagsamahin-ang-mga-pantig-ba-at-hay-ba-hay-bahay.mp3 — Pagsamahi  a g mga pa tig: ba at hay. ba-hay — bahay!
+- bahay.mp3 — bahay
+- ano-ang-unang-pantig-ng-bahay.mp3 — A o a g u a g pa tig  g bahay?
+- hay.mp3 — hay
+- ano-ang-huling-pantig-ng-bahay.mp3 — A o a g huli g pa tig  g bahay?
+- ang-huling-bahagi-ay-hay.mp3 — A g huli g bahagi ay hay.
+- ano-ang-unang-titik-ng-bahay.mp3 — A o a g u a g titik  g bahay?
+- ito-ay-bahay.mp3 — Ito ay bahay.
+- ang-ako-ay-tumutukoy-sa-sarili-ang-ikaw-ay-tumutukoy-sa-kausap.mp3 — A g ako ay tumutukoy sa sa ili. A g ikaw ay tumutukoy sa kausap.
+- piliin-ang-salitang-ako.mp3 — Pilii  a g salita g ako.
+- tingnan-ang-mga-titik-a-k-o.mp3 — Ti g a  a g mga titik a-k-o.
+- ako.mp3 — Ako
+- ikaw.mp3 — Ikaw
+- si.mp3 — Si
+- piliin-ang-salitang-ikaw.mp3 — Pilii  a g salita g ikaw.
+- nagsisimula-ito-sa-i.mp3 — Nagsisimula ito sa i.
+- ang.mp3 — A g
+- ano-ang-tumutukoy-sa-sarili.mp3 — A o a g tumutukoy sa sa ili?
+- kapag-itinuturo-mo-ang-iyong-sarili.mp3 — Kapag iti utu o mo a g iyo g sa ili.
+- ano-ang-tumutukoy-sa-kausap.mp3 — A o a g tumutukoy sa kausap?
+- ito-ang-salitang-ginagamit-para-sa-taong-kausap-mo.mp3 — Ito a g salita g gi agamit pa a sa tao g kausap mo.
+- buuin-ay-bata-tinutukoy-ang-sarili.mp3 — Buui : ___ ay bata. (Ti utukoy a g sa ili.)
+- magsimula-sa-ako.mp3 — Magsimula sa Ako.
+- ginagamit-ang-si-bago-ang-pangalan-ng-tao-ginagamit-ang-ang-bago-ang-pangngalan.mp3 — Gi agamit a g si bago a g pa gala   g tao. Gi agamit a g a g bago a g pa g gala .
+- piliin-ang-salitang-si.mp3 — Pilii  a g salita g si.
+- may-dalawang-titik-s-i.mp3 — May dalawa g titik: s-i.
+- piliin-ang-salitang-ang.mp3 — Pilii  a g salita g a g.
+- tingnan-ang-pagkakasulat-ng-salitang-ang.mp3 — Ti g a  a g pagkakasulat  g salita g a g.
+- buuin-ana-ay-mabait.mp3 — Buui : ___ A a ay mabait.
+- ginagamit-ito-bago-ang-pangalan-ng-tao.mp3 — Gi agamit ito bago a g pa gala   g tao.
+- buuin-bola-ay-bilog.mp3 — Buui : ___ bola ay bilog.
+- ginagamit-ito-bago-ang-pangngalang-bola.mp3 — Gi agamit ito bago a g pa g gala g bola.
+- buuin-ben-ay-bata.mp3 — Buui : ___ Be  ay bata.
+- ben-ang-pangalan-ng-tao.mp3 — Be  a g pa gala   g tao.
+- balikan-ang-mga-titik-at-mga-salitang-natutuhan-natin-kaya-mo-ito.mp3 — Balika  a g mga titik at mga salita g  atutuha   ati . Kaya mo ito!

@@ -1,0 +1,25 @@
+# Sa loob ng klase — Yugto 7
+
+## lesson.mp3
+
+Nakikinig si Ana habang nagsasalita ang guro. Kapag nais niyang sumagot, nagtataas siya ng kamay at naghihintay ng pagkakataon.
+
+## Tanong 1
+
+See [questions/1/SCRIPT.md](questions/1/SCRIPT.md).
+
+## Tanong 2
+
+See [questions/2/SCRIPT.md](questions/2/SCRIPT.md).
+
+## Tanong 3
+
+See [questions/3/SCRIPT.md](questions/3/SCRIPT.md).
+
+## Tanong 4
+
+See [questions/4/SCRIPT.md](questions/4/SCRIPT.md).
+
+## Tanong 5
+
+See [questions/5/SCRIPT.md](questions/5/SCRIPT.md).

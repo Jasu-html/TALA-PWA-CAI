@@ -1,0 +1,76 @@
+# TALA — Bilang phrase library
+
+Folder: assets/audio/fil/shared/bilang
+
+Isang recording lang bawat unique na phrase. Gamitin ang eksaktong filename; huwag gumawa ng copies para sa ibang yugto o tanong.
+
+- ito-ang-isa-1-at-dalawa-2-bilangin-ang-bawat-bituin.mp3 — Ito a g isa (1) at dalawa (2). Bila gi  a g bawat bitui .
+- ilan-ang-nasa-larawan.mp3 — Ila  a g  asa la awa ?
+- ituro-ang-bawat-larawan-habang-nagbibilang.mp3 — Itu o a g bawat la awa  haba g  agbibila g.
+- 1.mp3 — 1
+- 2.mp3 — 2
+- 0.mp3 — 0
+- 3.mp3 — 3
+- alin-ang-bilang-na-isa.mp3 — Ali  a g bila g  a isa?
+- hanapin-ang-numerong-1.mp3 — Ha api  a g  ume o g 1.
+- alin-ang-bilang-na-dalawa.mp3 — Ali  a g bila g  a dalawa?
+- hanapin-ang-numerong-2.mp3 — Ha api  a g  ume o g 2.
+- ito-ang-tatlo-3-at-apat-4-bilangin-ang-bawat-bituin.mp3 — Ito a g tatlo (3) at apat (4). Bila gi  a g bawat bitui .
+- 4.mp3 — 4
+- 5.mp3 — 5
+- alin-ang-bilang-na-tatlo.mp3 — Ali  a g bila g  a tatlo?
+- hanapin-ang-numerong-3.mp3 — Ha api  a g  ume o g 3.
+- alin-ang-bilang-na-apat.mp3 — Ali  a g bila g  a apat?
+- hanapin-ang-numerong-4.mp3 — Ha api  a g  ume o g 4.
+- ito-ang-lima-5-at-anim-6-bilangin-ang-bawat-bituin.mp3 — Ito a g lima (5) at a im (6). Bila gi  a g bawat bitui .
+- 6.mp3 — 6
+- 7.mp3 — 7
+- alin-ang-bilang-na-lima.mp3 — Ali  a g bila g  a lima?
+- hanapin-ang-numerong-5.mp3 — Ha api  a g  ume o g 5.
+- alin-ang-bilang-na-anim.mp3 — Ali  a g bila g  a a im?
+- hanapin-ang-numerong-6.mp3 — Ha api  a g  ume o g 6.
+- ito-ang-pito-7-at-walo-8-bilangin-ang-bawat-bituin.mp3 — Ito a g pito (7) at walo (8). Bila gi  a g bawat bitui .
+- 8.mp3 — 8
+- 9.mp3 — 9
+- alin-ang-bilang-na-pito.mp3 — Ali  a g bila g  a pito?
+- hanapin-ang-numerong-7.mp3 — Ha api  a g  ume o g 7.
+- alin-ang-bilang-na-walo.mp3 — Ali  a g bila g  a walo?
+- hanapin-ang-numerong-8.mp3 — Ha api  a g  ume o g 8.
+- ito-ang-siyam-9-at-sampu-10-bilangin-ang-bawat-bituin.mp3 — Ito a g siyam (9) at sampu (10). Bila gi  a g bawat bitui .
+- 10.mp3 — 10
+- alin-ang-bilang-na-siyam.mp3 — Ali  a g bila g  a siyam?
+- hanapin-ang-numerong-9.mp3 — Ha api  a g  ume o g 9.
+- alin-ang-bilang-na-sampu.mp3 — Ali  a g bila g  a sampu?
+- hanapin-ang-numerong-10.mp3 — Ha api  a g  ume o g 10.
+- bilangin-nang-isa-isa-ang-huling-bilang-ang-nagsasabi-kung-ilan-ang-lahat.mp3 — Bila gi   a g isa-isa. A g huli g bila g a g  agsasabi ku g ila  a g lahat.
+- sundin-ang-tamang-pagkakasunod-ng-mga-bilang-1-2-3-4-5.mp3 — Su di  a g tama g pagkakasu od  g mga bila g: 1, 2, 3, 4, 5.
+- anong-bilang-ang-nawawala.mp3 — A o g bila g a g  awawala?
+- bilangin-mula-1-hanggang-5.mp3 — Bila gi  mula 1 ha gga g 5.
+- sundin-ang-tamang-pagkakasunod-ng-mga-bilang-6-7-8-9-10.mp3 — Su di  a g tama g pagkakasu od  g mga bila g: 6, 7, 8, 9, 10.
+- bilangin-mula-6-hanggang-10.mp3 — Bila gi  mula 6 ha gga g 10.
+- mas-marami-ang-pangkat-na-may-mas-malaking-bilang.mp3 — Mas ma ami a g pa gkat  a may mas malaki g bila g.
+- aling-pangkat-ang-mas-marami.mp3 — Ali g pa gkat a g mas ma ami?
+- bilangin-ang-laman-ng-bawat-pangkat.mp3 — Bila gi  a g lama   g bawat pa gkat.
+- pangkat-a.mp3 — Pa gkat A
+- pangkat-b.mp3 — Pa gkat B
+- mas-kaunti-ang-pangkat-na-may-mas-maliit-na-bilang.mp3 — Mas kau ti a g pa gkat  a may mas maliit  a bila g.
+- aling-pangkat-ang-mas-kaunti.mp3 — Ali g pa gkat a g mas kau ti?
+- kapag-nagdagdag-dumarami-ang-mga-bagay-dalawa-dagdag-isa-ay-tatlo.mp3 — Kapag  agdagdag, duma ami a g mga bagay. Dalawa dagdag isa ay tatlo.
+- ilan-ang-lahat.mp3 — Ila  a g lahat?
+- magsimula-sa-2-at-magdagdag-ng-1.mp3 — Magsimula sa 2 at magdagdag  g 1.
+- magsimula-sa-1-at-magdagdag-ng-3.mp3 — Magsimula sa 1 at magdagdag  g 3.
+- magsimula-sa-3-at-magdagdag-ng-2.mp3 — Magsimula sa 3 at magdagdag  g 2.
+- magsimula-sa-4-at-magdagdag-ng-2.mp3 — Magsimula sa 4 at magdagdag  g 2.
+- magsimula-sa-5-at-magdagdag-ng-3.mp3 — Magsimula sa 5 at magdagdag  g 3.
+- kapag-may-inalis-kumakaunti-ang-mga-bagay-lima-bawas-dalawa-ay-tatlo.mp3 — Kapag may i alis, kumakau ti a g mga bagay. Lima bawas dalawa ay tatlo.
+- ilan-ang-natira.mp3 — Ila  a g  ati a?
+- mula-sa-5-mag-alis-ng-2.mp3 — Mula sa 5, mag-alis  g 2.
+- mula-sa-4-mag-alis-ng-1.mp3 — Mula sa 4, mag-alis  g 1.
+- mula-sa-6-mag-alis-ng-2.mp3 — Mula sa 6, mag-alis  g 2.
+- mula-sa-8-mag-alis-ng-3.mp3 — Mula sa 8, mag-alis  g 3.
+- mula-sa-10-mag-alis-ng-1.mp3 — Mula sa 10, mag-alis  g 1.
+- balikan-ang-pagbibilang-pagdaragdag-at-pagbabawas.mp3 — Balika  a g pagbibila g, pagda agdag, at pagbabawas.
+- ano-ang-kasunod-ng-5.mp3 — A o a g kasu od  g 5?
+- magbilang-pasulong.mp3 — Magbila g pasulo g.
+- pagsamahin-ang-dalawang-pangkat-ng-tatlo.mp3 — Pagsamahi  a g dalawa g pa gkat  g tatlo.
+- mag-alis-ng-dalawa-mula-sa-pito.mp3 — Mag-alis  g dalawa mula sa pito.

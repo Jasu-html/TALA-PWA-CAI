@@ -1,0 +1,89 @@
+# TALA — Likha phrase library
+
+Folder: assets/audio/fil/shared/likha
+
+Isang recording lang bawat unique na phrase. Gamitin ang eksaktong filename; huwag gumawa ng copies para sa ibang yugto o tanong.
+
+- walang-sulok-ang-bilog.mp3 — Wala g sulok a g bilog.
+- alin-ang-bilog.mp3 — Ali  a g bilog?
+- tingnan-ang-hugis-sa-itaas.mp3 — Ti g a  a g hugis sa itaas.
+- bilog.mp3 — ● Bilog
+- parisukat.mp3 — ■ Pa isukat
+- parihaba.mp3 — pa ihaba
+- ano-ang-pangalan-ng-hugis.mp3 — A o a g pa gala   g hugis?
+- alin-ang-kaparehong-hugis.mp3 — Ali  a g kapa eho g hugis?
+- pagtapatin-sa-isip-ang-mga-gilid-at-sulok.mp3 — Pagtapati  sa isip a g mga gilid at sulok.
+- alin-ang-hugis-na-natutuhan-natin.mp3 — Ali  a g hugis  a  atutuha   ati ?
+- piliin-muli-ang-bilog.mp3 — Pilii  muli a g bilog.
+- may-apat-na-magkakapantay-na-gilid-ang-parisukat.mp3 — May apat  a magkakapa tay  a gilid a g pa isukat.
+- alin-ang-parisukat.mp3 — Ali  a g pa isukat?
+- tatsulok.mp3 — ▲ Tatsulok
+- bituin.mp3 — ★ Bitui 
+- piliin-muli-ang-parisukat.mp3 — Pilii  muli a g pa isukat.
+- may-tatlong-gilid-at-tatlong-sulok-ang-tatsulok.mp3 — May tatlo g gilid at tatlo g sulok a g tatsulok.
+- alin-ang-tatsulok.mp3 — Ali  a g tatsulok?
+- puso.mp3 — puso
+- piliin-muli-ang-tatsulok.mp3 — Pilii  muli a g tatsulok.
+- may-apat-na-sulok-ang-parihaba-magkasinghaba-ang-magkaharap-na-gilid-nito.mp3 — May apat  a sulok a g pa ihaba. Magkasi ghaba a g magkaha ap  a gilid  ito.
+- alin-ang-parihaba.mp3 — Ali  a g pa ihaba?
+- piliin-muli-ang-parihaba.mp3 — Pilii  muli a g pa ihaba.
+- may-matutulis-na-dulo-ang-hugis-bituin.mp3 — May matutulis  a dulo a g hugis bitui .
+- alin-ang-bituin.mp3 — Ali  a g bitui ?
+- piliin-muli-ang-bituin.mp3 — Pilii  muli a g bitui .
+- ang-hugis-puso-ay-may-dalawang-umbok-sa-itaas-at-tulis-sa-ibaba.mp3 — A g hugis puso ay may dalawa g umbok sa itaas at tulis sa ibaba.
+- alin-ang-puso.mp3 — Ali  a g puso?
+- piliin-muli-ang-puso.mp3 — Pilii  muli a g puso.
+- kilalanin-ang-pula-at-asul-tingnan-at-ihambing-ang-dalawang-kulay.mp3 — Kilala i  a g pula at asul. Ti g a  at ihambi g a g dalawa g kulay.
+- alin-ang-kulay-pula.mp3 — Ali  a g kulay pula?
+- tingnan-ang-bilog-na-pula.mp3 — Ti g a  a g bilog  a pula.
+- pula.mp3 — 🔴 Pula
+- asul.mp3 — 🔵 Asul
+- dilaw.mp3 — 🟡 dilaw
+- ano-ang-pangalan-ng-kulay.mp3 — A o a g pa gala   g kulay?
+- tingnan-ang-bilog-na-asul.mp3 — Ti g a  a g bilog  a asul.
+- kilalanin-ang-dilaw-at-berde-tingnan-at-ihambing-ang-dalawang-kulay.mp3 — Kilala i  a g dilaw at be de. Ti g a  at ihambi g a g dalawa g kulay.
+- alin-ang-kulay-dilaw.mp3 — Ali  a g kulay dilaw?
+- tingnan-ang-bilog-na-dilaw.mp3 — Ti g a  a g bilog  a dilaw.
+- berde.mp3 — 🟢 Be de
+- kahel.mp3 — 🟠 Kahel
+- tingnan-ang-bilog-na-berde.mp3 — Ti g a  a g bilog  a be de.
+- kilalanin-ang-kahel-at-lila-tingnan-at-ihambing-ang-dalawang-kulay.mp3 — Kilala i  a g kahel at lila. Ti g a  at ihambi g a g dalawa g kulay.
+- alin-ang-kulay-kahel.mp3 — Ali  a g kulay kahel?
+- tingnan-ang-bilog-na-kahel.mp3 — Ti g a  a g bilog  a kahel.
+- lila.mp3 — 🟣 Lila
+- rosas.mp3 — 🩷  osas
+- tingnan-ang-bilog-na-lila.mp3 — Ti g a  a g bilog  a lila.
+- kilalanin-ang-rosas-at-kayumanggi-tingnan-at-ihambing-ang-dalawang-kulay.mp3 — Kilala i  a g  osas at kayuma ggi. Ti g a  at ihambi g a g dalawa g kulay.
+- alin-ang-kulay-rosas.mp3 — Ali  a g kulay  osas?
+- tingnan-ang-bilog-na-rosas.mp3 — Ti g a  a g bilog  a  osas.
+- kayumanggi.mp3 — 🟤 kayuma ggi
+- tingnan-ang-bilog-na-kayumanggi.mp3 — Ti g a  a g bilog  a kayuma ggi.
+- asul-at-dilaw-ay-berde-subukang-alalahanin-ang-dalawang-kulay.mp3 — Asul at dilaw ay be de. Subuka g alalaha i  a g dalawa g kulay.
+- ano-ang-mabubuong-kulay.mp3 — A o a g mabubuo g kulay?
+- asul-at-dilaw-ay-berde.mp3 — Asul at dilaw ay be de.
+- ano-ang-ihahalo-sa-asul-para-maging-berde.mp3 — A o a g ihahalo sa asul pa a magi g be de?
+- ano-ang-ihahalo-sa-dilaw-para-maging-berde.mp3 — A o a g ihahalo sa dilaw pa a magi g be de?
+- dilaw-at-asul-ay-berde.mp3 — Dilaw at asul ay be de.
+- alin-ang-berde.mp3 — Ali  a g be de?
+- ito-ang-kulay-ng-maraming-dahon.mp3 — Ito a g kulay  g ma ami g daho .
+- aling-dalawang-kulay-ang-bubuo-ng-berde.mp3 — Ali g dalawa g kulay a g bubuo  g be de?
+- balikan-ang-dalawang-kulay-sa-aralin.mp3 — Balika  a g dalawa g kulay sa a ali .
+- pula-at-asul.mp3 — Pula at asul
+- pula-at-dilaw.mp3 — Pula at dilaw
+- asul-at-dilaw.mp3 — Asul at dilaw
+- pula-at-dilaw-ay-kahel-pula-at-asul-ay-lila.mp3 — Pula at dilaw ay kahel. Pula at asul ay lila.
+- pula-at-dilaw-ay-kahel.mp3 — Pula at dilaw ay kahel.
+- pula-at-asul-ay-lila.mp3 — Pula at asul ay lila.
+- ano-ang-ihahalo-sa-pula-para-maging-kahel.mp3 — A o a g ihahalo sa pula pa a magi g kahel?
+- ano-ang-ihahalo-sa-asul-para-maging-lila.mp3 — A o a g ihahalo sa asul pa a magi g lila?
+- piliin-ang-lila.mp3 — Pilii  a g lila.
+- ito-ang-kulay-mula-sa-pula-at-asul.mp3 — Ito a g kulay mula sa pula at asul.
+- ang-padron-ay-ayos-na-paulit-ulit-sa-banig-maaaring-magpalitan-ang-mga-kulay-o-hugis.mp3 — A g pad o  ay ayos  a paulit-ulit. Sa ba ig, maaa i g magpalita  a g mga kulay o hugis.
+- ano-ang-kasunod.mp3 — A o a g kasu od?
+- salit-salitan-ang-pula-at-asul.mp3 — Salit-salita  a g pula at asul.
+- salit-salitan-ang-tatsulok-at-parisukat.mp3 — Salit-salita  a g tatsulok at pa isukat.
+- bumalik-sa-unang-kulay.mp3 — Bumalik sa u a g kulay.
+- salit-salitan-ang-bituin-at-puso.mp3 — Salit-salita  a g bitui  at puso.
+- dalawang-bilog-saka-isang-tatsulok.mp3 — Dalawa g bilog, saka isa g tatsulok.
+- balikan-ang-mga-hugis-kulay-at-padron.mp3 — Balika  a g mga hugis, kulay, at pad o !
+- gamitin-ang-mga-kulay-upang-gumuhit-walang-maling-guhit-kapag-tapos-na-pindutin-ang-tapos-na-ang-obra-ko.mp3 — Gamiti  a g mga kulay upa g gumuhit. Wala g mali g guhit! Kapag tapos  a, pi duti  a g Tapos  a a g ob a ko.

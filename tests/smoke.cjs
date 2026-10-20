@@ -23,7 +23,7 @@ function setup(saved,revealItems) {
   }
   const canvas={width:800,height:480,getContext:()=>({beginPath(){},moveTo(){},arc(){},fill(){},lineTo(){},stroke(){},clearRect(){},fillText(){}}),
     addEventListener:(name,fn)=>canvasHandlers[name]=fn,setPointerCapture(){},getBoundingClientRect:()=>({left:0,top:0,width:800,height:480})};
-  const nodes={'#app':{get innerHTML(){return html;},set innerHTML(v){parse(v);},querySelectorAll:()=>revealItems||[]},'#wallet-stars':{},'#toast':element(),'#feedback':{textContent:''},'#paint-canvas':canvas};
+  const nodes={'#app':{get innerHTML(){return html;},set innerHTML(v){parse(v);},querySelectorAll:()=>revealItems||[]},'#wallet-stars':{},'#toast':element(),'#feedback':{textContent:''},'#paint-canvas':canvas,'#learner-name':{value:''}};
   const all=selector=>selector==='[data-choice]'?buttons.filter(b=>b.dataset.choice!==undefined):selector==='[data-paint]'?buttons.filter(b=>b.dataset.paint):[];
   const one=selector=>{const action=selector.match(/^\[data-action="([^"]+)"\]$/);return action?buttons.find(b=>b.dataset.action===action[1]):nodes[selector];};
   const ctx={console,setTimeout(fn,delay){const id=nextTimer++;timers.set(id,fn);timerDelays.set(id,delay);return id;},clearTimeout(id){timers.delete(id);timerDelays.delete(id);},
@@ -38,16 +38,222 @@ function setup(saved,revealItems) {
     disconnect(){this.disconnected=true;}
   };
   ctx.window=ctx;vm.createContext(ctx);
-  for(const file of ['data','storage','speech','sfx','visuals','app'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../js',file+'.js'),'utf8'),ctx);
+  for(const file of ['data','quest','storage','speech','sfx','visuals','app'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../js',file+'.js'),'utf8'),ctx);
   function click(dataset) {
-    const b=buttons.find(b=>Object.entries(dataset).every(([k,v])=>b.dataset[k]===v));
+    const b=buttons.find(b=>Object.entries(dataset).every(([k,v])=>b.dataset[k]===v)) || (['home','dashboard'].includes(dataset.action)?element(dataset):null);
     assert.ok(b,'Button exists: '+JSON.stringify(dataset));
     if(b.disabled)return;
     for(const fn of [...handlers.click])fn({target:{closest:()=>b}});
   }
   const enter=(module,n=1)=>{click({module});click({level:String(n)});click({action:'practice'});};
-  return {ctx,nodes,click,enter,one,all,canvasHandlers,timers,timerDelays,observers};
+  const submitName=name=>{nodes['#learner-name'].value=name;for(const fn of handlers.submit)fn({target:{id:'name-form'},preventDefault(){}});};
+  return {ctx,nodes,click,enter,one,all,canvasHandlers,timers,timerDelays,observers,submitName,saved:()=>JSON.parse(value)};
 }
+const allCoreStages=()=>[['phonics',33],['numbers',15],['arts',15],['values',10]].flatMap(([id,count])=>Array.from({length:count},(_,i)=>id+':'+(i+1)));
+const questSave=(extra={})=>({curriculumVersion:2,completed:allCoreStages(),questOpeningSeen:true,...extra});
+test('Quest requires every core stage, regardless of stars, and locks later rounds',()=>{
+  const completed=allCoreStages().filter(id=>id!=='arts:15');
+  const env=setup(questSave({completed:[...completed,'quest:1','arts:999'],best:Object.fromEntries(completed.map(id=>[id,5]))})),{ctx,click,nodes}=env;
+  const p=ctx.TALA_STORE.get();assert.equal(ctx.TALA_QUEST.eligible(p),false);
+  assert.equal(ctx.TALA_QUEST.generate(p,1).length,0);
+  click({module:'quest'});assert.match(nodes['#app'].innerHTML,/Matuto muna kasama/);
+  assert.doesNotMatch(nodes['#app'].innerHTML,/data-level=/);
+  p.completed.push('arts:15');p.best=Object.fromEntries(allCoreStages().map(id=>[id,1]));
+  assert.equal(ctx.TALA_QUEST.eligible(p),true);
+  for(const missing of allCoreStages())assert.equal(ctx.TALA_QUEST.eligible({...p,completed:p.completed.filter(id=>id!==missing)}),false,missing+' is required');
+  p.completed=p.completed.filter(id=>id!=='quest:1');
+  assert.equal(ctx.TALA_QUEST.unlocked(p,1),true);assert.equal(ctx.TALA_QUEST.unlocked(p,2),false);
+  for(const invalid of [0,11,1.5,NaN])assert.equal(ctx.TALA_QUEST.generate(p,invalid).length,0);
+});
+test('Quest mixes only learned questions, removes review repeats, and raises difficulty',()=>{
+  const {ctx}=setup(),quest=ctx.TALA_QUEST;
+  const p={completed:ctx.TALA_DATA.modules.flatMap(m=>m.levels.map((_,i)=>m.id+':'+(i+1))).concat(Array.from({length:9},(_,i)=>'quest:'+(i+1))),attempts:{}};
+  const pool=quest.pool(p);assert.ok(pool.length>=60);
+  assert.equal(new Set(pool.map(q=>q.questKey)).size,pool.length);
+  for(let round=1;round<=10;round++){
+    const questions=quest.generate(p,round);assert.equal(questions.length,round<=3?8:10);
+    assert.equal(new Set(questions.map(q=>q.questKey)).size,questions.length);
+    const counts=ctx.TALA_DATA.modules.map(m=>questions.filter(q=>q.sourceModule===m.id).length);
+    assert.deepEqual(Array.from(counts),round<=3?[2,2,2,2]:[3,3,2,2]);
+    for(const q of questions){
+      assert.ok(p.completed.includes(q.sourceModule+':'+q.sourceLevel));
+      const m=ctx.TALA_DATA.modules.find(m=>m.id===q.sourceModule),original=m.levels[q.sourceLevel-1].questions[q.sourceQuestion-1];
+      assert.equal(q.choices[q.answer],original.choices[original.answer]);assert.equal(q.audioGuide,m.guide);
+    }
+  }
+  const mean=round=>quest.generate(p,round).reduce((sum,q)=>sum+q.difficulty,0)/quest.length(round);
+  assert.ok(mean(10)>mean(1), 'Later rounds select harder learned material');
+  const sparse={completed:['phonics:1','phonics:2','phonics:3','numbers:1','numbers:2','numbers:3'],attempts:{}};
+  assert.equal(quest.generate(sparse,1).length,0);
+});
+test('All ten Quest rounds save stars, open the ending, and survive reload',()=>{
+  const env=setup(questSave()),{ctx,click,nodes}=env;
+  ctx.TALA_SPEECH.speak=()=>{};
+  for(let round=1;round<=10;round++){
+    click({module:'quest'});
+    assert.match(nodes['#app'].innerHTML,/Landas ng mga Bituin/);
+    if(round<10)assert.match(nodes['#app'].innerHTML,new RegExp('data-level="'+(round+1)+'" disabled'));
+    click({level:String(round)});
+    const questions=ctx.TALA_QUEST.generate(ctx.TALA_STORE.get(),round);
+    click({action:'practice'});
+    assert.match(nodes['#app'].innerHTML,/quest-walker/);
+    for(const q of questions){click({choice:String(q.answer)});click({action:'confirm-answer'});click({action:'next-question'});}
+    const d=ctx.TALA_STORE.get();assert.equal(d.best['quest:'+round],5);assert.equal(d.attempts['quest:'+round],1);
+    assert.equal(d.results['quest:'+round].length,questions.length);
+    assert.ok(d.results['quest:'+round].every(q=>d.completed.includes(q.sourceModule+':'+q.sourceLevel)));
+    if(round===10){assert.equal(ctx.document.body.dataset.screen,'questStory');click({action:'quest-story-skip'});}
+    else assert.match(nodes['#app'].innerHTML,/quest-constellation/);
+    click({action:'home'});
+  }
+  assert.equal(ctx.TALA_STORE.get().stars,50);
+  click({module:'quest'});click({level:'1'});click({action:'practice'});
+  const replay=ctx.TALA_QUEST.generate(ctx.TALA_STORE.get(),1);
+  for(const q of replay){click({choice:String(q.answer)});click({action:'confirm-answer'});click({action:'next-question'});}
+  assert.equal(ctx.TALA_STORE.get().stars,50);assert.equal(ctx.TALA_STORE.get().attempts['quest:1'],2);
+  const reloaded=setup(env.saved());reloaded.click({module:'quest'});
+  assert.doesNotMatch(reloaded.nodes['#app'].innerHTML,/data-level="10" disabled/);
+  reloaded.click({action:'dashboard'});assert.match(reloaded.nodes['#app'].innerHTML,/10 sa 10 hamon ang natapos/);
+});
+test('Quest preview and hint recordings keep their source character and never submit on selection',()=>{
+  const env=setup(questSave()),{ctx,click,one}=env;
+  const clips=[];ctx.TALA_SPEECH.play=(...args)=>clips.push(args);ctx.TALA_SPEECH.speak=()=>{};
+  click({module:'quest'});click({level:'1'});
+  const questions=ctx.TALA_QUEST.generate(ctx.TALA_STORE.get(),1),q=questions[0];
+  click({action:'practice'});assert.deepEqual(clips.at(-1),[q.audioGuide,q.prompt]);
+  assert.equal(one('[data-action="confirm-answer"]').disabled,true);
+  const wrong=(q.answer+1)%q.choices.length;
+  click({choice:String(wrong)});assert.deepEqual(clips.at(-1),[q.audioGuide,ctx.TALA_SPEECH.spokenText(q.choices[wrong])]);
+  assert.equal(ctx.TALA_STORE.get().stars,0);assert.equal(one('[data-action="next-question"]'),undefined);
+  click({action:'hint'});assert.deepEqual(clips.at(-1),[q.audioGuide,q.hint]);
+  for(let i=0;i<3;i++){click({choice:String(wrong)});click({action:'confirm-answer'});}
+  assert.ok(one('[data-action="next-question"]'));click({action:'next-question'});
+  for(const q of questions.slice(1)){click({choice:String(q.answer)});click({action:'confirm-answer'});click({action:'next-question'});}
+  assert.equal(ctx.TALA_STORE.get().best['quest:1'],4);
+  assert.equal(ctx.TALA_STORE.get().results['quest:1'][0].misses,3);
+});
+test('Quest instruction MP3 matches the reusable actor script and missing prompts do not block play',async()=>{
+  const env=setup(questSave()),{ctx,click,one,nodes}=env;
+  const lesson=ctx.TALA_QUEST.world.levels[0].lesson,script=fs.readFileSync(path.join(__dirname,'../docs/voice-scripts/TALA_QUEST.md'),'utf8');
+  assert.ok(script.includes(lesson));assert.ok(script.includes(path.basename(ctx.TALA_SPEECH.sharedPath('Tala',lesson))));
+  ctx.Audio=class{play(){return Promise.reject(new Error('missing MP3'));}pause(){}};
+  click({module:'quest'});click({level:'1'});click({action:'practice'});
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.match(nodes['#toast'].textContent,/Wala pang recording/);
+  click({choice:'0'});assert.equal(one('[data-action="confirm-answer"]').disabled,false);
+  click({action:'home'});await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(ctx.document.body.dataset.screen,'home');
+  assert.equal(ctx.TALA_STORE.get().completed.includes('quest:1'),false);
+});
+test('Quest opening introduces Anino after all modules, saves on completion, and can replay',()=>{
+  const env=setup(questSave({questOpeningSeen:false,best:Object.fromEntries(allCoreStages().map(id=>[id,1]))})),{ctx,click,nodes,one}=env;
+  const recordings=[];let tts=0;
+  ctx.TALA_SPEECH.play=(...args)=>recordings.push(args);ctx.TALA_SPEECH.speak=()=>tts++;
+  click({module:'quest'});assert.equal(ctx.document.body.dataset.screen,'questStory');
+  assert.match(nodes['#app'].innerHTML,/Bumalik ang ningning/);assert.equal(one('[data-action="quest-story-back"]').disabled,true);
+  assert.equal(ctx.TALA_STORE.get().questOpeningSeen,false);
+  for(let i=0;i<3;i++){
+    click({action:'quest-story-listen'});assert.deepEqual(recordings.at(-1),['Tala',ctx.TALA_QUEST.stories.opening[i].text]);
+    if(i===1){assert.match(nodes['#app'].innerHTML,/anino-body/);click({action:'quest-story-back'});click({action:'quest-story-next'});}
+    click({action:'quest-story-next'});
+  }
+  assert.equal(tts,0);assert.equal(ctx.document.body.dataset.screen,'map');
+  assert.equal(ctx.TALA_STORE.get().questOpeningSeen,true);assert.equal(ctx.TALA_STORE.get().questEndingSeen,false);
+  assert.equal(ctx.TALA_STORE.get().stars,0);assert.equal(ctx.TALA_STORE.get().completed.length,73);
+  const reload=setup(env.saved());reload.click({module:'quest'});assert.equal(reload.ctx.document.body.dataset.screen,'map');
+  reload.click({action:'quest-opening'});assert.match(reload.nodes['#app'].innerHTML,/Bumalik ang ningning/);
+  reload.click({action:'quest-story-skip'});assert.equal(reload.ctx.document.body.dataset.screen,'map');
+});
+test('One-star final challenge saves before the ending, resumes the ending, and thanks the learner',()=>{
+  const previous=Array.from({length:9},(_,i)=>'quest:'+(i+1));
+  const env=setup(questSave({completed:allCoreStages().concat(previous),best:Object.fromEntries(previous.map(id=>[id,1]))})),{ctx,click,nodes}=env;
+  ctx.TALA_SPEECH.speak=()=>{};
+  click({module:'quest'});assert.doesNotMatch(nodes['#app'].innerHTML,/data-action="quest-ending"/);
+  click({level:'10'});const questions=ctx.TALA_QUEST.generate(ctx.TALA_STORE.get(),10);click({action:'practice'});
+  for(const q of questions){const wrong=String((q.answer+1)%q.choices.length);for(let i=0;i<3;i++){click({choice:wrong});click({action:'confirm-answer'});}click({action:'next-question'});}
+  assert.equal(ctx.document.body.dataset.screen,'questStory');assert.match(nodes['#app'].innerHTML,/Nagtagumpay tayo/);
+  assert.equal(ctx.TALA_STORE.get().best['quest:10'],1);assert.equal(ctx.TALA_STORE.get().attempts['quest:10'],1);
+  assert.equal(ctx.TALA_STORE.get().results['quest:10'].length,10);assert.equal(ctx.TALA_STORE.get().questEndingSeen,false);
+  // Leaving before the ending finishes must not lose the final quiz result.
+  click({action:'home'});const reload=setup(env.saved()),clips=[];
+  reload.ctx.TALA_SPEECH.play=(...args)=>clips.push(args);
+  reload.click({module:'quest'});assert.equal(reload.ctx.document.body.dataset.screen,'questStory');
+  for(let i=0;i<3;i++){
+    reload.click({action:'quest-story-listen'});assert.deepEqual(clips.at(-1),['Tala',reload.ctx.TALA_QUEST.stories.ending[i].text]);
+    if(i===2)assert.match(reload.nodes['#app'].innerHTML,/Salamat, Ana!/);
+    reload.click({action:'quest-story-next'});
+  }
+  assert.equal(reload.ctx.document.body.dataset.screen,'home');assert.equal(reload.ctx.TALA_STORE.get().questEndingSeen,true);
+  const stars=reload.ctx.TALA_STORE.get().stars;
+  reload.click({module:'quest'});assert.equal(reload.ctx.document.body.dataset.screen,'map');
+  reload.click({action:'quest-ending'});reload.click({action:'quest-story-skip'});
+  assert.equal(reload.ctx.TALA_STORE.get().stars,stars);assert.equal(reload.ctx.TALA_STORE.get().attempts['quest:10'],1);
+  reload.click({action:'dashboard'});reload.ctx.confirm=()=>true;reload.click({action:'reset'});
+  assert.equal(reload.ctx.TALA_STORE.get().questOpeningSeen,false);assert.equal(reload.ctx.TALA_STORE.get().questEndingSeen,false);
+});
+test('Every Quest story page has an exact reusable Tala recording script',()=>{
+  const {ctx}=setup(),script=fs.readFileSync(path.join(__dirname,'../docs/voice-scripts/TALA_QUEST_STORY.md'),'utf8'),files=new Set();
+  for(const kind of ['opening','ending']){
+    assert.equal(ctx.TALA_QUEST.stories[kind].length,3);
+    for(const page of ctx.TALA_QUEST.stories[kind]){
+      const file=ctx.TALA_SPEECH.sharedPath('Tala',page.text);files.add(file);
+      assert.ok(script.includes(page.text));assert.ok(script.includes(path.basename(file)));
+    }
+  }
+  assert.equal(files.size,6);
+});
+test('First launch story supports back, recordings, completion, and returning learner setup',()=>{
+  const env=setup({curriculumVersion:2,learner:'Munting Tala'}),{ctx,nodes,click,one}=env;
+  const recordings=[];let synthesized=0,stops=0;
+  ctx.TALA_SPEECH.play=(...args)=>recordings.push(args);
+  ctx.TALA_SPEECH.speak=()=>synthesized++;
+  ctx.TALA_SPEECH.stop=()=>stops++;
+  assert.equal(ctx.document.body.dataset.screen,'intro');
+  assert.equal(one('[data-action="intro-back"]').disabled,true);
+  click({action:'intro-back'});
+  assert.match(nodes['#app'].innerHTML,/Ang munting bituin/);
+  for(let i=0;i<3;i++){
+    click({action:'intro-listen'});
+    assert.equal(recordings.at(-1)[0],'Tala');
+    assert.equal(recordings.at(-1)[1],ctx.TALA_DATA.intro[i].text);
+    if(i===1){click({action:'intro-back'});assert.match(nodes['#app'].innerHTML,/Ang munting bituin/);click({action:'intro-next'});}
+    click({action:'intro-next'});
+  }
+  assert.equal(synthesized,0);assert.ok(stops>=5);
+  assert.equal(ctx.document.body.dataset.screen,'welcome');
+  assert.equal(env.saved().introSeen,true);assert.equal(env.saved().setupComplete,false);
+  assert.equal(env.saved().stars,0);assert.deepEqual(env.saved().completed,[]);
+  const resumed=setup(env.saved());assert.equal(resumed.ctx.document.body.dataset.screen,'welcome');
+  // Even the default learner name counts as completed setup when submitted.
+  resumed.submitName('');assert.equal(resumed.saved().setupComplete,true);
+  assert.equal(setup(resumed.saved()).ctx.document.body.dataset.screen,'home');
+});
+test('Skipping and replaying the story preserve learning progress; reset restores first launch',()=>{
+  const first=setup({curriculumVersion:2,learner:'Munting Tala'});
+  first.click({action:'intro-skip'});assert.equal(first.saved().introSeen,true);
+  assert.equal(first.ctx.document.body.dataset.screen,'welcome');
+  const env=setup({curriculumVersion:2,learner:'Ana',stars:7,completed:['phonics:1'],best:{'phonics:1':5}});
+  assert.equal(env.ctx.document.body.dataset.screen,'home');
+  env.click({action:'intro-open'});env.click({action:'intro-next'});env.click({action:'intro-skip'});
+  assert.equal(env.ctx.document.body.dataset.screen,'home');
+  assert.equal(env.saved().stars,7);assert.deepEqual(env.saved().completed,['phonics:1']);
+  env.click({action:'intro-open'});assert.match(env.nodes['#app'].innerHTML,/Ang munting bituin/);
+  env.click({action:'intro-next'});env.click({action:'intro-next'});env.click({action:'intro-next'});
+  assert.equal(setup(env.saved()).ctx.document.body.dataset.screen,'home');
+  env.click({action:'dashboard'});env.ctx.confirm=()=>true;env.click({action:'reset'});
+  assert.equal(env.ctx.document.body.dataset.screen,'intro');
+  assert.equal(env.ctx.TALA_STORE.get().introSeen,false);assert.equal(env.ctx.TALA_STORE.get().stars,0);
+});
+test('All three optional story recordings have exact scripts and use shared Tala paths',()=>{
+  const {ctx}=setup(),script=fs.readFileSync(path.join(__dirname,'../docs/voice-scripts/TALA_INTRO.md'),'utf8');
+  assert.equal(ctx.TALA_DATA.intro.length,3);
+  const paths=new Set();
+  for(const page of ctx.TALA_DATA.intro){
+    const source=ctx.TALA_SPEECH.sharedPath('Tala',page.text);paths.add(source);
+    assert.ok(source.startsWith('assets/audio/fil/shared/tala/'));
+    assert.ok(script.includes(path.basename(source)));assert.ok(script.includes(page.text));
+  }
+  assert.equal(paths.size,3);
+});
 test('Level reveals share a 120ms queue across separate scroll callbacks',()=>{
   const stage=top=>{
     const classes=new Set(['stage']);

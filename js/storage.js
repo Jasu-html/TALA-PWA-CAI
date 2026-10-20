@@ -1,10 +1,14 @@
 (function () {
   const KEY = 'tala-pwa-progress-v1';
-  const fresh = () => ({ curriculumVersion:2, learner:'Munting Tala', stars:0, completed:[], attempts:{}, best:{}, results:{}, lastVisit:null });
+  const fresh = () => ({ curriculumVersion:2, learner:'Munting Tala', setupComplete:false, introSeen:false, questOpeningSeen:false, questEndingSeen:false, stars:0, completed:[], attempts:{}, best:{}, results:{}, lastVisit:null });
   function read() {
     try {
       const raw = JSON.parse(localStorage.getItem(KEY)) || {};
       const d = { ...fresh(), ...raw };
+      // Existing learners should not be sent through first-run setup after an update.
+      const returning = (typeof raw.learner==='string' && raw.learner!=='Munting Tala') || d.completed.length>0;
+      d.setupComplete = raw.setupComplete ?? returning;
+      d.introSeen = raw.introSeen ?? d.setupComplete;
       d.completed = d.completed.map(id => id.includes(':') ? id : `${id}:1`);
       if (raw.curriculumVersion !== 2) {
         // The original three-stage demo used a different order. Keep its
@@ -27,7 +31,14 @@
   }
   window.TALA_STORE = {
     get:read,
-    setLearner(name) { const d=read(); d.learner=name.trim() || 'Munting Tala'; return save(d); },
+    setLearner(name) { const d=read(); d.learner=name.trim() || 'Munting Tala'; d.setupComplete=true; return save(d); },
+    markIntroSeen() { const d=read(); d.introSeen=true; return save(d); },
+    markQuestStorySeen(kind) {
+      const d=read();
+      if(kind==='opening')d.questOpeningSeen=true;
+      if(kind==='ending')d.questEndingSeen=true;
+      return save(d);
+    },
     complete(id, stars, results = []) {
       const d=read(), previous=d.best[id] || (d.completed.includes(id) ? 5 : 0);
       const earned=Math.max(0, stars-previous);

@@ -6,17 +6,21 @@ This repository contains the current web presentation build. It is intentionally
 
 ## What is currently included
 
+- A skippable three-panel Filipino story introduces Tala and her friends before first-time learner setup. Returning learners go straight to home and can replay it using **Ang kuwento ni Tala**. Optional story recordings use the [Tala intro script](docs/voice-scripts/TALA_INTRO.md).
+
 - **Titik** — letters A-Z, word blending, sight words, and review (33 stages)
 - **Bilang** — numbers 1-10, counting, ordering, more/fewer, addition, subtraction, and review (15 stages)
 - **Likha** — shapes, colors, color mixing, patterns, review, and a drawing finale (15 stages)
 - **Tala** — Filipino stories and situations about kindness, respect, sharing, hygiene, tidiness, and responsibility (10 stages)
-- 73 stages total: 72 five-question activities and one drawing activity.
+- 73 core stages: 72 five-question activities and one drawing activity, plus 10 Quest Quiz rounds hosted by Tala.
+- **Hamon ni Tala (Quest Quiz)** unlocks after completing every stage in all four core worlds, including the drawing finale. Any star rating counts; five stars are not required. Rounds 1-3 have eight questions; rounds 4-10 have ten. Each round draws from completed lessons, removes duplicate questions within the round, and unlocks the next round on completion. Later rounds favor harder learned questions, with a 2/2/2/2 or 3/3/2/2 subject mix.
+- A three-panel Quest opening introduces **Anino**, a shadow who tries to steal Tala's restored shine. Completing all ten rounds, at any star rating, opens a three-panel ending where Tala regains her light and thanks the learner by name on screen. Both stories have replay controls and optional recorded narration. Progress is saved before the ending begins.
 - 360 quiz questions, with Filipino text and picture/visual choices.
 - Select an answer first, listen to its word recording, then press **Ito ang sagot ko** to confirm it.
 - Three unsuccessful confirmations reveal the correct answer so the experience stays encouraging and no-fail.
 - First-try accuracy awards 1-5 stars. Replaying a stage only adds stars above the previous best.
 - Progress and learner name are stored locally in the browser.
-- Next stages unlock after the previous stage is completed.
+- Next stages and Quest rounds unlock after the previous one is completed. Completing a Quest round lights a constellation point; the teacher/parent progress view also lists Quest stars and attempts.
 - Placeholder avatars for TALA, LIKHA, TITIK, and BILANG appear throughout the home screen, maps, lessons, questions, painting activity, and celebrations.
 - Saturated child-friendly colors, background scenery, moving particles, scroll reveals, domino-style level entrances, confetti, and reduced-motion support.
 - Offline Web Audio effects for taps, selections, correct answers, retries, hints, stamps, painting, level completion, and scrolling piano-like notes.
@@ -25,7 +29,7 @@ This repository contains the current web presentation build. It is intentionally
 
 ## What is not included yet
 
-This is not the old native Android/Kotlin project. There is no Gradle project, Jetpack Compose UI, Room database, Firebase backend, account system, teacher dashboard, PDF reporting, avatar shop, Quest module, tracing activity, or drag-and-drop activity in the current PWA. Those ideas may be added later, but they should not be treated as implemented features.
+This is not the old native Android/Kotlin project. There is no Gradle project, Jetpack Compose UI, Room database, Firebase backend, account system, PIN-protected teacher dashboard, PDF reporting, avatar shop, tracing activity, or drag-and-drop activity in the current PWA. The current teacher/parent screen is a local progress summary. Those larger features may be added later, but they should not be treated as implemented features.
 
 ## Run locally
 
@@ -42,7 +46,7 @@ Node.js is the only tool needed to run the current project. No package installat
 For a quick automated check, run:
 
 ```powershell
-node --test tests/smoke.cjs tests/presentation.cjs
+node --test tests/smoke.cjs tests/presentation.cjs tests/offline.cjs
 ```
 
 The tests simulate the DOM and Web Audio APIs. They verify curriculum coverage, progress behavior, shared audio paths, character assets, scenery, sound lifecycle, and presentation interactions. A real phone check is still recommended for visual layout, Filipino voice availability, and audio balance.
@@ -55,13 +59,14 @@ css/styles.css              Base layout and component styles
 css/playful.css             Playful UI and character presentation styles
 css/vibrant.css             Saturated palette, scenery, motion, and transitions
 js/data.js                  Filipino curriculum data and 73 stages
+js/quest.js                 Learned-content pool, unlocks, and mixed round generation
 js/app.js                   Screen rendering, level flow, answers, and events
 js/storage.js               Local progress storage and migration
 js/speech.js                Filipino TTS and shared MP3 playback
 js/sfx.js                   Web Audio effects, themes, and scroll piano notes
 js/visuals.js               Avatars, world scenery, and visual helpers
 manifest.webmanifest        Installable PWA metadata
-sw.js                       Cache-first service worker
+sw.js                       Update-aware shell caching and offline media cache
 assets/characters/          Replaceable SVG character placeholders
 assets/audio/fil/shared/    Folder for reusable recorded MP3 phrases
 docs/voice-scripts/         Character-separated phrase lists for voice actors
@@ -89,6 +94,8 @@ Use lowercase character folders: `titik`, `bilang`, `likha`, and `tala`. The fil
 
 The older per-stage scripts under `assets/audio/fil/` and [VOICE_ACTOR_SCRIPTS.md](VOICE_ACTOR_SCRIPTS.md) are retained as reference. The shared phrase workflow is preferred because it avoids recording the same word repeatedly.
 
+Quest questions, options, and hints reuse their source character's existing MP3s, even though Tala hosts the round. Question prompts play automatically when a Quest question opens; missing files remain silent and never block answering. One optional reusable Tala instruction is listed in [TALA_QUEST.md](docs/voice-scripts/TALA_QUEST.md). The six opening/ending narration clips and exact filenames are in [TALA_QUEST_STORY.md](docs/voice-scripts/TALA_QUEST_STORY.md); no generated voices are included.
+
 ## Replacing character art
 
 The four current SVGs are placeholders. Replace them using the guidance in [assets/characters/README.md](assets/characters/README.md). If filenames remain `tala.svg`, `likha.svg`, `titik.svg`, and `bilang.svg`, no JavaScript changes are needed.
@@ -97,7 +104,7 @@ The four current SVGs are placeholders. Replace them using the guidance in [asse
 
 Curriculum content is defined in `js/data.js`. Progress is stored locally under the browser key `tala-pwa-progress-v1`; it does not leave the device. The teacher/parent menu includes a reset action for clearing the demo learner and progress.
 
-The service worker uses a versioned cache. When adding or renaming shell files, update the cache version and file list in `sw.js` so installed copies receive the new files.
+The service worker checks the network for HTML, CSS, and JavaScript, then falls back to the current release cache when offline. Images and recordings use the cache first. CSS and JavaScript URLs include a release version to avoid pairing new markup with stale styles. Keep these URLs in `index.html`, the cache name, and the matching file list in `sw.js` in sync for each release.
 
 ## Design and accessibility notes
 

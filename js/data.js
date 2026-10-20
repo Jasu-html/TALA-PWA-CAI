@@ -222,7 +222,11 @@
     items.map(([prompt,correct,a,b])=>q(prompt,visual,[correct,a,b],correct,'Alalahanin ang mabuting gawi: '+correct+'.'))));
   values.push(stage('Bituin ng kabutihan','Dalhin ang kabutihan sa klase, tahanan, at pamayanan.','💛 🤝','⭐',
     [values[0].questions[0],values[2].questions[0],values[3].questions[1],values[6].questions[3],values[8].questions[0]]));
-  window.TALA_DATA={version:2,modules:[
+  window.TALA_DATA={version:2,intro:[
+    {scene:'fall',title:'Ang munting bituin',text:'Ako si Tala, isang munting bituin. Nahulog ako mula sa langit at nawala ang aking ningning.',characters:['Tala']},
+    {scene:'friends',title:'Mga bagong kaibigan',text:'Nakilala ko sina Titik, Bilang, at Likha. Sasamahan nila tayong magbasa, magbilang, at lumikha!',characters:['Titik','Bilang','Likha']},
+    {scene:'shine',title:'Sama-sama tayong sumikat!',text:'Sa bawat aralin at mabuting gawa, may bagong bituing makokolekta. Tulungan mo akong ibalik ang ningning sa langit. Tara, matuto at maglaro!',characters:['Tala','Titik','Bilang','Likha']}
+  ],modules:[
     {id:'phonics',icon:'🔤',guide:'Titik',world:'Gubat ng mga Titik',title:'Titik at Tunog',color:'purple',levels:phonics},
     {id:'numbers',icon:'🔢',guide:'Bilang',world:'Pulo ng mga Bilang',title:'Pagbibilang',color:'blue',levels:numbers},
     {id:'arts',icon:'🎨',guide:'Likha',world:'Hardin ng mga Kulay',title:'Hugis at Kulay',color:'coral',levels:arts},

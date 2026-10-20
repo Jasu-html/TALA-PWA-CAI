@@ -97,6 +97,9 @@ test('Four world themes are distinct, switch cleanly, and respect mute',()=>{
 test('Offline shell includes all new visual and audio code assets',()=>{
   const ctx={self:{addEventListener(){}}};vm.createContext(ctx);
   vm.runInContext(fs.readFileSync(path.join(root,'sw.js'),'utf8'),ctx);const files=vm.runInContext('FILES',ctx);
-  for(const file of files)assert.ok(fs.existsSync(path.resolve(root,file)),file);
-  for(const required of ['./css/playful.css','./css/vibrant.css','./js/sfx.js','./js/visuals.js','./assets/characters/tala.svg'])assert.ok(files.includes(required));
+  const paths=Array.from(files,file=>file.split('?')[0]);
+  for(const file of paths)assert.ok(fs.existsSync(path.resolve(root,file)),file);
+  for(const required of ['./css/playful.css','./css/vibrant.css','./js/sfx.js','./js/visuals.js','./js/quest.js','./assets/characters/tala.svg'])assert.ok(paths.includes(required));
+  const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+  for(const [,asset]of html.matchAll(/(?:src|href)="((?:css|js)\/[^\"]+)"/g))assert.ok(files.includes('./'+asset),asset+' is cached at the same version as HTML');
 });

@@ -1,5 +1,11 @@
 # TALA — Tala phrase library
 
+Bagong kuwento ng huling hamon: [Tala at Anino — pambungad at wakas](TALA_QUEST_STORY.md), anim na linya na isasalaysay ni Tala.
+
+Para sa tatlong bagong pambungad na recording, tingnan ang [Tala intro script](TALA_INTRO.md). Pareho ang folder: `assets/audio/fil/shared/tala/`.
+
+Para sa isang gabay sa lahat ng Quest rounds, tingnan ang [Hamon ni Tala script](TALA_QUEST.md). Ang mga tanong at sagot sa Quest ay gumagamit ng dati nang recordings ng kani-kanilang character.
+
 Folder: assets/audio/fil/shared/tala
 
 Isang recording lang bawat unique na phrase. Gamitin ang eksaktong filename; huwag gumawa ng copies para sa ibang yugto o tanong.

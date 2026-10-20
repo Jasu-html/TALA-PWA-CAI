@@ -4,6 +4,10 @@ Mas maikli na ang recording workflow: isang MP3 lang bawat natatanging linyang m
 
 ## Mga file na ipapadala sa voice actors
 
+- [Tala intro script](docs/voice-scripts/TALA_INTRO.md) — tatlong recording para sa pambungad na kuwento
+- [Hamon ni Tala script](docs/voice-scripts/TALA_QUEST.md) — isang gabay sa lahat ng Quest rounds; inuulit ang dati nang recordings para sa mga tanong, sagot, at pahiwatig
+- [Tala at Anino — pambungad at wakas](docs/voice-scripts/TALA_QUEST_STORY.md) — anim na linyang isasalaysay ni Tala para sa huling hamon at pasasalamat
+
 - [Likha phrase list](docs/voice-scripts/LIKHA_PHRASES.md) — hugis, kulay, pattern, at drawing
 - [Tala phrase list](docs/voice-scripts/TALA_PHRASES.md) — mabuting gawi
 - [Titik phrase list](docs/voice-scripts/TITIK_PHRASES.md) — A–Z, pantig, at sight words

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="512" android:viewportHeight="512">
+    <!-- Negative-space face remains legible when the launcher supplies its tint. -->
+    <group android:pivotX="256" android:pivotY="256" android:scaleX="0.94" android:scaleY="0.94">
+    <path android:fillColor="#000000" android:fillType="evenOdd"
+        android:pathData="M246,108Q256,87 266,108L301,180Q304,187 312,188L392,200Q415,203 399,219L341,276Q335,282 337,291L351,371Q355,394 335,383L264,345Q256,341 248,345L177,383Q157,394 161,371L175,291Q177,282 171,276L113,219Q97,203 120,200L200,188Q208,187 211,180Z M214,253a12,18 0,1 0,24 0a12,18 0,1 0,-24 0Z M274,253a12,18 0,1 0,24 0a12,18 0,1 0,-24 0Z M235,284Q256,302 277,284Q276,313 256,313Q236,313 235,284Z" />
+    </group>
+</vector>

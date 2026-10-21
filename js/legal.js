@@ -2,7 +2,7 @@
   const version='2026-10-21.2';
   const contacts=['j.alarcio@olivarezcollege.edu.ph','kylestephen.verdan@olivarezcollege.edu.ph'];
   window.TALA_LEGAL={
-    version,appVersion:'1.0.14',operator:'Olivarez College - IT Students',contacts,
+    version,appVersion:'1.0.16',operator:'Olivarez College - IT Students',contacts,
     // Do not switch this to a public release until docs/PUBLIC_RELEASE_CHECKLIST.md is cleared.
     releaseStatus:'review',postalAddress:'',
     thirdPartyLicense:`Capacitor Core / Android 8.5.3

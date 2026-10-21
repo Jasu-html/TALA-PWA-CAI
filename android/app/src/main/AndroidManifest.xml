@@ -7,9 +7,9 @@
     <uses-feature android:name="android.hardware.microphone" android:required="false" />
     <application
         android:allowBackup="false"
-        android:icon="@drawable/tala_icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/tala_icon"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 

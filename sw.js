@@ -1,7 +1,8 @@
-const CACHE = 'tala-pwa-v40';
-const FILES = ['./','./index.html','./manifest.webmanifest','./css/styles.css?v=40','./css/playful.css?v=40','./css/vibrant.css?v=40','./css/compact.css?v=40','./js/data.js?v=40','./js/quest.js?v=40','./js/storage.js?v=40','./js/speech.js?v=40','./js/sfx.js?v=40','./js/visuals.js?v=40','./js/native.js?v=40','./js/app.js?v=40','./assets/characters/tala.svg','./assets/characters/likha.svg','./assets/characters/titik.svg','./assets/characters/bilang.svg'];
-FILES.push('./css/public.css?v=40','./js/launch.js?v=40','./js/legal.js?v=40','./js/public.js?v=40','./assets/icons/tala.svg','./assets/icons/tala-192.png','./assets/icons/tala-512.png');
-FILES.push('./css/night.css?v=40');
+const CACHE = 'tala-pwa-v42';
+const FILES = ['./','./index.html','./manifest.webmanifest','./css/styles.css?v=42','./css/playful.css?v=42','./css/vibrant.css?v=42','./css/compact.css?v=42','./js/data.js?v=42','./js/quest.js?v=42','./js/storage.js?v=42','./js/speech.js?v=42','./js/sfx.js?v=42','./js/visuals.js?v=42','./js/native.js?v=42','./js/app.js?v=42','./assets/characters/tala.svg','./assets/characters/likha.svg','./assets/characters/titik.svg','./assets/characters/bilang.svg'];
+FILES.push('./css/public.css?v=42','./js/launch.js?v=42','./js/legal.js?v=42','./js/public.js?v=42','./assets/icons/tala.svg','./assets/icons/tala-192.png','./assets/icons/tala-512.png');
+FILES.push('./css/night.css?v=42');
+FILES.push('./assets/icons/tala-180.png','./assets/icons/tala-maskable-512.png');
 for(const name of ['Tala','Titik','Likha','Bilang']) {
   for(const expression of ['Neutral','Happy','Talking'])FILES.push(`./assets/characters/${name}-${expression}.png`);
 }

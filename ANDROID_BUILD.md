@@ -5,13 +5,13 @@ The app ID is `com.tala.learning`; the launcher name is **TALA**. The full title
 remains **TALA — A Voice-Guided Learning App for Grade 1 Learners** in the app header.
 This is a debug-signed testing build, not a Play Store release.
 
-The current verified build is `builds/TALA-1.0.14-debug.apk`, approximately **26.28 MiB**,
+The current verified build is `builds/TALA-1.0.16-debug.apk`, approximately **28.18 MiB**,
 with minimum SDK 24 (**Android 7.0+**) and target SDK 36. Android's `apksigner`
 successfully verified its debug signature. Archive verification confirmed all
-**927 public source files**, including **887 catalogued voice recordings**, match the current source.
+**929 public source files**, including **887 catalogued voice recordings**, match the current source.
 This does not replace testing the app on a physical phone.
 
-SHA-256: `840c513d502a67ed9393a454810c940400742ab37259529844ae7ec809c5cea7`.
+SHA-256: `aec293d773890c2932fcbe039090c64a773445d3836fa57076e521561efa5392`.
 
 ## Build again on Windows
 
@@ -48,6 +48,36 @@ bundled assets directly. The browser PWA keeps its existing service worker.
 The APK has its **own** local progress store; browser/PWA progress does not migrate
 automatically. Clearing app data or uninstalling removes that progress. Android
 backup is disabled to keep learner data from being backed up by this wrapper.
+
+## Update 1.0.16
+
+Color app icons now use the supplied Tala portrait with an AI-assisted violet
+background edit, replacing the smiling-star color icon. The original upload and
+edited master are preserved outside the web bundle in `docs/icon-source/`, with
+the final prompt and limitations. Android legacy/adaptive/splash and PWA/touch/
+favicon exports derive from this master. Optional Android monochrome mode retains
+the simplified star glyph. Existing in-game character art is unchanged.
+
+All 77 automated tests passed, plus public-launch/offline browser checks at three
+sizes. Square/opaque master checks, manually selected face-landmark safe-circle
+checks and round-export inspection passed. These do not replace real launcher
+testing. All 929 public files match the APK, and its debug signature verified.
+No policy/progress change; install over the existing app without uninstalling.
+
+## Update 1.0.15
+
+The app icon now uses one refined gold smiling star on a blue-violet night sky.
+PWA/favicon/touch exports and Android legacy, adaptive and splash resources share
+the same vector artwork. Android 13+ has a monochrome/themed variant. The manifest
+now selects the launcher mipmaps instead of the older standalone purple vector.
+See [icon assets and regeneration](assets/icons/README.md).
+
+Mask validation confirms an opaque maskable background and the essential star
+within Android's safe circle. All 77 automated tests passed, including two new
+icon-resource checks. Public launch/offline browser checks passed at three sizes.
+APK source matching and debug signature verified. Update over the existing app to
+keep progress. Launcher icon caches may take time to refresh; do not uninstall or
+clear app data just to refresh the icon. Physical-launcher testing is still needed.
 
 ## Update 1.0.14
 

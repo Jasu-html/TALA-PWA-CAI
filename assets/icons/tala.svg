@@ -1,9 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
-  <defs><linearGradient id="sky" x2="1" y2="1"><stop stop-color="#533bb3"/><stop offset="1" stop-color="#132a48"/></linearGradient><linearGradient id="gold" x2="0" y2="1"><stop stop-color="#ffe6a0"/><stop offset="1" stop-color="#ffba36"/></linearGradient></defs>
-  <rect width="512" height="512" rx="108" fill="url(#sky)"/>
-  <circle cx="256" cy="249" r="163" fill="#fff" opacity=".06"/>
-  <path d="m256 104 44 91 100 15-72 70 17 99-89-47-89 47 17-99-72-70 100-15z" fill="url(#gold)" stroke="#fff0bc" stroke-width="9" stroke-linejoin="round"/>
-  <path d="m385 84 7 20 20 7-20 7-7 20-7-20-20-7 20-7z" fill="#a2eee1"/>
-  <ellipse cx="229" cy="249" rx="9" ry="13" fill="#36315f"/><ellipse cx="283" cy="249" rx="9" ry="13" fill="#36315f"/>
-  <path d="M237 280q19 19 38 0" fill="none" stroke="#62415c" stroke-width="8" stroke-linecap="round"/>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#6742CB"/><stop offset=".48" stop-color="#30246C"/><stop offset="1" stop-color="#142C49"/></linearGradient>
+    <radialGradient id="halo"><stop stop-color="#BFA1FF" stop-opacity=".30"/><stop offset="1" stop-color="#BFA1FF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="gold" x1=".2" y1="0" x2=".7" y2="1"><stop stop-color="#FFF3AA"/><stop offset=".45" stop-color="#FFD05A"/><stop offset="1" stop-color="#FFAE30"/></linearGradient>
+    <path id="star" d="M246 108Q256 87 266 108L301 180Q304 187 312 188L392 200Q415 203 399 219L341 276Q335 282 337 291L351 371Q355 394 335 383L264 345Q256 341 248 345L177 383Q157 394 161 371L175 291Q177 282 171 276L113 219Q97 203 120 200L200 188Q208 187 211 180Z"/>
+  </defs>
+  <g id="background">
+    <rect width="512" height="512" rx="112" fill="url(#sky)"/>
+    <circle cx="256" cy="245" r="224" fill="url(#halo)"/>
+    <path d="M84 380Q242 460 424 339" fill="none" stroke="#AEA4FF" stroke-opacity=".13" stroke-width="3" stroke-linecap="round"/>
+  </g>
+  <g id="foreground" transform="translate(15.36 15.36) scale(.94)">
+    <use href="#star" transform="translate(0 12)" fill="#17173C" opacity=".48"/>
+    <use href="#star" fill="url(#gold)" stroke="#DA8B20" stroke-width="10" stroke-linejoin="round"/>
+    <path d="M127 213L205 201Q219 199 225 186L256 121" fill="none" stroke="#FFF4BF" stroke-width="9" stroke-linecap="round"/>
+    <ellipse cx="226" cy="253" rx="12" ry="18" fill="#29214E"/>
+    <ellipse cx="286" cy="253" rx="12" ry="18" fill="#29214E"/>
+    <circle cx="223" cy="247" r="4" fill="#FFF4CD"/>
+    <circle cx="283" cy="247" r="4" fill="#FFF4CD"/>
+    <ellipse cx="207" cy="279" rx="17" ry="9" fill="#EF835D" opacity=".65"/>
+    <ellipse cx="305" cy="279" rx="17" ry="9" fill="#EF835D" opacity=".65"/>
+    <path d="M235 284Q256 302 277 284Q276 313 256 313Q236 313 235 284Z" fill="#57304B"/>
+    <path d="M245 307Q256 297 267 307Q256 315 245 307Z" fill="#F19C87"/>
+    <path d="M359 127L364 143L380 148L364 153L359 169L354 153L338 148L354 143Z" fill="#AEF3E8"/>
+    <circle cx="159" cy="147" r="5" fill="#FFE9AE"/>
+  </g>
 </svg>

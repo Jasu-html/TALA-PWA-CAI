@@ -25,6 +25,14 @@ function setup(){
   }
   return {env,calls,request,cache:store(current),oldCache:store('tala-pwa-v18')};
 }
+test('Every supplied character expression is in the offline installation list',()=>{
+  const ctx={self:{addEventListener(){}}};vm.createContext(ctx);
+  vm.runInContext(fs.readFileSync(path.join(__dirname,'../sw.js'),'utf8'),ctx);
+  const files=vm.runInContext('FILES',ctx);
+  for(const name of ['Tala','Titik','Likha','Bilang'])for(const expression of ['Neutral','Happy','Talking']){
+    assert.ok(files.includes(`./assets/characters/${name}-${expression}.png`));
+  }
+});
 test('Styles and scripts refresh online instead of remaining stuck on cached versions',async()=>{
   const {env,cache,calls,request}=setup();
   for(const asset of ['css/vibrant.css?v=19','js/app.js?v=19']){

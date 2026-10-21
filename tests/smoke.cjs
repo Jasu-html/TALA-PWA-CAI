@@ -6,6 +6,7 @@ const path = require('node:path');
 function setup(saved,revealItems,options={}) {
   const handlers={}, buttons=[], timers=new Map(), timerDelays=new Map(), observers=[], canvasHandlers={};
   let nextTimer=1,value=JSON.stringify(saved?{learner:'Ana',...saved}:{curriculumVersion:2,learner:'Ana'}),html='';
+  const otherStorage=new Map(options.publicPreferences?[['tala-public-preferences-v1',JSON.stringify(options.publicPreferences)]]:[]);
   function element(dataset={}, disabled=false) {
     const tokens=new Set();
     const listeners={};
@@ -19,7 +20,9 @@ function setup(saved,revealItems,options={}) {
     for(const match of markup.matchAll(/<button\b([^>]*)>/g)) {
       const attrs=match[1],dataset={};
       for(const entry of attrs.matchAll(/data-([\w-]+)="([^"]*)"/g))dataset[entry[1].replace(/-([a-z])/g,(_,c)=>c.toUpperCase())]=entry[2];
-      buttons.push(element(dataset,/\bdisabled\b/.test(attrs)));
+      const button=element(dataset,/\bdisabled\b/.test(attrs));
+      for(const name of (attrs.match(/class="([^"]*)"/)?.[1]||'').split(/\s+/).filter(Boolean))button.classList.add(name);
+      buttons.push(button);
     }
   }
   const canvas={width:800,height:480,getContext:()=>({beginPath(){},moveTo(){},arc(){},fill(){},lineTo(){},stroke(){},clearRect(){},fillText(){}}),
@@ -27,13 +30,14 @@ function setup(saved,revealItems,options={}) {
   const nodes={'#app':{get innerHTML(){return html;},set innerHTML(v){parse(v);},querySelectorAll:()=>revealItems||[]},'#wallet-stars':{},'#toast':element(),'#feedback':{textContent:''},'#paint-canvas':canvas,'#learner-name':{value:''}};
   nodes['.activity-card']={insertAdjacentHTML:(_,markup)=>parse(html+markup)};
   nodes['#name-voice-status']=element();nodes['#edit-learner-name']={value:''};
+  for(const id of ['adult-answer','guardian-confirm','terms-confirm','processing-confirm','voice-confirm','delete-confirm','public-error'])nodes['#'+id]={value:'',checked:false,textContent:''};
   for(const selector of ['.tutorial-demo-title','.tutorial-demo-text','.tutorial-hand'])nodes[selector]=element();
   nodes['.tutorial-panel']={querySelector:selector=>one(selector),querySelectorAll:()=>buttons.filter(b=>b.dataset.demoStep!==undefined)};
   const all=selector=>selector==='[data-choice]'?buttons.filter(b=>b.dataset.choice!==undefined):selector==='[data-paint]'?buttons.filter(b=>b.dataset.paint):[];
   const one=selector=>{const action=selector.match(/^\[data-action="([^"]+)"\]$/);return action?buttons.find(b=>b.dataset.action===action[1]):nodes[selector];};
   const ctx={console,setTimeout(fn,delay){const id=nextTimer++;timers.set(id,fn);timerDelays.set(id,delay);return id;},clearTimeout(id){timers.delete(id);timerDelays.delete(id);},
     Audio:class{constructor(src){this.src=src;}play(){return Promise.resolve();}pause(){}},
-    localStorage:{getItem:()=>value,setItem:(_,v)=>value=v,removeItem:()=>value=null},
+    localStorage:{getItem:key=>key==='tala-pwa-progress-v1'?value:otherStorage.get(key)||null,setItem:(key,v)=>{if(key==='tala-pwa-progress-v1')value=v;else otherStorage.set(key,v);},removeItem:key=>{if(key==='tala-pwa-progress-v1')value=null;else otherStorage.delete(key);}},
     document:{body:{dataset:{}},querySelector:one,querySelectorAll:all,
       addEventListener(e,fn){(handlers[e]||=[]).push(fn);},removeEventListener(e,fn){handlers[e]=(handlers[e]||[]).filter(f=>f!==fn);}},
     navigator:{},scrollTo(){},addEventListener(){},confirm:()=>false};
@@ -43,7 +47,7 @@ function setup(saved,revealItems,options={}) {
     disconnect(){this.disconnected=true;}
   };
   Object.assign(ctx,options);ctx.window=ctx;vm.createContext(ctx);
-  for(const file of ['data','quest','storage','speech','sfx','visuals','native','app'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../js',file+'.js'),'utf8'),ctx);
+  for(const file of ['data','quest','storage','speech','sfx','visuals','native',...(options.publicUI?['legal','public']:[]),'app'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../js',file+'.js'),'utf8'),ctx);
   function click(dataset) {
     const b=buttons.find(b=>Object.entries(dataset).every(([k,v])=>b.dataset[k]===v)) || (['home','dashboard'].includes(dataset.action)?element(dataset):null);
     assert.ok(b,'Button exists: '+JSON.stringify(dataset));
@@ -58,8 +62,71 @@ function setup(saved,revealItems,options={}) {
   };
   const enter=(module,n=1)=>{click({module});click({level:String(n)});click({action:'practice'});};
   const submitName=name=>{nodes['#learner-name'].value=name;for(const fn of handlers.submit)fn({target:{id:'name-form'},preventDefault(){}});};
-  return {ctx,nodes,click,enter,one,all,canvasHandlers,timers,timerDelays,observers,submitName,dispatch:(name,event)=>{for(const fn of handlers[name]||[])fn(event);},saved:()=>JSON.parse(value)};
+  return {ctx,nodes,click,enter,one,all,canvasHandlers,timers,timerDelays,observers,submitName,dispatch:(name,event)=>{for(const fn of handlers[name]||[])fn(event);},saved:()=>JSON.parse(value),preferences:()=>JSON.parse(otherStorage.get('tala-public-preferences-v1')||'null')};
 }
+const guardianApproval={version:'2026-10-21.2',guardian:true,terms:true,processing:true};
+function submitPublic(env,id){env.dispatch('submit',{target:{id},preventDefault(){}});}
+function passAdultGate(env){
+  const [,a,operator,b]=env.nodes['#app'].innerHTML.match(/ano ang (\d+) ([×+]) (\d+)/);
+  env.nodes['#adult-answer'].value=String(operator==='×'?Number(a)*Number(b):Number(a)+Number(b));submitPublic(env,'adult-gate-form');
+}
+test('Parent gate only uses single-digit multiplication or two-digit addition',()=>{
+  for(const random of [0,.49,.5,.999999]){
+    const env=setup(undefined,undefined,{publicUI:true});env.ctx.Math=Object.create(Math);env.ctx.Math.random=()=>random;
+    env.click({action:'start-game'});
+    const [,a,operator,b]=env.nodes['#app'].innerHTML.match(/ano ang (\d+) ([×+]) (\d+)/);
+    assert.equal(operator,random<.5?'×':'+');
+    for(const operand of [Number(a),Number(b)])assert.ok(operator==='×'?operand>=1&&operand<=9:operand>=10&&operand<=99);
+    passAdultGate(env);assert.equal(env.ctx.document.body.dataset.screen,'consent');
+  }
+});
+test('Public launch shows Start without narration, blocks learning until separate guardian consents, and preserves legacy progress',()=>{
+  const saved={curriculumVersion:2,setupComplete:true,introSeen:true,stars:4,completed:['phonics:1'],best:{'phonics:1':4}};
+  const env=setup(saved,undefined,{publicUI:true});
+  assert.equal(env.ctx.document.body.dataset.screen,'start');assert.equal(env.preferences(),null);
+  assert.equal(env.ctx.TALA_SPEECH.isPlaying(),false);assert.equal(env.ctx.TALA_UI.back(),false);
+  env.click({action:'home'});assert.equal(env.ctx.document.body.dataset.screen,'start');
+  env.click({action:'start-game'});assert.equal(env.ctx.document.body.dataset.screen,'parentGate');
+  env.nodes['#adult-answer'].value='0';submitPublic(env,'adult-gate-form');assert.equal(env.ctx.document.body.dataset.screen,'parentGate');
+  passAdultGate(env);assert.equal(env.ctx.document.body.dataset.screen,'consent');
+  submitPublic(env,'legal-consent-form');assert.equal(env.preferences(),null);
+  env.nodes['#guardian-confirm'].checked=true;env.nodes['#terms-confirm'].checked=true;
+  submitPublic(env,'legal-consent-form');assert.equal(env.preferences(),null,'Terms must not imply processing consent');
+  env.nodes['#processing-confirm'].checked=true;submitPublic(env,'legal-consent-form');
+  assert.equal(env.ctx.document.body.dataset.screen,'home');assert.equal(env.saved().best['phonics:1'],4);
+  assert.equal(env.preferences().voiceInput,false);assert.ok(env.preferences().acceptedAt);
+});
+test('Public microphone permission is separate, off by default, and never starts capture on consent',()=>{
+  const env=setup({curriculumVersion:2,introSeen:true,setupComplete:false},undefined,{publicUI:true,publicPreferences:guardianApproval,SpeechRecognition:class{}});
+  env.click({action:'start-game'});assert.equal(env.ctx.document.body.dataset.screen,'welcome');
+  env.click({action:'name-voice'});assert.equal(env.ctx.document.body.dataset.screen,'parentGate');
+  passAdultGate(env);assert.equal(env.ctx.document.body.dataset.screen,'voicePermission');
+  submitPublic(env,'voice-permission-form');assert.equal(env.ctx.TALA_PUBLIC.voiceAllowed(),false);
+  env.nodes['#voice-confirm'].checked=true;submitPublic(env,'voice-permission-form');
+  assert.equal(env.ctx.document.body.dataset.screen,'welcome');assert.equal(env.ctx.TALA_PUBLIC.voiceAllowed(),true);
+  env.click({action:'dashboard'});env.click({action:'parent-open'});env.click({action:'voice-disable'});assert.equal(env.ctx.TALA_PUBLIC.voiceAllowed(),false);
+});
+test('Revised terms require renewed consent; adult data deletion removes only TALA keys and returns to Start',()=>{
+  const env=setup({curriculumVersion:2,setupComplete:true,introSeen:true,completed:['phonics:1']},undefined,{publicUI:true,publicPreferences:{...guardianApproval,version:'old'}});
+  assert.equal(env.ctx.TALA_PUBLIC.accepted(),false);
+  env.ctx.localStorage.setItem('unrelated-app','keep');
+  env.click({action:'parent-open'});passAdultGate(env);env.click({action:'delete-review'});
+  env.nodes['#delete-confirm'].value='wrong';submitPublic(env,'delete-data-form');assert.equal(env.saved().completed.length,1);
+  env.nodes['#delete-confirm'].value='BURAHIN';submitPublic(env,'delete-data-form');
+  assert.equal(env.saved(),null);assert.equal(env.preferences(),null);assert.equal(env.ctx.localStorage.getItem('unrelated-app'),'keep');
+  assert.equal(env.ctx.document.body.dataset.screen,'start');assert.equal(env.ctx.TALA_PUBLIC.accepted(),false);
+});
+test('Expired adult sessions and failed storage cannot create or bypass consent',()=>{
+  for(const mode of ['expired','storage']){
+    const env=setup(undefined,undefined,{publicUI:true});env.click({action:'start-game'});passAdultGate(env);
+    for(const key of ['guardian-confirm','terms-confirm','processing-confirm'])env.nodes['#'+key].checked=true;
+    if(mode==='expired'){
+      const RealDate=Date;env.ctx.Date=class extends RealDate{static now(){return RealDate.now()+360000;}};
+    }else env.ctx.localStorage.setItem=()=>{throw new Error('storage denied');};
+    submitPublic(env,'legal-consent-form');assert.equal(env.preferences(),null);assert.equal(env.ctx.TALA_PUBLIC.accepted(),false);
+    assert.equal(env.ctx.document.body.dataset.screen,mode==='expired'?'parentGate':'consent');
+  }
+});
 const allCoreStages=()=>[['phonics',33],['numbers',15],['arts',15],['values',10]].flatMap(([id,count])=>Array.from({length:count},(_,i)=>id+':'+(i+1)));
 const questSave=(extra={})=>({curriculumVersion:2,completed:allCoreStages(),questOpeningSeen:true,...extra});
 test('Correct-answer praise has four variants and never repeats consecutively, even with identical random values',()=>{
@@ -97,6 +164,27 @@ test('Phone Back from completion returns to the map, then directly to home',()=>
   env.ctx.TALA_UI.back();assert.equal(env.ctx.document.body.dataset.screen,'map');
   env.ctx.TALA_UI.back();assert.equal(env.ctx.document.body.dataset.screen,'home');
   assert.equal(env.saved().best['phonics:1'],5);
+});
+test('Trail Bumalik never restores the preceding victory, for either on-screen or phone Back',()=>{
+  for(const native of [false,true]){
+    const env=setup();env.enter('phonics');
+    for(const q of env.ctx.TALA_DATA.modules[0].levels[0].questions){env.click({choice:String(q.answer)});env.click({action:'confirm-answer'});env.click.advanceFeedback();}
+    assert.equal(env.ctx.document.body.dataset.screen,'complete');
+    env.click({action:'map'});assert.equal(env.ctx.document.body.dataset.screen,'map');
+    if(native)env.ctx.TALA_UI.back();else env.click({action:'home'});
+    assert.equal(env.ctx.document.body.dataset.screen,'home');
+    assert.equal(env.ctx.TALA_UI.back(),false,'Old victory history is discarded');
+    assert.equal(env.saved().best['phonics:1'],5,'Progress is retained');
+  }
+});
+test('Home selects its own music and module entry requests a themed arrival only once',()=>{
+  const env=setup(),music=[],arrivals=[];
+  env.ctx.TALA_SFX.setWorld=id=>music.push(id);env.ctx.TALA_SFX.enterWorld=id=>arrivals.push(id);
+  env.click({action:'home'});assert.equal(music.at(-1),'home');
+  env.click({module:'numbers'});assert.deepEqual(arrivals,['numbers']);assert.equal(music.at(-1),'numbers');
+  env.click({level:'1'});assert.deepEqual(arrivals,['numbers'],'Lessons do not replay module arrivals');
+  env.ctx.TALA_UI.back();assert.deepEqual(arrivals,['numbers'],'Back to a trail does not replay its entrance');
+  env.ctx.TALA_UI.back();assert.equal(music.at(-1),'home');
 });
 test('General introductions play once per device, persist on reload, and can always be replayed',()=>{
   const players=[];

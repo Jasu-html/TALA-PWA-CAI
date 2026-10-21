@@ -1,17 +1,49 @@
 (function () {
-  // Replace these image paths with your final transparent PNG/WebP artwork.
+  // One shared expression set updates every placement of each character.
   const characters={
     Tala:{image:'assets/characters/tala.svg',label:'Tala',color:'gold',icon:'★'},
     Likha:{image:'assets/characters/likha.svg',label:'Likha',color:'coral',icon:'🎨'},
     Titik:{image:'assets/characters/titik.svg',label:'Titik',color:'purple',icon:'📖'},
     Bilang:{image:'assets/characters/bilang.svg',label:'Bilang',color:'blue',icon:'123'}
   };
-  function avatar(name,style='') {
+  for(const [name,character] of Object.entries(characters)) {
+    character.fallback=character.image;
+    character.image=`assets/characters/${name}-Neutral.png`;
+    character.expressions={Neutral:character.image,Happy:`assets/characters/${name}-Happy.png`,Talking:`assets/characters/${name}-Talking.png`};
+  }
+  let speaking=null;
+  const expressionFor=mood=>mood==='happy'?'Happy':'Neutral';
+  function avatar(name,style='',expression='Neutral') {
     const c=characters[name]||characters.Tala;
-    return '<span class="character '+c.color+' '+style+'" data-character="'+c.label+'"><span class="character-shadow"></span><img class="character-image" src="'+c.image+'" alt="" width="160" height="200" draggable="false"><span class="character-fallback" aria-hidden="true">'+c.icon+'</span><span class="character-name">'+c.label+'</span></span>';
+    if(style.includes('character-celebrate'))expression='Happy';
+    const base=c.expressions[expression]?expression:'Neutral';
+    const active=base==='Happy'?'Happy':speaking===c.label?'Talking':base;
+    const src=active==='Neutral'?c.image:c.expressions[active];
+    return '<span class="character '+c.color+' '+style+'" data-character="'+c.label+'" data-base-expression="'+base+'" data-expression="'+active+'"><span class="character-shadow"></span><img class="character-image" src="'+src+'" alt="" width="160" height="200" draggable="false"><span class="character-fallback" aria-hidden="true">'+c.icon+'</span><span class="character-name">'+c.label+'</span></span>';
+  }
+  function refresh(actor) {
+    const c=characters[actor.dataset.character],img=actor.querySelector('.character-image');
+    if(!c||!img)return;
+    const base=actor.dataset.baseExpression||'Neutral';
+    const expression=base==='Happy'?'Happy':speaking===c.label?'Talking':base;
+    const src=expression==='Neutral'?c.image:c.expressions[expression];
+    if(actor.dataset.expression===expression)return;
+    actor.dataset.expression=expression;
+    actor.classList.remove('image-missing');
+    img.dataset.fallback='';img.src=src;
+  }
+  function setSpeaking(name) {
+    speaking=characters[name]?name:null;
+    document.querySelectorAll?.('.character[data-character]').forEach(refresh);
+  }
+  function setMood(container,mood) {
+    container.dataset.mood=mood;
+    container.querySelectorAll?.('.character[data-character]').forEach(actor=>{
+      actor.dataset.baseExpression=expressionFor(mood);refresh(actor);
+    });
   }
   function guide(name,content,mood='idle') {
-    return '<div class="guide-conversation" data-mood="'+mood+'"><div class="guide-actor">'+avatar(name)+'</div><div class="speech-bubble">'+content+'</div></div>';
+    return '<div class="guide-conversation" data-mood="'+mood+'"><div class="guide-actor">'+avatar(name,'',expressionFor(mood))+'</div><div class="speech-bubble">'+content+'</div></div>';
   }
   const art={
     tree:'<path d="M49 73h12v37H49z" fill="#a47652"/><path d="M55 3 91 61H76l18 24H16l18-24H19z" fill="#62b99b"/><path d="M55 3v82H16l18-24H19z" fill="#79c9a8"/><path d="m44 48 11-17 12 17" fill="none" stroke="#a0dfbc" stroke-width="5" stroke-linecap="round"/>',
@@ -37,7 +69,15 @@
     return markup+'</div>';
   }
   document.addEventListener('error',event=>{
-    if(event.target?.classList?.contains('character-image'))event.target.closest('.character')?.classList.add('image-missing');
+    const img=event.target;
+    if(!img?.classList?.contains('character-image'))return;
+    const actor=img.closest('.character'),c=characters[actor?.dataset.character];
+    if(!c)return;
+    if(!img.dataset.fallback&&actor.dataset.expression!=='Neutral') {
+      img.dataset.fallback='neutral';img.src=c.image;
+    } else if(img.dataset.fallback!=='legacy') {
+      img.dataset.fallback='legacy';img.src=c.fallback;
+    } else actor.classList.add('image-missing');
   },true);
-  window.TALA_VISUALS={characters,avatar,guide,scenery};
+  window.TALA_VISUALS={characters,avatar,guide,scenery,setSpeaking,setMood};
 })();

@@ -1,0 +1,220 @@
+/* Tala's night sky surrounds cool, high-contrast learning surfaces.
+   Keep module accent colors, feedback colors, dimensions and touch targets intact. */
+:root{
+  --night-canvas:radial-gradient(ellipse at 50% 45%,#3a3477 0,transparent 65%),linear-gradient(145deg,#151f47,#1f214f 65%,#183d4b);
+  --ink:#1e1b4b;
+  --muted:#4b4680;
+  --accent:#6d28d9;
+  --deep:#4c1d95;
+  --soft:#ddd0f1;
+  --night-panel:#ded7f0;
+  --night-border:#80719d;
+  --night-paper:#e8e2f1;
+  --night-paper-raised:#f1ebf6;
+  --night-paper-inset:#d8ceeb;
+  --night-text:#f3f4ff;
+  --night-muted:#ccd6ee;
+  background:#151f47;
+  color-scheme:dark;
+}
+html{background:#151f47}
+body{background-color:#151f47;background-image:var(--night-canvas);background-attachment:fixed;color:var(--night-text);isolation:isolate}
+body:before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.55;background-image:radial-gradient(circle at 8% 12%,#ffe5a4 0 1px,transparent 1.7px),radial-gradient(circle at 76% 9%,#c0d2ff 0 1px,transparent 1.7px),radial-gradient(circle at 24% 67%,#ecdeff 0 1px,transparent 1.7px),radial-gradient(circle at 91% 48%,#ffe5a4 0 1px,transparent 1.7px),radial-gradient(circle at 57% 85%,#c0edeb 0 1px,transparent 1.7px);background-size:420px 540px,610px 670px,530px 620px,710px 590px,470px 730px}
+
+/* At the top there is no bar fill. Only the scrolled state gains a solid surface. */
+.topbar{background:transparent;border-color:transparent;box-shadow:none}
+.brand-button strong{color:#f4efff}.brand-button small{color:#d9d2ef}
+.brand-button strong,.brand-button small{transition:color .25s ease}
+.topbar.is-scrolled .brand-button strong{color:var(--ink)}
+.topbar.is-scrolled .brand-button small{color:var(--muted)}
+.brand-star{color:#ffda72;filter:drop-shadow(0 0 9px #ffd07140)}
+.topbar.is-scrolled,.map-heading.is-scrolled{background:var(--night-panel);border-color:var(--night-border);box-shadow:0 5px 0 #090e2c66,0 12px 28px #080d282e}
+.icon-button,.wallet{background:#30305a;color:#f4efff;border-color:#9b91bb;box-shadow:0 4px 0 #121534}
+.icon-button:hover{border-color:#bba4ff}.sound-toggle[aria-pressed="false"]{background:#252c4a;color:#bbc3db}
+.wallet span{color:#ffda72}
+.back-button{background:transparent;color:#f4efff;border:1px solid transparent;box-shadow:none}
+.back-button:hover{background:#c5b9e31a}
+.screen-listen{background:#2b3359;color:#e5e9fa;border:1px solid #7775a3}
+.screen-listen:hover{background:#39416c}
+.story-replay,.public-parent-link,.quest-story-controls .text-button{color:#d7caff}
+.footer-note{color:#bac9e8}
+.flow-steps>span{background:#2d3556;color:#d0d7ed;border-color:#697196}
+.flow-steps>span.active{background:#ded2ff;color:#492b94;border-color:#b6a4eb}
+.flow-steps>span.finished{background:#d4eee5;color:#1f6053;border-color:#9dcbbc}
+
+/* Home: moonlit hills, quiet stars and four jewel-colored worlds. */
+.home-scene{background:radial-gradient(ellipse at 55% 5%,#51418a80,transparent 65%),linear-gradient(165deg,#242950,#202b4c 60%,#19434b);border-color:#7777ac;box-shadow:0 7px 0 #0b183c66,0 20px 40px #080d2833}
+.home-sun{background:#dceaff;box-shadow:inset -22px -9px 0 #92a8d5,0 0 0 15px #c4d7ff0c,0 0 45px #c4d7ff22}
+.home-cloud{background:#b8c9f0;box-shadow:22px -16px 0 1px #b8c9f0,48px 2px 0 #b8c9f0;opacity:.10}
+.home-hill{background:#1c4f5a}.hill-b{background:#143f4b}
+.home-float{color:#ffe5a4;text-shadow:0 0 12px #ffdf8c44}
+.float-b,.float-d{font-size:0;color:#bfdaff}.float-b:after,.float-d:after{content:'✦';font-size:20px}
+.home-scene .greeting{background:#252d54;border-color:#7274a2;box-shadow:0 5px 0 #10183655;color:#f3f4ff}
+.home-scene .greeting h1{color:#f4f4ff}.home-scene .greeting h1 span{color:#d1b9ff}
+.home-scene .greeting .eyebrow{color:#bcebdd}.home-scene .greeting p{color:#d0d8ee}
+.world-card{border-color:#ccd1ef}
+.world-card.purple .world-art{background:linear-gradient(#6551ba,#30345f)}
+.world-card.blue .world-art{background:linear-gradient(#176b9d,#223c65)}
+.world-card.coral .world-art{background:linear-gradient(#9b568d,#46365f)}
+.world-card.gold .world-art{background:linear-gradient(#c77e36,#714238)}
+/* These are decorative crescent moons, not incomplete progress rings. */
+.world-sun{background:transparent;box-shadow:inset -9px -3px 0 #ffe2ae;pointer-events:none}
+.world-sun:after{content:'✦';position:absolute;left:-9px;top:0;color:#ffe2ae;font-size:10px}
+.world-card.purple .world-land{background:#574a91}.world-card.blue .world-land{background:#185477}
+.world-card.coral .world-land{background:#7c3d72}.world-card.gold .world-land{background:#98573c}
+.world-copy>strong{color:var(--ink)}.world-guide{color:var(--accent)}.world-bottom{color:var(--muted)}
+.round-arrow{background:var(--accent);color:#fff}
+.progress-track{background:#b4a7c9;border:1px solid #7d7097;box-shadow:none}
+.gentle-note{background:#273551;color:#d8e5f5;border-color:#6b8c9b;box-shadow:0 4px 0 #10243f66}
+
+/* Trails remain colorful and fully scrollable, now under a shared night sky. */
+.map-page{--night-accent:#d6c0ff;border-color:#7d7aac;box-shadow:0 7px 0 #0e163a80}
+.map-page.purple{background:linear-gradient(#312c5a,#183f43 650px);--night-accent:#d6c0ff}
+.map-page.blue{background:linear-gradient(#24385e,#164454 650px);--night-accent:#a6e4ff}
+.map-page.coral{background:linear-gradient(#432e5d,#343756 650px);--night-accent:#ffb7db}
+.map-page.gold{background:linear-gradient(#38305d,#293d55 650px);--night-accent:#ffe2a0}
+.map-page:before{inset:0;background-image:radial-gradient(circle at 15% 20%,#dfe9ff70 0 1px,transparent 2px),radial-gradient(circle at 85% 55%,#ffe5a450 0 1px,transparent 2px);background-size:260px 360px,310px 430px}
+.map-title h1,.map-title .eyebrow{color:var(--night-accent)}.map-title p{color:#d2dcef}
+.map-title .jump-stage{background:#303656;color:#f1efff;border-color:#9697bd;box-shadow:0 3px 0 #111b3866}
+.map-count{background:#30305a;color:#ffe1a3;border-color:#9b91bb}
+.map-heading:not(.is-scrolled){background:transparent;border-color:transparent;box-shadow:none}
+.map-heading .back-button{background:transparent;color:#f4efff;border-color:transparent;box-shadow:none}
+.map-heading .back-button:hover{background:#c5b9e31a}
+.map-heading.is-scrolled .back-button{color:var(--ink)}
+.map-heading.is-scrolled .map-count{background:transparent;color:#623a05;border-color:#80719d}
+.road-edge{stroke:#c5cfee}.road-dashes{stroke:#fff9}
+.stage-stars{color:#ffe093;text-shadow:0 2px 2px #14213f}
+.stage strong{background:var(--night-paper-raised);border-color:#a7b2d1;box-shadow:0 4px 0 #111b4566}
+.stage strong{color:var(--ink)}
+.stage-button.is-complete{color:#153d2c}
+.stage-button.is-locked{background:linear-gradient(#65708e,#4c5878);color:#eef0ff;box-shadow:0 7px 0 #303c60,0 11px 0 #b9c8ea33}
+.map-guide{background:var(--night-paper);border:1px solid #a8b4db}
+
+/* Muted blue-lavender paper avoids bright white against the dark sky. */
+.activity-card,.world-copy,.welcome-copy,.public-panel,.celebration,.intro-card,.summary-grid>div,.report-panel,.name-editor,.quest-report,.speech-bubble{color:var(--ink);color-scheme:light}
+.activity-card,.world-copy,.public-panel,.intro-card,.welcome-scene,.celebration,.summary-grid>div,.report-panel,.name-editor{background:var(--night-paper)}
+.activity-card,.public-panel,.intro-card,.welcome-scene,.celebration{border-color:#929fc3;box-shadow:0 7px 0 #10173466,0 18px 36px #080d2829}
+.world-card{border-color:#a1acce}
+.choice,.speech-bubble,.tutorial-step,.quest-report-list>div{background:var(--night-paper-raised)}
+.speech-bubble{border-color:#88759f;box-shadow:0 5px 0 #a496b8}
+.speech-bubble:before{border-color:#88759f}
+.purple{--accent:#6d28d9;--deep:#4c1d95;--soft:#ddd0f1;--land:#9d76e5}
+.blue{--accent:#0369a1;--deep:#075985;--soft:#cde6f1;--land:#3d9dcd}
+.coral{--accent:#be185d;--deep:#9d174d;--soft:#f2d1e3;--land:#d36d9c}
+.gold{--accent:#9a4807;--deep:#783b0c;--soft:#f2d5af;--land:#d69645}
+.question-counter,.selection-instruction{color:var(--muted)}
+.primary-button{background:#6d28d9;box-shadow:0 6px 0 #431886;color:#fff}
+.primary-button:hover{background:#5b21b6;box-shadow:0 8px 0 #431886}
+.start-play,.start-play:hover{background:linear-gradient(140deg,#ffe19a,#ffc34b);color:#402b12;box-shadow:0 6px 0 #a56920}
+.secondary-button{background:var(--night-paper-raised);color:var(--ink);border-color:#80719d}
+.choice{border-color:#7b6b96;box-shadow:0 4px 0 #a295b8}
+.choice.selected{border-color:var(--accent);box-shadow:0 4px 0 var(--deep)}
+.tutorial-disclosure>summary,.listen-button{color:var(--deep)}
+.listen-button.screen-listen{color:#f4efff}
+.teaching-art{background:linear-gradient(145deg,var(--soft),var(--night-paper));border-color:#8b76b7}
+.tutorial-panel{background:var(--night-paper-raised)}
+.tutorial-demo,.public-form>input,#name-form input,.name-editor input,.license-notice pre{background:var(--night-paper-raised)}
+.public-form>input,#name-form input,.name-editor input{border:2px solid #716489;color:var(--ink)}
+.public-form>input::placeholder,#name-form input::placeholder,.name-editor input::placeholder{color:#5c557b;opacity:1}
+.public-settings>section,.check-row{border-color:#9ca8cb}
+.public-panel .small-note,.public-panel .legal-version{color:#3e4b69}
+.choice.correct{background:#acd3bc}
+.primary-button:disabled{background:#acb5ce;color:#4e576f;box-shadow:0 3px 0 #8c97b6}
+.celebration{background:radial-gradient(circle at 50% 17%,#c3b6de,transparent 55%),var(--night-paper)}
+.public-panel .back-button,.activity-card>.back-button{background:var(--night-paper-inset);color:var(--ink);border-color:#80719d}
+.public-panel .danger-button,.secondary-button[data-action="reset"]{background:#f8e4e6;color:#b91c1c;border:2px solid #b91c1c}
+.welcome-art{background:radial-gradient(ellipse at 50% 35%,#56458f66,transparent 65%),linear-gradient(#242c58,#204757)}
+.sun-halo{background:#dbe5ff;box-shadow:0 0 0 22px #c0d3ff12,0 0 50px #aabfff25}
+.welcome-hill{background:#20515b}.welcome-hill:after{background:#163f4b}
+.welcome-art .cloud{opacity:.25}
+.intro-friends{background:linear-gradient(#263864,#315477 70%,#326064)}
+.intro-hill{background:#1b4e54;box-shadow:130px -14px 0 #28626a}
+.quest-card{background:radial-gradient(ellipse at 10% 25%,#6a518740,transparent 65%),linear-gradient(120deg,#30345c,#383157);border-color:#9990bc;box-shadow:0 5px 0 #0f173b66,0 14px 28px #0a10252e}
+.quest-card-copy>strong{color:#fff2cf}.quest-card-copy>.eyebrow,.quest-card-symbol{color:#ffda82}.quest-card-copy>span:last-child{color:#d5dcf0}
+.dashboard-title h1{color:#f3f4ff}.dashboard-title h1 span{color:#c9b1ff}.dashboard-title .eyebrow{color:#c6d8f9}.dashboard-title p{color:#cbd7ed}
+.quest-report{background:var(--night-paper);border-color:#9ca8cb}.quest-report h2{color:#4c347e}
+.name-editor h2{color:#42268a}
+.earned-stars .rating-star.is-filled,.quest-report .rating-star.is-filled{color:#a15b00}
+.earned-stars .rating-star.is-empty,.quest-report .rating-star.is-empty{color:#706289;text-shadow:none}
+.stage-stars .rating-star.is-filled{color:#ffcf66}.stage-stars .rating-star.is-empty{color:#b9afd3}
+.quest-constellation span{color:#a79ac6}.quest-constellation .is-lit{color:#f5bd46}
+
+/* Readable secondary text is 12px+, not compressed to fit a fixed viewport. */
+.brand-button small{font-size:12px;line-height:1.3}
+.world-guide,.world-bottom,.question-counter,.selection-instruction,.activity-heading .pill,.greeting .eyebrow,.quest-card-copy .eyebrow,.character-name,.character-story .character-name{font-size:12px}
+.home-scene .greeting .eyebrow,.quest-card-copy .eyebrow{font-size:12px}
+body[data-screen="home"] .world-guide,body[data-screen="home"] .world-bottom{font-size:12px}
+body[data-screen="home"] .quest-card-copy>span:last-child{font-size:16px;line-height:1.45}
+.intro-card .intro-toolbar .pill,.intro-copy .eyebrow,.public-panel .eyebrow,.play-label,.character-name{font-size:12px}
+.start-brand p,.start-badge,.start-footer small{font-size:12px}
+.start-main>p{font-size:16px}
+.dashboard-title .eyebrow{font-size:12px}
+.home-scene .greeting p,.quest-card-copy>span:last-child,.public-panel p,.public-panel .small-note{font-size:16px;line-height:1.45}
+.speech-bubble p,.choice{font-size:18px;line-height:1.4}
+.tutorial-step strong{font-size:14px}.public-panel .text-button,.public-settings>section>button{font-size:16px}
+@media(max-width:680px){
+  .topbar{min-height:88px;padding-bottom:34px}
+  .brand-button small{position:absolute;left:10px;right:10px;bottom:6px;max-width:none;font-size:12px;line-height:1.3;text-wrap:balance}
+  .world-copy{padding:7px 8px 9px}.world-copy>strong{font-size:18px;line-height:1.15}
+  .world-guide,.world-bottom,.home-scene .world-guide,.home-scene .world-bottom{font-size:12px;line-height:1.25}
+  .home-scene .greeting p,.quest-card-copy>span:last-child{font-size:16px}
+  .world-bottom{margin-top:7px}.quest-card-copy{gap:5px}
+  .question-counter,.selection-instruction,.activity-heading .pill,.flow-steps>span{font-size:12px}
+  .story-auto-tools p,.story-auto-tools button,.footer-note,.start-footer small{font-size:12px}
+  .welcome-copy .name-voice-status,.welcome-copy .name-privacy{font-size:12px;line-height:1.4}
+}
+
+/* Fill the available lesson/play space, retaining a small sky margin below.
+   Only the illustration/conversation grows; controls keep their natural height. */
+body:is([data-screen="lesson"],[data-screen="practice"]) .app-shell{display:flex;flex-direction:column;height:100dvh;min-height:100dvh}
+body:is([data-screen="lesson"],[data-screen="practice"]) #app{display:flex;flex-direction:column;flex:1 0 auto;min-height:0}
+body:is([data-screen="lesson"],[data-screen="practice"]) .screen{display:flex;flex-direction:column;flex:1;min-height:min-content;padding-bottom:clamp(24px,3dvh,36px)}
+body:is([data-screen="lesson"],[data-screen="practice"]) .activity-card{display:flex;flex-direction:column;flex:1;min-height:min-content;margin:0 auto;width:100%}
+body[data-screen="lesson"] .teaching-art{flex:1 0 100px;height:auto;min-height:100px;margin:12px 0}
+body[data-screen="practice"] .question-card{display:grid;grid-template-rows:auto auto auto minmax(min-content,1fr) auto minmax(min-content,1fr) auto}
+body[data-screen="practice"] .question-card>.guide-conversation{flex:1;align-items:center;min-height:min-content;margin:0;padding:10px 0}
+body[data-screen="practice"] .question-card .speech-bubble{align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+body[data-screen="practice"] .question-card .question-visual{display:grid;place-items:center;flex:1}
+body[data-screen="practice"] .question-card>.choices{display:grid;grid-template-columns:minmax(0,1fr);grid-auto-rows:max-content;align-content:space-evenly;gap:10px;flex:1 0 auto}
+body[data-screen="practice"] .choice{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:12px;min-height:52px;padding:8px 14px;text-align:left}
+body[data-screen="practice"] .choice small{flex:0 0 25px}
+body[data-screen="practice"] .answer-dock{flex:0 0 auto}
+body[data-screen="practice"] .question-card .speech-bubble{min-height:clamp(110px,20dvh,200px)}
+@media(min-width:681px) and (orientation:landscape){
+  body[data-screen="lesson"] .teaching-art{height:clamp(100px,15dvh,140px)}
+  body[data-screen="lesson"] .guide-conversation{margin:10px 0}
+  body[data-screen="lesson"] .guide-actor .character{width:80px}
+}
+@media(min-width:681px) and (max-height:850px) and (orientation:landscape){
+  body[data-screen="practice"] .question-card{display:flex}
+  body[data-screen="practice"] .question-card>.guide-conversation{margin:8px 0;padding:0}
+  body[data-screen="practice"] .guide-actor .character{width:64px}
+  body[data-screen="practice"] .question-card .speech-bubble{min-height:90px;padding:10px 14px}
+  body[data-screen="practice"] .speech-bubble .question-visual{font-size:30px;line-height:1.25;padding:4px 0}
+  body[data-screen="practice"] .bubble-audio .listen-button{min-height:44px;padding:7px 10px}
+}
+@media(max-height:680px){
+  body[data-screen="practice"] .question-card{display:flex}
+  body[data-screen="home"] .world-copy{padding:5px 8px 6px}
+  body[data-screen="home"] .world-bottom{margin-top:4px;min-height:24px}
+  body[data-screen="home"] .round-arrow{width:24px;height:24px;font-size:18px}
+  body:is([data-screen="lesson"],[data-screen="practice"]) .screen{padding-bottom:18px}
+  body[data-screen="lesson"] .teaching-art{height:clamp(80px,16dvh,110px);min-height:80px;margin:8px 0}
+  body[data-screen="practice"] .question-card .speech-bubble{min-height:90px}
+}
+@media(min-width:681px) and (max-height:680px) and (orientation:landscape){
+  body[data-screen="lesson"] .teaching-art{height:80px}
+  body[data-screen="lesson"] .guide-actor .character{width:64px}
+  body[data-screen="practice"] .activity-card{padding:10px 12px}
+  body[data-screen="practice"] .activity-heading{margin-bottom:4px}
+  body[data-screen="practice"] .question-card h1{margin-top:4px}
+  body[data-screen="practice"] .question-card>.guide-conversation{margin:4px 0}
+  body[data-screen="practice"] .question-card>.choices{gap:6px}
+  body[data-screen="practice"] .choice{min-height:44px;padding:6px 12px}
+  body[data-screen="practice"] .selection-instruction{margin-bottom:6px}
+  body[data-screen="practice"] .answer-dock{margin-top:6px;padding-top:6px}
+}
+
+/* Native form focus remains visible on both the night chrome and light paper. */
+.topbar button:focus-visible,.map-heading button:focus-visible,.story-replay:focus-visible{outline-color:#b7e8e0}
+@media(prefers-reduced-motion:reduce){body{background-attachment:scroll}}

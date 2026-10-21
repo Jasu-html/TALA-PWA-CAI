@@ -11,6 +11,10 @@
   let renderedRoute=null;
   const captureRoute=()=>({state:JSON.parse(JSON.stringify(state)),introPage,questStoryKind,questStoryPage,questQuestions:[...questQuestions]});
   function goBack(){
+    if(state.screen==='start')return false;
+    if(window.TALA_PUBLIC?.back(state.screen))return true;
+    // A world trail is a root destination, never a return to an old victory screen.
+    if(state.screen==='map'){go(store().setupComplete?'home':'welcome',false);return true;}
     if(state.screen==='intro'&&introPage>0){introPage--;go('intro',false);return true;}
     if(state.screen==='questStory'&&questStoryPage>0){questStoryPage--;go('questStory',false);return true;}
     if(state.screen==='complete'){
@@ -112,6 +116,7 @@
   }
   function nameStatus(text) { const status=document.querySelector('#name-voice-status');if(status)status.textContent=text; }
   function startNameVoice() {
+    if(window.TALA_PUBLIC&&!TALA_PUBLIC.voiceAllowed()){TALA_PUBLIC.requestVoice();return;}
     if(nameRecognition){stopNameVoice();nameStatus('Huminto na. Maaari mong subukan muli.');return;}
     if(!Recognition){nameStatus('Hindi suportado ang mikropono sa browser na ito. Magpatulong sa pag-type ng pangalan.');return;}
     if(!nameVoiceConsent){
@@ -150,7 +155,23 @@
   const level=()=>state.module==='quest'?{...world().levels[state.level-1],questions:questQuestions}:world().levels[state.level-1];
   const question=()=>level().questions[state.question];
   const recordingGuide=()=>state.module==='quest'&&state.screen==='practice'?question().audioGuide:world().guide;
-  let paintCleanup=()=>{},revealCleanup=()=>{},tutorialCleanup=()=>{};
+  let paintCleanup=()=>{},revealCleanup=()=>{},tutorialCleanup=()=>{},transitionCleanup=()=>{};
+  function moduleTransition(id) {
+    TALA_SFX.enterWorld(id==='quest'?'values':id);
+    if(window.matchMedia?.('(prefers-reduced-motion: reduce)').matches||window.TALA_PUBLIC?.reduceMotion()||!document.createElement)return;
+    transitionCleanup();
+    const m=id==='quest'?TALA_QUEST.world:TALA_DATA.modules.find(item=>item.id===id);
+    if(!m)return;
+    const overlay=document.createElement('div');
+    overlay.className='world-transition '+m.color;
+    overlay.setAttribute('aria-hidden','true');
+    overlay.innerHTML='<i class="world-wave wave-one"></i><i class="world-wave wave-two"></i><i class="world-wave wave-three"></i><span class="world-arrival"><b>'+m.icon+'</b><strong>'+m.title+'</strong></span>';
+    document.body.append(overlay);
+    const cleanup=()=>{clearTimeout(fallback);overlay.remove();if(transitionCleanup===cleanup)transitionCleanup=()=>{};};
+    const fallback=setTimeout(cleanup,1100);
+    transitionCleanup=cleanup;
+    overlay.addEventListener('animationend',event=>{if(event.target===overlay)cleanup();});
+  }
   function startPractice() {
     if(state.module==='quest'){
       questQuestions=TALA_QUEST.generate(store(),state.level);
@@ -162,10 +183,21 @@
   const done=(id,n)=>store().completed.includes(key(id,n));
   const unlocked=n=>state.module==='quest'?TALA_QUEST.unlocked(store(),n):n===1 || done(state.module,n-1);
   const esc=text=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const avatar=(name,style='')=>TALA_VISUALS.avatar(name,style);
+  const avatar=(name,style='',expression='Neutral')=>TALA_VISUALS.avatar(name,style,expression);
   const guide=(name,content,mood)=>TALA_VISUALS.guide(name,content,mood);
+  const ratingStars=rating=>Array.from({length:5},(_,i)=>'<span class="rating-star '+(i<rating?'is-filled':'is-empty')+'" aria-hidden="true">'+(i<rating?'★':'☆')+'</span>').join('');
   const topbar=document.querySelector('.topbar');
-  const updateTopbar=()=>topbar?.classList.toggle('is-scrolled',window.scrollY>24);
+  const updateTopbar=()=>{
+    const scrolled=window.scrollY>24;
+    topbar?.classList.toggle('is-scrolled',scrolled);
+    document.querySelector('.map-heading')?.classList.toggle('is-scrolled',scrolled);
+    if(topbar?.getBoundingClientRect){
+      const inset=parseFloat(window.getComputedStyle?.(topbar).top)||0;
+      document.documentElement?.style.setProperty('--map-sticky-top',(topbar.getBoundingClientRect().height+inset+8)+'px');
+    }
+  };
+  window.addEventListener('resize',updateTopbar,{passive:true});
+  if(window.ResizeObserver&&topbar)new ResizeObserver(updateTopbar).observe(topbar);
   let lastScrollY=window.scrollY||0,scrollDistance=0;
   window.addEventListener('scroll',()=>{
     resetIdle();
@@ -182,7 +214,7 @@
   function setupScrollReveal() {
     revealCleanup();
     revealCleanup=()=>{};
-    if (!window.IntersectionObserver || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    if (!window.IntersectionObserver || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || window.TALA_PUBLIC?.reduceMotion()) return;
     const items=app.querySelectorAll('.greeting,.world-card,.gentle-note,.map-title,.map-companion,.stage,.map-prop,.map-guide,.dashboard-title,.summary-grid,.report-row');
     let previousScroll=window.scrollY||0,revealTimer=null;
     const pending=[];
@@ -212,13 +244,15 @@
     items.forEach(item=>{item.classList.add('scroll-reveal');revealObserver.observe(item);});
     revealCleanup=()=>{revealObserver.disconnect();clearTimeout(revealTimer);pending.length=0;};
   }
-  function mood(value) { const actor=document.querySelector('.guide-conversation'); if(actor)actor.dataset.mood=value; }
+  function mood(value) { const actor=document.querySelector('.guide-conversation'); if(actor)TALA_VISUALS.setMood(actor,value); }
   function syncSoundButton() { const button=document.querySelector('[data-action="sound-toggle"]');if(!button)return;const enabled=TALA_SFX.isEnabled();button.textContent=enabled?'🔊':'🔇';button.setAttribute('aria-pressed',String(enabled));button.setAttribute('aria-label',enabled?'Patayin ang tunog ng laro':'Buksan ang tunog ng laro'); }
   const star='<span class="star-face" aria-hidden="true"><i></i></span>';
   const back=action=>`<button class="back-button" data-action="${action}">← <span>Bumalik</span></button>`;
   function go(screen,remember=true) {
-    if(['home','welcome'].includes(screen))navigation.length=0;
-    else if(remember&&renderedRoute&&screen!==renderedRoute.state.screen&&screen!=='complete'){
+    if(window.TALA_PUBLIC?.needsConsent(screen))screen='start';
+    transitionCleanup();
+    if(['home','welcome','start'].includes(screen))navigation.length=0;
+    else if(remember&&renderedRoute&&screen!==renderedRoute.state.screen&&screen!=='complete'&&!window.TALA_PUBLIC?.screens[screen]&&!window.TALA_PUBLIC?.screens[renderedRoute.state.screen]){
       navigation.push(renderedRoute);if(navigation.length>30)navigation.shift();
     }
     clearTimeout(answerTimer);answerTimer=null;clearTimeout(idleTimer);
@@ -227,7 +261,7 @@
     clearTimeout(timer); paintCleanup(); paintCleanup=()=>{}; tutorialCleanup(); tutorialCleanup=()=>{}; version++; TALA_SPEECH.stop(); state.screen=screen;
     document.body.dataset.screen=screen;
     document.querySelector('#wallet-stars').textContent=store().stars;
-    app.innerHTML=`<section class="screen">${['home','map','complete','dashboard'].includes(screen)?'<button class="listen-button screen-listen" data-action="screen-listen" aria-label="Pakinggan muli ang gabay">🔊 Pakinggan ang gabay</button>':''}${({welcome,home,map,lesson,practice,complete,dashboard,intro,questStory})[screen]()}${screen==='home'?questCard()+'<button class="text-button story-replay" data-action="intro-open">✦ Ang kuwento ni Tala</button>':''}${screen==='dashboard'?nameEditor()+questReport():''}${state.module==='quest'&&['map','complete'].includes(screen)&&TALA_QUEST.eligible(store())?constellation()+questStoryControls():''}</section>`;
+    app.innerHTML=`<section class="screen">${['home','map','complete','dashboard'].includes(screen)?'<button class="listen-button screen-listen" data-action="screen-listen" aria-label="Pakinggan muli ang gabay">🔊 Pakinggan ang gabay</button>':''}${({welcome,home,map,lesson,practice,complete,dashboard,intro,questStory,...(window.TALA_PUBLIC?.screens||{})})[screen]()}${screen==='home'?questCard()+'<button class="text-button story-replay" data-action="intro-open">✦ Ang kuwento ni Tala</button>':''}${screen==='dashboard'?nameEditor()+questReport()+(window.TALA_PUBLIC?.parentLink()||''):''}${state.module==='quest'&&['map','complete'].includes(screen)&&TALA_QUEST.eligible(store())?constellation()+questStoryControls():''}</section>`;
     if(screen==='lesson') {
       const card=document.querySelector('.activity-card');
       if(card?.insertAdjacentHTML) card.insertAdjacentHTML('beforeend','<details class="tutorial-disclosure"><summary>🔊 Paano ito laruin?</summary>'+tutorial()+'</details>');
@@ -237,7 +271,7 @@
     updateTopbar();
     setupScrollReveal();
     syncSoundButton();
-    TALA_SFX.setWorld(['map','lesson','practice'].includes(screen)?(state.module==='quest'?'values':state.module):null);
+    TALA_SFX.setWorld(['home','welcome','start'].includes(screen)?'home':['map','lesson','practice'].includes(screen)?(state.module==='quest'?'values':state.module):null);
     if(screen==='complete')TALA_SFX.play('complete');
     if (screen==='practice' && level().type==='paint') setupPainting();
     if(screen==='practice'&&level().type!=='paint'&&state.selected!==null){
@@ -260,7 +294,7 @@
   function questCount() {return TALA_QUEST.world.levels.filter((_,i)=>done('quest',i+1)).length;}
   function questCard() {
     const ready=TALA_QUEST.eligible(store()),count=questCount();
-    return `<button class="quest-card gold" data-module="quest"><span class="quest-card-avatar" aria-hidden="true">${avatar('Tala')}</span><span class="quest-card-copy"><span class="eyebrow">HAMON NI TALA</span><strong>${TALA_QUEST.finished(store())?'Muling nagningning si Tala!':'Handa ka na bang sumikat?'}</strong><span>${ready?count+' sa 10 hamon ang natapos':'Tapusin ang lahat ng yugto sa apat na mundo. Kahit ilang bituin!'}</span></span><span class="quest-card-symbol" aria-hidden="true">${ready?'→':'🔒'}</span></button>`;
+    return `<button class="quest-card gold" data-module="quest"><span class="quest-card-avatar" aria-hidden="true">${avatar('Tala')}</span><span class="quest-card-copy"><span class="eyebrow">HAMON NI TALA</span><strong>${TALA_QUEST.finished(store())?'Muling nagningning si Tala!':'Handa ka na bang sumikat?'}</strong><span>${ready?count+' sa 10 hamon ang natapos':'Tapusin ang lahat ng yugto. Kahit ilang bituin!'}</span></span><span class="quest-card-symbol" aria-hidden="true">${ready?'→':'🔒'}</span></button>`;
   }
   function openQuest() {
     state.module='quest';
@@ -292,7 +326,7 @@
   }
   function questReport() {
     const d=store();
-    return `<section class="quest-report gold" aria-labelledby="quest-report-title"><h2 id="quest-report-title">Hamon ni Tala</h2><p>${questCount()} sa 10 hamon ang natapos</p><div class="quest-report-list">${TALA_QUEST.world.levels.map((l,i)=>{const id='quest:'+(i+1),stars=d.best[id]||0;return `<div><strong>${l.title}</strong><span aria-label="${stars} bituin">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</span><small>${d.attempts[id]||0} pagsubok</small></div>`;}).join('')}</div></section>`;
+    return `<section class="quest-report gold" aria-labelledby="quest-report-title"><h2 id="quest-report-title">Hamon ni Tala</h2><p>${questCount()} sa 10 hamon ang natapos</p><div class="quest-report-list">${TALA_QUEST.world.levels.map((l,i)=>{const id='quest:'+(i+1),stars=d.best[id]||0;return `<div><strong>${l.title}</strong><span aria-label="${stars} bituin">${ratingStars(stars)}</span><small>${d.attempts[id]||0} pagsubok</small></div>`;}).join('')}</div></section>`;
   }
   function constellation() {
     return `<div class="quest-constellation" role="img" aria-label="${questCount()} sa 10 bituin ang nagningning">${TALA_QUEST.world.levels.map((_,i)=>`<span class="${done('quest',i+1)?'is-lit':''}" aria-hidden="true">★</span>`).join('')}</div>`;
@@ -332,7 +366,7 @@
     return `<section class="name-editor"><h2>Pangalan ng mag-aaral</h2><p>Maaaring itama ng guro o magulang ang baybay. Hindi mababago ang progreso.</p><form id="edit-name-form"><label for="edit-learner-name">Pangalan</label><input id="edit-learner-name" maxlength="24" autocomplete="given-name" required value="${esc(store().learner)}"><button type="submit" class="secondary-button">I-save ang pangalan</button></form></section>`;
   }
   function home() {
-    return `<div class="home-scene"><div class="home-sky" aria-hidden="true"><span class="home-sun"></span><span class="home-cloud cloud-a"></span><span class="home-cloud cloud-b"></span><span class="home-hill hill-a"></span><span class="home-hill hill-b"></span><span class="home-float float-a">✦</span><span class="home-float float-b">✿</span><span class="home-float float-c">✦</span><span class="home-float float-d">✿</span></div><div class="greeting"><div><span class="eyebrow">KUMUSTA, ${esc(store().learner)}!</span><h1>Saan tayo <span>ngayon?</span></h1><p>Pumili ng mundong tutuklasin.</p></div><div class="greeting-star">${avatar('Tala','character-host')}</div></div><div class="world-grid">${TALA_DATA.modules.map((m,i)=>{const count=m.levels.filter((_,j)=>done(m.id,j+1)).length;return `<button class="world-card ${m.color}" data-module="${m.id}"><span class="world-art" aria-hidden="true"><span class="world-sun"></span><span class="world-land"></span><span class="world-symbol">${avatar(m.guide,'character-world')}</span><span class="world-token">${m.icon}</span><span class="world-sprout">${['🌳','🌴','🌷','🌼'][i]}</span></span><span class="world-copy"><span class="world-guide">Kasama si ${m.guide}</span><strong>${m.title}</strong><span class="world-bottom"><span>${count} / ${m.levels.length} yugto</span><span class="round-arrow">→</span></span><span class="progress-track"><i style="width:${count/m.levels.length*100}%"></i></span></span></button>`}).join('')}</div><div class="gentle-note"><span>🌱</span> Bawat pagsubok, bagong pagkatuto!</div></div>`;
+    return `<div class="home-scene"><div class="home-sky" aria-hidden="true"><span class="home-sun"></span><span class="home-cloud cloud-a"></span><span class="home-cloud cloud-b"></span><span class="home-hill hill-a"></span><span class="home-hill hill-b"></span><span class="home-float float-a">✦</span><span class="home-float float-b">✿</span><span class="home-float float-c">✦</span><span class="home-float float-d">✿</span></div><div class="greeting"><div><span class="eyebrow">KUMUSTA, ${esc(store().learner)}!</span><h1>Saan tayo <span>ngayon?</span></h1><p>Pumili ng mundo.</p></div><div class="greeting-star">${avatar('Tala','character-host')}</div></div><div class="world-grid">${TALA_DATA.modules.map((m,i)=>{const count=m.levels.filter((_,j)=>done(m.id,j+1)).length;return `<button class="world-card ${m.color}" data-module="${m.id}"><span class="world-art" aria-hidden="true"><span class="world-sun"></span><span class="world-land"></span><span class="world-symbol">${avatar(m.guide,'character-world')}</span><span class="world-token">${m.icon}</span><span class="world-sprout">${['🌳','🌴','🌷','🌼'][i]}</span></span><span class="world-copy"><span class="world-guide">Kasama si ${m.guide}</span><strong>${m.title}</strong><span class="world-bottom"><span>${count} / ${m.levels.length} yugto</span><span class="round-arrow">→</span></span><span class="progress-track"><i style="width:${count/m.levels.length*100}%"></i></span></span></button>`}).join('')}</div><div class="gentle-note"><span>🌱</span> Bawat pagsubok, bagong pagkatuto!</div></div>`;
   }
   function map() {
     if(state.module==='quest'&&!TALA_QUEST.eligible(store())) {
@@ -355,7 +389,7 @@
     m.levels.map((l,i)=>{
       const n=i+1,available=unlocked(n),completed=done(m.id,n),current=available&&!completed;
       const rating=completed?(store().best[key(m.id,n)]||5):0;
-      return '<div class="stage" id="stage-'+n+'" style="left:'+positions[i%4]+'%;top:'+(22+i*step)+'px"><button class="stage-button '+(completed?'is-complete':current?'is-current':'is-locked')+'" data-level="'+n+'" '+(available?'':'disabled')+' aria-label="Yugto '+n+': '+esc(l.title)+(available?'':', naka-lock')+'">'+(current?'<span class="play-label">TARA NA!</span>':'')+'<span>'+(completed?'✓':available?n:'🔒')+'</span></button><span class="stage-stars" aria-label="'+rating+' bituin">'+'★'.repeat(rating)+'☆'.repeat(5-rating)+'</span><strong>'+l.title+'</strong></div>';
+      return '<div class="stage" id="stage-'+n+'" style="left:'+positions[i%4]+'%;top:'+(22+i*step)+'px"><button class="stage-button '+(completed?'is-complete':current?'is-current':'is-locked')+'" data-level="'+n+'" '+(available?'':'disabled')+' aria-label="Yugto '+n+': '+esc(l.title)+(available?'':', naka-lock')+'">'+(current?'<span class="play-label">TARA NA!</span>':'')+'<span>'+(completed?'✓':available?n:'🔒')+'</span></button><span class="stage-stars" aria-label="'+rating+' bituin">'+ratingStars(rating)+'</span><strong>'+l.title+'</strong></div>';
     }).join('')+'<div class="trail-finish" style="top:'+(height-45)+'px" aria-hidden="true">🏁</div></div><div class="map-guide">'+avatar(m.guide,'character-mini')+'<p>“Kaya mo iyan! Sasamahan kita.”<small>— '+m.guide+'</small></p></div></div>';
   }
   const audio=text=>`<button class="listen-button" data-audio-text="${esc(text)}" aria-label="Pakinggan ang recording">🔊 <span>Pakinggan</span></button>`;
@@ -466,7 +500,7 @@
     paintCleanup=()=>{document.removeEventListener('click',actions);};
   }
   function complete() {
-    return `<div class="celebration"><div class="confetti-field" aria-hidden="true">${Array.from({length:36},(_,i)=>'<i style="--i:'+i+';--x:'+((i*37)%99)+'%;--drift:'+((i*17)%140-70)+'px;--delay:'+((i*7)%13)*.055+'s"></i>').join('')}</div><div class="celebration-sparks" aria-hidden="true">✦ <span>✧</span> ✦</div><div class="celebration-mascot">${avatar(world().guide,'character-celebrate')}</div><span class="pill">ANG GALING MO, ${esc(store().learner.toUpperCase())}!</span><h1>Isang bagong <span>ningning!</span></h1><p>Natapos mo ang “${level().title}”.</p><div class="earned-stars" aria-label="${state.stars} bituin">${'★'.repeat(state.stars)}${'☆'.repeat(5-state.stars)}</div><p class="reward-caption">${state.earned?`+${state.earned} bituin sa iyong koleksiyon`:'Naitala na ang iyong pinakamagandang marka!'}</p><button class="primary-button" data-action="map">Tuloy ang saya! <span>→</span></button><button class="text-button" data-action="replay">Laruin muli</button></div>`;
+    return `<div class="celebration"><div class="confetti-field" aria-hidden="true">${Array.from({length:36},(_,i)=>'<i style="--i:'+i+';--x:'+((i*37)%99)+'%;--drift:'+((i*17)%140-70)+'px;--delay:'+((i*7)%13)*.055+'s"></i>').join('')}</div><div class="celebration-sparks" aria-hidden="true">✦ <span>✧</span> ✦</div><div class="celebration-mascot">${avatar(world().guide,'character-celebrate')}</div><span class="pill">ANG GALING MO, ${esc(store().learner.toUpperCase())}!</span><h1>Isang bagong <span>ningning!</span></h1><p>Natapos mo ang “${level().title}”.</p><div class="earned-stars" aria-label="${state.stars} bituin">${ratingStars(state.stars)}</div><p class="reward-caption">${state.earned?`+${state.earned} bituin sa iyong koleksiyon`:'Naitala na ang iyong pinakamagandang marka!'}</p><button class="primary-button" data-action="map">Tuloy ang saya! <span>→</span></button><button class="text-button" data-action="replay">Laruin muli</button></div>`;
   }
   function dashboard() {
     const d=store(),total=TALA_DATA.modules.reduce((sum,m)=>sum+m.levels.length,0),count=TALA_DATA.modules.reduce((sum,m)=>sum+m.levels.filter((_,i)=>done(m.id,i+1)).length,0);
@@ -474,7 +508,9 @@
   }
   function toast(message) { const el=document.querySelector('#toast'); el.textContent=message; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),4000); }
   window.TALA_UI={toast,back:goBack};
+  window.TALA_PUBLIC?.init({go,store,avatar,toast,screen:()=>state.screen,tap:()=>TALA_SFX.play('tap'),soundEnabled:TALA_SFX.isEnabled,toggleSound:()=>{TALA_SFX.toggle();syncSoundButton();},stopVoice:stopNameVoice,resetSound:()=>{TALA_SFX.resetPreferences();syncSoundButton();}});
   document.addEventListener('submit',event=>{
+    if(window.TALA_PUBLIC?.handleSubmit(event))return;
     if(event.target.id==='edit-name-form'){
       event.preventDefault();
       const name=document.querySelector('#edit-learner-name').value.trim();
@@ -488,6 +524,7 @@
     const button=event.target.closest('button'); if(!button||button.disabled)return;
     const {action,module:moduleId,level:levelNumber,recording,choice}=button.dataset;
     renderedRoute=captureRoute();
+    if(window.TALA_PUBLIC?.handle(button))return;
     if(button.classList.contains('back-button')){pendingVoice='';TALA_SFX.play('tap');goBack();return;}
     pendingVoice='';
     if(action==='screen-listen'){narrateScreen(true);return;}
@@ -503,7 +540,7 @@
       return;
     }
     TALA_SFX.play(choice!==undefined?'select':action==='hint'?'hint':moduleId||levelNumber?'enter':action==='paint-star'?'stamp':action==='next-question'?'next':action==='paint-clear'?'paint':'tap');
-    if(moduleId){if(moduleId==='quest')openQuest();else{state.module=moduleId;go('map');}}
+    if(moduleId){if(moduleId==='quest')openQuest();else{state.module=moduleId;go('map');}moduleTransition(moduleId);}
     if(levelNumber&&unlocked(Number(levelNumber))){state.level=Number(levelNumber);state.misses=0;go('lesson');}
     if(button.dataset.audioText && choice===undefined) TALA_SPEECH.play(recordingGuide(),TALA_SPEECH.spokenText(button.dataset.audioText));
     if(action==='intro-open'){introPage=0;go('intro');}
@@ -558,5 +595,8 @@
   window.addEventListener('pagehide',()=>{clearTimeout(idleTimer);clearTimeout(answerTimer);cancelStoryTimer();stopNameVoice();TALA_SPEECH.stop();});
   // Native builds load the bundled assets directly; only the browser PWA needs a service worker.
   if(!window.Capacitor?.isNativePlatform?.()&&'serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>{}));
-  go(!store().introSeen?'intro':store().setupComplete?'home':'welcome');
+  // A failed legal/consent script must never silently fall back to ungated learning.
+  if(document.querySelector('#launch-splash')&&(!window.TALA_PUBLIC||!window.TALA_LEGAL)){window.TALA_LAUNCH?.fail();return;}
+  go(window.TALA_PUBLIC?'start':!store().introSeen?'intro':store().setupComplete?'home':'welcome');
+  window.TALA_LAUNCH?.ready();
 })();

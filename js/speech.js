@@ -7,6 +7,7 @@
   synth?.addEventListener('voiceschanged', refresh);
   function stop() {
     generation++; synth?.cancel();
+    window.TALA_VISUALS?.setSpeaking(null);
     if (recording) { recording.pause(); recording.currentTime = 0; recording = null; }
     window.TALA_SFX?.setNarrating(false);
   }
@@ -17,7 +18,12 @@
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.voice = voice; utterance.lang = voice.lang;
     utterance.rate = 0.85; utterance.pitch = 1.05;
-    utterance.onend = utterance.onerror = () => window.TALA_SFX?.setNarrating(false);
+    const token=generation;
+    utterance.onstart=()=>{if(token===generation)window.TALA_VISUALS?.setSpeaking('Tala');};
+    utterance.onend = utterance.onerror = () => {
+      if(token!==generation)return;
+      window.TALA_VISUALS?.setSpeaking(null);window.TALA_SFX?.setNarrating(false);
+    };
     window.TALA_SFX?.setNarrating(true);
     synth.speak(utterance);
   }
@@ -45,6 +51,7 @@
     let index=0,started=false;
     async function next() {
       if(token!==generation)return;
+      window.TALA_VISUALS?.setSpeaking(null);
       const clip=clips[index++];
       if(!clip){recording=null;window.TALA_SFX?.setNarrating(false);options.onEnded?.();return;}
       const player = new Audio(sharedPath(clip.character, clip.text)); recording = player;
@@ -57,7 +64,7 @@
         settled=true;
         // A missing interface label must not block the actual question or lesson.
         if(clip.optional&&error?.name!=='NotAllowedError'){next();return;}
-        recording = null; window.TALA_SFX?.setNarrating(false);
+        recording = null; window.TALA_VISUALS?.setSpeaking(null); window.TALA_SFX?.setNarrating(false);
         window.TALA_UI?.toast(error?.name === 'NotAllowedError'
           ? 'Pindutin ang Pakinggan para marinig ang boses.'
           : 'Wala pang recording para dito.');
@@ -67,6 +74,7 @@
       window.TALA_SFX?.setNarrating(true);
       try {
         await player.play();
+        if(token===generation&&!settled)window.TALA_VISUALS?.setSpeaking(clip.character);
         if(token===generation&&!started){started=true;options.onStarted?.();}
       }
       catch (error) { failed(error); }

@@ -3,11 +3,24 @@
   "short_name": "TALA",
   "lang": "fil-PH",
   "start_url": "./",
+  "id": "./",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#fff8e9",
-  "theme_color": "#101b4d",
+  "background_color": "#151f47",
+  "theme_color": "#151f47",
   "description": "Voice-guided learning app para sa mga batang nasa Grade 1.",
   "icons": [
-    { "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E⭐%3C/text%3E%3C/svg%3E", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    {
+      "src": "assets/icons/tala-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icons/tala-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ]
 }

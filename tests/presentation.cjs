@@ -15,6 +15,44 @@ test('All four character slots use bundled artwork and support a single-path rep
   ctx.TALA_VISUALS.characters.Tala.image='assets/characters/tala.png';
   assert.match(ctx.TALA_VISUALS.avatar('Tala'),/src="assets\/characters\/tala.png"/);
 });
+test('Character expressions follow playback, preserve happy feedback, and stop on interruption',async()=>{
+  const actors=['Tala','Titik','Likha','Bilang'].map(name=>{
+    const img={dataset:{},src:''};
+    return {dataset:{character:name,baseExpression:'Neutral',expression:'Neutral'},classList:{remove(){},add(){}},querySelector:()=>img,img};
+  });
+  const players=[];
+  class Audio {
+    constructor(){players.push(this);}
+    play(){return Promise.resolve();}
+    pause(){}
+  }
+  const ctx={Audio,document:{addEventListener(){},querySelectorAll:()=>actors}};
+  ctx.window=ctx;vm.createContext(ctx);
+  for(const file of ['visuals','speech'])vm.runInContext(fs.readFileSync(path.join(root,'js',file+'.js'),'utf8'),ctx);
+  const visual=ctx.TALA_VISUALS;
+  for(const name of ['Tala','Titik','Likha','Bilang']){
+    for(const expression of ['Neutral','Happy','Talking']){
+      const file=visual.characters[name].expressions[expression];
+      assert.ok(fs.existsSync(path.join(root,file)),file);
+      assert.match(visual.avatar(name,'',expression),new RegExp(name+'-'+expression+'\\.png'));
+    }
+  }
+  assert.match(visual.avatar('Tala','character-celebrate'),/Tala-Happy\.png/);
+  await ctx.TALA_SPEECH.play('Titik','A');
+  assert.equal(actors[1].dataset.expression,'Talking');
+  assert.equal(actors[0].dataset.expression,'Neutral');
+  const container={dataset:{},querySelectorAll:()=>[actors[1]]};
+  visual.setMood(container,'happy');assert.equal(actors[1].dataset.expression,'Happy');
+  players[0].onended();assert.equal(actors[1].dataset.expression,'Happy');
+  visual.setMood(container,'thinking');assert.equal(actors[1].dataset.expression,'Neutral');
+  await ctx.TALA_SPEECH.play('Likha','Bilog');
+  const old=players.at(-1);ctx.TALA_SPEECH.stop();
+  assert.equal(actors[2].dataset.expression,'Neutral');
+  await ctx.TALA_SPEECH.play('Bilang','Isa');old.onended();
+  assert.equal(actors[3].dataset.expression,'Talking','Stale playback must not reset the new speaker');
+  players.at(-1).onerror({name:'NetworkError'});
+  assert.equal(actors[3].dataset.expression,'Neutral');
+});
 test('Each path gets world-specific scenery with no interactive obstacles',()=>{
   const ctx={document:{addEventListener(){}}};ctx.window=ctx;vm.createContext(ctx);
   vm.runInContext(fs.readFileSync(path.join(root,'js/visuals.js'),'utf8'),ctx);
@@ -26,10 +64,13 @@ test('Each path gets world-specific scenery with no interactive obstacles',()=>{
   }
 });
 function audioSetup(saved=new Map()){
-  const events={},notes=[];let created=0,audioContext;
+  const events={},notes=[],textures=[],gains=[];let created=0,audioContext;
   class AudioContext{
-    constructor(){created++;audioContext=this;this.currentTime=0;this.state='running';this.destination={};}
-    createGain(){return {gain:{value:0,setValueAtTime(){},linearRampToValueAtTime(){},exponentialRampToValueAtTime(){}},connect(){},disconnect(){}};}
+    constructor(){created++;audioContext=this;this.currentTime=0;this.sampleRate=8000;this.state='running';this.destination={};}
+    createGain(){const bus={gain:{value:0,setValueAtTime(v){this.value=v;},linearRampToValueAtTime(v){this.value=v;},exponentialRampToValueAtTime(){}},connect(){},disconnect(){}};gains.push(bus);return bus;}
+    createBuffer(channels,length){return {getChannelData:()=>new Float32Array(length)};}
+    createBufferSource(){const source={connect(){},disconnect(){},start(){source.started=true;},stop(){source.stopped=true;source.onended?.();}};textures.push(source);return source;}
+    createBiquadFilter(){return {frequency:{value:0},connect(){},disconnect(){}};}
     createOscillator(){const note={frequency:{setValueAtTime(f){note.frequencyValue=f;}},connect(){},disconnect(){},start(t){note.started=t;},stop(){note.stopped=true;note.onended?.();}};notes.push(note);return note;}
     resume(){this.state='running';return Promise.resolve();}
     suspend(){this.state='suspended';return Promise.resolve();}
@@ -37,7 +78,7 @@ function audioSetup(saved=new Map()){
   const timers=new Map();let nextTimer=1;
   const ctx={AudioContext,document:{hidden:false,addEventListener:(e,fn)=>events[e]=fn},localStorage:{getItem:k=>saved.get(k),setItem:(k,v)=>saved.set(k,v)},setTimeout:(fn,delay)=>{const id=nextTimer++;timers.set(id,{fn,delay});return id;},clearTimeout:id=>timers.delete(id)};
   ctx.window=ctx;vm.createContext(ctx);vm.runInContext(fs.readFileSync(path.join(root,'js/sfx.js'),'utf8'),ctx);
-  return {ctx,notes,events,saved,timers,created:()=>created,context:()=>audioContext};
+  return {ctx,notes,textures,gains,events,saved,timers,created:()=>created,context:()=>audioContext};
 }
 test('Scroll piano changes notes, limits rapid swipes, and respects narration and mute',()=>{
   const env=audioSetup(),{ctx,notes}=env;
@@ -78,21 +119,54 @@ test('Effects stop in background and gracefully tolerate missing audio support',
   vm.createContext(unsupported);vm.runInContext(fs.readFileSync(path.join(root,'js/sfx.js'),'utf8'),unsupported);
   assert.doesNotThrow(()=>unsupported.TALA_SFX.play('tap'));
 });
-test('Four world themes are distinct, switch cleanly, and respect mute',()=>{
+test('Five themes have distinct timbres and phrasing, switch cleanly, and respect mute',()=>{
   const {ctx,notes,timers}=audioSetup();
+  ctx.TALA_SFX.setWorld('home');assert.equal(notes.length,0,'Rendering alone must not start music');
+  ctx.TALA_SFX.play('tap');
   const melodies=[];
-  for(const world of ['phonics','numbers','arts','values']){
+  const durations=[];
+  for(const world of ['phonics','numbers','arts','values','home']){
     const start=notes.length;
     ctx.TALA_SFX.setWorld(world);
     melodies.push(notes.slice(start,start+4).map(n=>n.frequencyValue).join(','));
     assert.equal(timers.size,1);
+    durations.push([...timers.values()][0].delay);
   }
-  assert.equal(new Set(melodies).size,4);
+  assert.equal(new Set(melodies).size,5);
+  assert.equal(new Set(durations).size,5,'Different phrase lengths and tempos');
   const count=notes.length;
   ctx.TALA_SFX.toggle();assert.equal(timers.size,0);
   ctx.TALA_SFX.setWorld('phonics');assert.equal(notes.length,count);
   ctx.TALA_SFX.toggle();assert.ok(notes.length>count);
   ctx.TALA_SFX.setWorld(null);assert.equal(timers.size,0);
+});
+test('World arrivals add independent ambience, duck under speech, and stop when hidden or muted',()=>{
+  const env=audioSetup(),{ctx,notes,textures,gains,events,timers}=env;
+  ctx.TALA_SFX.play('tap');
+  for(const world of ['phonics','numbers','arts','values']){
+    ctx.TALA_SFX.setWorld(world);
+    const before=notes.length,noise=textures.length;
+    ctx.TALA_SFX.enterWorld(world);
+    assert.ok(notes.length>before,world+' arrival has a unique tonal cue');
+    assert.ok(textures.length>noise,world+' arrival has a natural texture');
+    assert.equal(timers.size,1,'Arrival must not create another music loop');
+  }
+  assert.equal(gains[0].gain.value,.48,'SFX master level is raised without changing the voiceover player');
+  ctx.TALA_SFX.setNarrating(true);assert.equal(gains[1].gain.value,.30);assert.equal(gains[2].gain.value,.25);
+  ctx.TALA_SFX.setNarrating(false);assert.equal(gains[1].gain.value,.72);assert.equal(gains[2].gain.value,.60);
+  ctx.document.hidden=true;events.visibilitychange();assert.equal(timers.size,0);
+  const count=notes.length;ctx.TALA_SFX.enterWorld('phonics');assert.equal(notes.length,count);
+  ctx.document.hidden=false;events.visibilitychange();assert.equal(timers.size,1);
+  ctx.TALA_SFX.toggle();assert.equal(timers.size,0);
+  const muted=notes.length;ctx.TALA_SFX.enterWorld('numbers');assert.equal(notes.length,muted);
+  assert.ok(textures.every(source=>source.stopped));
+});
+test('First interaction during narration starts the louder game mix already ducked',()=>{
+  const {ctx,gains}=audioSetup();
+  ctx.TALA_SFX.setNarrating(true);ctx.TALA_SFX.setWorld('home');ctx.TALA_SFX.play('tap');
+  assert.equal(gains[0].gain.value,.48);
+  assert.equal(gains[1].gain.value,.30);
+  assert.equal(gains[2].gain.value,.25);
 });
 test('Offline shell includes all new visual and audio code assets',()=>{
   const ctx={self:{addEventListener(){}}};vm.createContext(ctx);

@@ -1,16 +1,15 @@
-# Your TALA characters
+# TALA character artwork
 
-The four SVGs in this folder are simple, replaceable vector placeholders:
+Each character (Tala, Titik, Likha, Bilang) has three transparent PNGs:
 
-- tala.svg — Tala
-- likha.svg — Likha
-- titik.svg — Titik
-- bilang.svg — Bilang
+- Neutral: default, listening, and retry pose.
+- Talking: active while that character speaks; resets when playback ends or stops.
+- Happy: correct answers and completion celebrations; takes priority over Talking.
 
-To use your final artwork, put transparent PNG or WebP images in this folder and edit the four image paths at the top of js/visuals.js. For example, change assets/characters/tala.svg to assets/characters/tala.png.
+Filenames follow Tala-Neutral.png, Tala-Happy.png, and Tala-Talking.png. Use the exact character name and casing for all four sets.
 
-Use roughly 4:5 portrait artwork with the full character visible. Around 640 × 800 pixels works well; leave a little transparent padding around the head and feet. Keep filenames lowercase. All placements (home, world cards, maps, lessons, questions, painting, and completion) update from that one configuration.
+js/visuals.js shares the supplied images across every character placement. Original proportions are preserved without cropping. The app supplies labels and speech bubbles.
 
-The app adds the name label and speech bubble. Do not bake those into the artwork. Gentle idle and celebration motion is handled by CSS and respects reduced-motion settings.
+If an expression fails to load, the app tries Neutral, then the older lowercase SVG, then an icon. Keep the four SVG files as fallbacks.
 
-For reliable offline loading on first install, also update the matching character paths in the FILES list in sw.js and increase the cache version after changing artwork.
+All twelve PNGs are precached by sw.js and bundled into the APK. Bump the cache/page versions when changing artwork.

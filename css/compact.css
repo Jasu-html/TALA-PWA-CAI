@@ -1,3 +1,20 @@
+/* Trail navigation stays below the header without creating a nested scroll container. */
+.map-page{overflow:clip}
+.map-heading{position:sticky;top:var(--map-sticky-top,110px);z-index:30;padding:8px;border:2px solid transparent;border-radius:20px;background:transparent;transition:background-color .25s ease,box-shadow .25s ease,border-color .25s ease}
+.map-heading.is-scrolled{background:#fffdf8;border-color:#d7ccef;box-shadow:0 5px 0 #5a43a82b,0 10px 24px #27375b25}
+.map-heading .back-button{min-height:44px}
+/* Layered wave wipe: purely decorative, never traps taps or delays navigation. */
+.world-transition{position:fixed;inset:0;z-index:100;overflow:hidden;pointer-events:none;animation:world-arrive .9s linear both;contain:strict}
+.world-wave{position:absolute;width:180%;height:180%;left:-40%;top:0;border-radius:43% 48% 0 0;will-change:transform;animation:world-wave-sweep .88s cubic-bezier(.4,0,.2,1) both}
+.wave-one{background:var(--soft);animation-delay:0s}
+.wave-two{background:var(--accent);opacity:.88;animation-delay:.055s;left:-20%;border-radius:48% 42% 0 0}
+.wave-three{background:var(--deep);opacity:.35;animation-delay:.11s;left:-30%}
+.world-arrival{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:white;text-align:center;padding:25px;text-shadow:0 2px 4px #2225;animation:world-arrival-label .85s ease both}
+.world-arrival b{font-size:clamp(42px,9vw,72px)}.world-arrival strong{font-size:clamp(22px,5vw,36px)}
+@keyframes world-wave-sweep{0%{transform:translate3d(0,80%,0) rotate(-9deg)}48%{transform:translate3d(0,-12%,0) rotate(3deg)}100%{transform:translate3d(0,-120%,0) rotate(9deg)}}
+@keyframes world-arrival-label{0%,16%{opacity:0;transform:translateY(15px) scale(.94)}34%,57%{opacity:1;transform:translateY(0) scale(1)}85%,100%{opacity:0;transform:translateY(-18px) scale(1.04)}}
+@keyframes world-arrive{from{opacity:1}to{opacity:1}}
+@media(prefers-reduced-motion:reduce){.world-transition{display:none}.map-heading{transition:none}}
 /* Phone layout: preserve readable content and touch targets, trim decoration. */
 @media (max-width:680px) {
   .app-shell{padding:calc(env(safe-area-inset-top,0px) + 4px) 10px calc(env(safe-area-inset-bottom,0px) + 8px)}

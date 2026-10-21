@@ -1,10 +1,25 @@
 # TALA PWA
 
-TALA is a Filipino-only, offline-first Progressive Web App for Grade 1 learners. It teaches early letters and words, counting, shapes and colors, and good values through short lessons, picture-based questions, character guides, stars, and a winding level path.
+TALA is an offline-first Progressive Web App for Grade 1 learners, with Filipino lessons and plain Taglish parent/help screens. It teaches early letters and words, counting, shapes and colors, and good values through short lessons, picture-based questions, character guides, stars, and a winding level path.
 
 The web app uses HTML, CSS, and browser JavaScript without a bundler, so it can be demonstrated immediately. A Capacitor Android wrapper and Gradle project are also included for building a test APK with all lessons and recordings bundled.
 
 ## What is currently included
+
+The app now opens with an animated loading screen and a dedicated **Magsimula /
+Magpatuloy** title screen. Before learner setup, a parent/guardian completes an adult
+gate and separate, unchecked terms/data-consent choices. Returning learners keep
+their progress but must approve a revised policy version. Voice input is off by
+default and has its own optional consent; typing remains available.
+
+**Para sa magulang** includes privacy/terms and a child-friendly explanation, help,
+about/version/contact details, motion/sound preferences, local-data export, and typed
+deletion/withdrawal. The adult gate is not identity verification or secure authentication.
+Terms and privacy are review drafts informed by Philippine sources, not legal certification.
+See the [public-release checklist](docs/PUBLIC_RELEASE_CHECKLIST.md): rights to the generated
+audio, legal-operator/address details, legal review, and production signing still need
+resolution before public distribution. Run `npm run test:launch` for the full guardian,
+offline-startup, export/deletion, and failed-boot checks.
 
 - A skippable three-panel Filipino story introduces Tala and her friends before first-time learner setup. Returning learners go straight to home and can replay it using **Ang kuwento ni Tala**. Optional story recordings use the [Tala intro script](docs/voice-scripts/TALA_INTRO.md).
 
@@ -23,10 +38,10 @@ The web app uses HTML, CSS, and browser JavaScript without a bundler, so it can 
 - The welcome screen automatically plays Tala's guidance, with a replay button. Supported browsers offer Filipino voice input for the learner's name after a parent-permission notice. The recognized name stays in the editable field until “Tara na!” is pressed. Teachers/parents can correct it from ☰ → “Pangalan ng mag-aaral” without resetting progress.
 - Voice naming is optional, browser-dependent, and may need internet and a secure context (HTTPS or localhost). The browser may send speech to its recognition provider; TALA does not save an audio recording. Typing remains available. The microphone stops on navigation, tab hiding, manual typing, cancellation, or after 15 seconds. This is separate from cached MP3 playback, which works offline after caching. See [browser speech-recognition behavior](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API).
 - Next stages and Quest rounds unlock after the previous one is completed. Completing a Quest round lights a constellation point; the teacher/parent progress view also lists Quest stars and attempts.
-- Placeholder avatars for TALA, LIKHA, TITIK, and BILANG appear throughout the home screen, maps, lessons, questions, painting activity, and celebrations.
+- Supplied character PNGs for Tala, Likha, Titik, and Bilang appear throughout the app, with Neutral, Talking, and Happy expressions tied to narration and answer feedback.
 - Saturated child-friendly colors, background scenery, moving particles, scroll reveals, domino-style level entrances, confetti, and reduced-motion support.
 - Offline Web Audio effects for taps, selections, correct answers, retries, hints, stamps, painting, level completion, and scrolling piano-like notes.
-- Four looping local Web Audio themes: forest for Titik, beach for Bilang, garden for Likha, and village for Tala.
+- Five distinct offline musical identities: welcoming celesta/piano on Home, woodland flute and birds for Titik, beach marimba with surf and seabirds for Bilang, playful pizzicato and brush sparkles for Likha, and warm piano/bells for Tala. Music and ambience soften under narration. Module selection adds a world-colored wave transition (skipped with reduced motion). See [sound design](docs/SOUND_DESIGN.md).
 - Recorded Filipino introductions for welcome, home, each module map, Hamon ni Tala, menu, and completion play once per device/browser. “Pakinggan” always replays them; three minutes without interaction offers a reminder without interrupting active audio. Heard introductions persist across app restarts and are cleared by progress reset. Navigation uses sound effects rather than repeated spoken labels. Questions, choices, hints, stories, and brief answer feedback remain voiced.
 
 ## What is not included yet
@@ -55,11 +70,22 @@ The tests simulate the DOM and Web Audio APIs. They verify curriculum coverage, 
 
 ## Main project structure
 
+Real Chrome checks are available with `npm run test:phone`, `npm run test:tablet`, and
+`npm run test:sound` after installing development dependencies. Sound checks generate
+short WAV previews in `.tools/sound-design/` and verify the wave transition. The trail's
+sticky Back/count bar turns solid while scrolling; Back from a trail always returns
+Home, including after level completion.
+
+`npm run test:theme` checks 51 rendered color/type samples and transparent-to-solid
+navigation states. The [night theme review](docs/THEME_REVIEW.md) records measured
+improvements, palette choices, short-screen scrolling, and accessibility limits.
+
 ```text
 index.html                  App shell and accessible page mount
 css/styles.css              Base layout and component styles
 css/playful.css             Playful UI and character presentation styles
 css/vibrant.css             Saturated palette, scenery, motion, and transitions
+css/night.css               Shared midnight sky, moonlit worlds, and contrast-safe surfaces
 js/data.js                  Filipino curriculum data and 73 stages
 js/quest.js                 Learned-content pool, unlocks, and mixed round generation
 js/app.js                   Screen rendering, level flow, answers, and events
@@ -69,7 +95,7 @@ js/sfx.js                   Web Audio effects, themes, and scroll piano notes
 js/visuals.js               Avatars, world scenery, and visual helpers
 manifest.webmanifest        Installable PWA metadata
 sw.js                       Update-aware shell caching and offline media cache
-assets/characters/          Replaceable SVG character placeholders
+assets/characters/          Three PNG expressions per character plus SVG fallbacks
 assets/audio/fil/shared/    Folder for reusable recorded MP3 phrases
 docs/voice-scripts/         Character-separated phrase lists for voice actors
 tests/                      Smoke and presentation tests
@@ -112,7 +138,7 @@ The service worker checks the network for HTML, CSS, and JavaScript, then falls 
 
 ## Design and accessibility notes
 
-The app is designed for touch screens and small phone displays. It includes safe-area spacing for phone status bars, a sticky navigation bar that becomes solid while scrolling, keyboard-visible focus states, labeled controls, `aria-live` feedback, and a reduced-motion mode. The app remains Filipino-only; English text is limited to developer documentation and code comments.
+The app is designed for touch screens and small phone displays. It includes safe-area spacing for phone status bars, a sticky navigation bar that becomes solid while scrolling, keyboard-visible focus states, labeled controls, `aria-live` feedback, and a reduced-motion mode. Lessons stay in Filipino; privacy, terms, help, and parent controls use everyday Taglish with familiar English labels.
 
 ## Android test APK
 

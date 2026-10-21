@@ -1,0 +1,153 @@
+/* Phone layout: preserve readable content and touch targets, trim decoration. */
+@media (max-width:680px) {
+  .app-shell{padding:calc(env(safe-area-inset-top,0px) + 4px) 10px calc(env(safe-area-inset-bottom,0px) + 8px)}
+  .topbar{top:env(safe-area-inset-top,0px);min-height:64px;padding:4px 6px;margin-bottom:4px;border-radius:16px;gap:6px}
+  .topbar-actions{gap:6px}.icon-button{width:44px;height:44px;min-width:44px;font-size:19px}
+  .brand-button{gap:4px;padding:0}.brand-button strong{font-size:22px}.brand-star{font-size:25px;flex-shrink:0}
+  .brand-button small{display:block;font-size:8px;line-height:1.22;max-width:150px}.wallet{padding:5px 8px;min-height:42px;gap:4px}.wallet b{font-size:16px}
+  .screen{padding:4px 0 8px}.footer-note{display:none}.screen-listen{min-height:44px;margin:0 0 5px auto;padding:6px 10px;font-size:12px}
+  .home-scene{padding:10px;border-width:2px;border-radius:23px;box-shadow:0 5px 0 #68bbac55}
+  .home-scene .greeting{padding:6px 10px;margin-bottom:10px;gap:8px;border-width:2px;border-radius:18px;box-shadow:0 3px 0 #348db833}
+  .greeting .eyebrow{font-size:10px}.home-scene .greeting h1{font-size:23px;line-height:1.1}.greeting h1 span{display:inline}.home-scene .greeting p{font-size:12px;line-height:1.3;margin-top:4px}
+  .character-host{width:48px}.greeting-star{padding:0}.home-scene .world-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .world-card{border-radius:18px;box-shadow:0 4px 0 var(--deep);min-width:0}.world-art{height:58px}.world-symbol{top:0}.character-world{width:55px}
+  .world-sprout{font-size:17px;bottom:3px}.world-token{width:24px;height:24px;font-size:13px;top:5px;left:5px}.world-land{height:45px;bottom:-16px}.world-sun{width:25px;height:25px}
+  .world-copy{padding:6px 8px 8px}.world-guide{font-size:10px;line-height:1.1}.world-copy>strong{font-size:16px;line-height:1.2;margin-top:3px}
+  .world-bottom{margin-top:5px;font-size:10px;gap:4px}.round-arrow{width:25px;height:25px;font-size:17px}.progress-track{height:4px;margin-top:5px}
+  .home-scene .gentle-note{display:none}.quest-card{margin:12px 0 4px;padding:10px;gap:8px;border-radius:20px;border-width:2px;box-shadow:0 4px 0 #b88d3333}
+  body[data-screen="home"] .screen{position:relative}
+  body[data-screen="home"] .screen-listen{position:absolute;right:23px;top:17px;z-index:2;width:44px;padding:6px;font-size:0;margin:0}
+  body[data-screen="home"] .screen-listen:before{content:"🔊";font-size:20px}
+  .home-scene .greeting{padding-right:52px}.home-scene .greeting-star{display:none}.home-scene .greeting .eyebrow{margin-bottom:3px}
+  .world-art{height:50px}.world-copy{font-size:12px;line-height:1.2}.world-guide{display:block}.story-replay{margin-top:4px}
+  .home-scene .greeting .eyebrow{line-height:1.2}.quest-card-copy .eyebrow{line-height:1.2;margin-bottom:0}
+  .world-art{height:46px}.world-copy{padding:4px 8px 6px}.home-scene .greeting{padding-top:4px;padding-bottom:4px;margin-bottom:6px}.quest-card{margin-top:8px}
+  .quest-card-avatar .character{width:44px}.quest-card-copy{gap:4px}.quest-card-copy .eyebrow{font-size:10px}.quest-card-copy strong{font-size:17px;line-height:1.15}.quest-card-copy>span:last-child{font-size:11px;line-height:1.3}.quest-card-symbol{font-size:20px}
+  .story-replay{min-height:44px;font-size:13px;padding:6px}
+  .flow-top{margin-bottom:7px;gap:8px}.back-button{min-height:44px;padding:6px 10px}.flow-steps{gap:4px}.flow-steps>span{padding:6px;font-size:11px}.flow-steps i{width:10px}
+  .activity-card{padding:12px;border-width:2px;border-radius:22px;box-shadow:0 5px 0 #b9add544}.activity-heading{gap:6px;margin-bottom:8px}.activity-heading .pill{padding:6px 8px;font-size:11px}.activity-card h1{font-size:22px;line-height:1.2}
+  .question-card h1{margin:8px 0 0}.question-progress{margin:0 0 8px;gap:5px}.question-progress span{height:7px}.question-counter{font-size:11px}
+  .guide-conversation{gap:10px;margin:12px 0}.guide-actor .character{width:60px}.speech-bubble{padding:10px;border-radius:17px}.speech-bubble p{font-size:16px;line-height:1.4}.speech-bubble:before{bottom:20px;left:-7px;width:11px;height:11px}
+  .speech-bubble .question-visual{font-size:24px;line-height:1.35;padding:4px 0;white-space:pre-line;overflow-wrap:anywhere}.bubble-audio .listen-button{min-height:44px;padding:7px 10px;font-size:15px}
+  .selection-instruction{font-size:11px;margin-bottom:8px;gap:4px;line-height:1.3}.choices{gap:8px}.choice{min-height:52px;padding:10px 8px;font-size:17px;line-height:1.25;border-radius:15px;overflow-wrap:anywhere}.choice small{font-size:12px}
+  .answer-dock{gap:8px;padding-top:9px;margin-top:6px}.answer-dock .confirm-answer{min-height:48px;padding:9px;font-size:16px}.answer-dock .hint-button{width:48px;height:48px;min-height:48px}.answer-dock .feedback{font-size:14px;line-height:1.35;min-height:0;padding:4px 0}.feedback:empty{display:none}
+  .teaching-art{min-height:80px;margin:10px 0;padding:8px;gap:18px;border-radius:18px}.teaching-main{font-size:32px}.teaching-picture{font-size:36px}.lesson-text{margin:0;font-size:16px}
+  .activity-card>.primary-button{min-height:48px;padding:10px 16px;font-size:17px}.tutorial-disclosure{margin-top:10px;text-align:left}.tutorial-disclosure>summary{cursor:pointer;min-height:44px;padding:10px;color:var(--deep);font-weight:800;font-size:14px;border-radius:12px;background:var(--soft)}
+  .tutorial-panel{margin:8px 0;padding:12px}.tutorial-demo{margin:10px 0;padding:10px}.tutorial-heading h2{font-size:18px}
+  .intro-toolbar{padding:8px 10px}.intro-toolbar .secondary-button{min-height:44px;padding:8px}.intro-scene{min-height:110px}.intro-cast{padding:20px 14px 12px;gap:8px}.intro-actor{flex-basis:75px}.character-story{max-width:75px}.intro-fall .intro-actor{flex-basis:90px}.intro-fall .character-story{max-width:90px}.intro-shine .intro-actor{flex-basis:67px}.intro-moon{width:30px;height:30px}
+  .intro-copy{padding:12px 14px 4px}.intro-copy h1{font-size:23px}.intro-copy p{font-size:16px;line-height:1.4;margin:8px 0 10px}.intro-copy .listen-button{min-height:44px;padding:8px 12px}.intro-navigation{padding:10px 12px 14px;gap:7px}.intro-navigation button{min-height:44px!important;padding:8px 10px!important;font-size:14px!important}.story-auto-tools{padding:5px 12px 0}.story-auto-tools p{font-size:11px;line-height:1.3}.story-auto-tools button{font-size:12px;padding:5px}
+  .welcome-scene{min-height:0;border-radius:24px}.welcome-art{min-height:95px}.sun-halo{width:75px;height:75px}.character-hero{width:72px}.welcome-hill{height:65px}.floating-flower{font-size:24px;bottom:3px}.cloud-one{top:15px}.cloud-two{top:30px}
+  .welcome-copy{padding:12px 16px}.welcome-copy h1{font-size:31px;margin:8px 0}.welcome-copy p{font-size:14px}.welcome-copy .pill{font-size:10px;padding:5px 9px}.welcome-listen{margin:8px 0 0;min-height:44px;padding:8px;font-size:14px}#name-form{margin-top:10px}#name-form label{margin-bottom:6px}#name-form input{min-height:48px;padding:10px 12px;font-size:17px}#name-form .primary-button{margin-top:8px;min-height:48px;padding:10px;font-size:18px}.name-voice{min-height:44px;margin:8px 0 4px}.welcome-copy .name-voice-status{min-height:0;font-size:12px;line-height:1.3}.welcome-copy .name-privacy{font-size:10px;line-height:1.3;margin-top:8px}.welcome-copy>.text-button{min-height:44px;padding:6px;font-size:12px}
+  .celebration{padding:14px}.celebration-mascot{margin:8px 0}.character-celebrate{width:85px}.celebration h1{font-size:27px;margin:10px 0}.earned-stars{font-size:32px;margin:12px 0}.reward-caption{margin-bottom:12px}.celebration-sparks{font-size:18px}.celebration .primary-button,.celebration .secondary-button{min-height:48px;padding:10px}
+  .quest-walk{padding-top:28px;padding-bottom:5px;margin-bottom:8px}.quest-stone{flex-basis:22px;height:22px}.quest-walker{bottom:26px}.quest-walker .character{width:28px}
+  #paint-canvas{height:clamp(140px,27dvh,210px);width:100%;touch-action:none}.paint-palette{gap:8px;margin:10px 0}.paint-color{min-width:36px;width:36px;min-height:44px;height:44px}.paint-actions{gap:8px;margin:10px 0}
+  /* Keep every map node and its winding trail scrollable at the original scale. */
+  .story-auto-tools button{margin-top:4px}
+  body[data-screen="map"] .map-page{padding-top:12px}
+}
+
+/* Use the actual remaining viewport, not a fixed small-phone content height.
+   Intrinsic minimums still allow scrolling for small screens, large text, or a keyboard. */
+@media (max-width:1366px) {
+  body:is([data-screen="home"],[data-screen="lesson"],[data-screen="practice"],[data-screen="intro"],[data-screen="questStory"],[data-screen="welcome"],[data-screen="complete"]) .app-shell{
+    display:flex;flex-direction:column;height:100vh;height:100dvh;min-height:100vh;min-height:100dvh;
+  }
+  body:not([data-screen="map"]):not([data-screen="dashboard"]) .topbar{flex:0 0 auto}
+  body:not([data-screen="map"]):not([data-screen="dashboard"]) #app{display:flex;flex-direction:column;flex:1 0 auto;min-height:0}
+  body:not([data-screen="map"]):not([data-screen="dashboard"]) .screen{display:flex;flex-direction:column;flex:1;min-height:min-content;width:100%}
+  body[data-screen="home"] .home-scene{display:flex;flex-direction:column;flex:1;min-height:min-content}
+  body[data-screen="home"] .home-scene .greeting{flex:0 0 auto;width:100%;max-width:none}
+  body[data-screen="home"] .world-grid{flex:1;grid-auto-rows:1fr;min-height:min-content}
+  body[data-screen="home"] .world-card{display:flex;flex-direction:column;min-height:min-content}
+  body[data-screen="home"] .world-art{flex:1 0 46px;min-height:46px;height:auto}
+  body[data-screen="home"] .world-copy{flex:0 0 auto}
+  body[data-screen="home"] .world-symbol{inset:0;transform:none;display:flex;align-items:center;justify-content:center}
+  body[data-screen="home"] .character-world{height:100%;min-height:68px;max-height:170px;width:auto;aspect-ratio:4/5}
+  body[data-screen="home"] .quest-card,body[data-screen="home"] .story-replay{flex:0 0 auto}
+  body:is([data-screen="lesson"],[data-screen="practice"]) .flow-top{flex:0 0 auto;width:100%}
+  body:is([data-screen="lesson"],[data-screen="practice"]) .activity-card{display:flex;flex-direction:column;flex:1;min-height:min-content;width:100%}
+  body[data-screen="lesson"] .teaching-art{flex:1;min-height:80px}
+  body[data-screen="lesson"] .activity-card>.primary-button{align-self:center;flex:0 0 auto}
+  body[data-screen="practice"] .question-card>.guide-conversation{flex:1;min-height:min-content}
+  body[data-screen="practice"] .question-card .speech-bubble{align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+  body[data-screen="practice"] .question-card .question-visual{display:grid;place-items:center;flex:1}
+  body[data-screen="practice"] .question-card>.choices,body[data-screen="practice"] .answer-dock{flex:0 0 auto}
+  body:is([data-screen="intro"],[data-screen="questStory"]) .intro-card{display:flex;flex-direction:column;flex:1;min-height:min-content;width:100%}
+  body:is([data-screen="intro"],[data-screen="questStory"]) .intro-scene{flex:1;min-height:110px}
+  body[data-screen="welcome"] .welcome-scene{display:flex;flex-direction:column;flex:1;min-height:min-content}
+  body[data-screen="welcome"] .welcome-art{flex:1;min-height:95px}
+  body[data-screen="welcome"] .welcome-copy{flex:0 0 auto;width:100%}
+  body[data-screen="complete"] .celebration{display:flex;flex-direction:column;align-items:center;justify-content:space-evenly;flex:1;min-height:min-content;width:100%}
+}
+@media (max-width:680px) and (min-height:720px) {
+  body[data-screen="home"] .world-copy{padding:8px 10px 10px}
+  body[data-screen="home"] .world-copy>strong{font-size:18px}
+  body[data-screen="home"] .world-guide{font-size:11px}
+  body[data-screen="home"] .world-bottom{font-size:12px;margin-top:8px}
+  body[data-screen="home"] .home-scene .greeting{padding-top:9px;padding-bottom:9px}
+  body[data-screen="home"] .quest-card{padding:12px}
+  body[data-screen="home"] .quest-card-copy>span:last-child{font-size:12px}
+  body[data-screen="lesson"] .teaching-main{font-size:clamp(32px,7dvh,68px)}
+  body[data-screen="lesson"] .teaching-picture{font-size:clamp(36px,7dvh,68px)}
+  body[data-screen="practice"] .question-card>.guide-conversation{align-items:center}
+  body[data-screen="practice"] .question-card .question-visual{font-size:clamp(28px,5dvh,46px)}
+  body[data-screen="practice"] .question-card .guide-actor .character{width:clamp(60px,10dvh,95px)}
+  body[data-screen="welcome"] .sun-halo{width:clamp(75px,14dvh,130px);height:clamp(75px,14dvh,130px)}
+  body[data-screen="welcome"] .character-hero{width:100%}
+  body:is([data-screen="intro"],[data-screen="questStory"]) .intro-actor{flex-basis:115px}
+  body:is([data-screen="intro"],[data-screen="questStory"]) .character-story{max-width:135px}
+  body:is([data-screen="intro"],[data-screen="questStory"]) .intro-fall .intro-actor{flex-basis:135px}
+  body:is([data-screen="intro"],[data-screen="questStory"]) .intro-fall .character-story{max-width:135px}
+}
+
+/* Tablets keep the same viewport-filling structure with larger readable controls.
+   Two rows in portrait, four cards across in landscape; no orientation locking. */
+@media (min-width:681px) and (max-width:1366px) {
+  .app-shell{max-width:1200px;padding:calc(env(safe-area-inset-top,0px) + 6px) 20px calc(env(safe-area-inset-bottom,0px) + 10px)}
+  .topbar{top:env(safe-area-inset-top,0px);min-height:76px;padding:6px 10px;margin-bottom:6px;gap:12px}
+  .brand-button strong{font-size:28px}.brand-button small{max-width:320px;font-size:11px;line-height:1.3}.icon-button{width:52px;height:52px;min-width:52px}.topbar-actions{gap:12px}
+  .screen{padding:6px 0 10px}.footer-note{display:none}
+  body[data-screen="home"] .screen{position:relative}
+  body[data-screen="home"] .screen-listen{position:absolute;right:40px;top:28px;z-index:2;width:52px;min-height:52px;padding:8px;margin:0;font-size:0}
+  body[data-screen="home"] .screen-listen:before{content:"🔊";font-size:24px}
+  .home-scene{padding:14px;border-width:3px;border-radius:30px}
+  .home-scene .greeting{padding:10px 76px 10px 18px;margin-bottom:14px;border-radius:22px;border-width:2px}
+  .home-scene .greeting .eyebrow{font-size:12px;line-height:1.2;margin-bottom:5px}.home-scene .greeting h1{font-size:30px;line-height:1.1}.home-scene .greeting p{font-size:16px;line-height:1.35;margin-top:5px}.home-scene .greeting-star{display:none}
+  .home-scene .world-grid{gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+  .world-card{border-radius:24px;min-width:0;box-shadow:0 5px 0 var(--deep)}
+  body[data-screen="home"] .world-art{min-height:90px;flex-basis:90px}.world-token{width:34px;height:34px;font-size:19px;top:10px;left:10px}.world-sprout{font-size:25px}
+  body[data-screen="home"] .character-world{max-height:230px;min-height:100px}
+  .world-copy{padding:10px 14px 12px;font-size:14px;line-height:1.25}.world-guide{display:block;font-size:13px}.world-copy>strong{font-size:22px;line-height:1.15;margin-top:5px}.world-bottom{font-size:13px;margin-top:8px}.round-arrow{width:34px;height:34px;font-size:21px}.progress-track{height:6px;margin-top:8px}
+  .home-scene .gentle-note{display:none}.quest-card{margin:14px 0 4px;padding:12px 18px;border-radius:25px;gap:14px}.quest-card-avatar .character{width:58px}.quest-card-copy{gap:5px}.quest-card-copy .eyebrow{font-size:12px;line-height:1.2;margin-bottom:0}.quest-card-copy strong{font-size:22px;line-height:1.2}.quest-card-copy>span:last-child{font-size:14px;line-height:1.35}
+  .story-replay{min-height:48px;padding:8px;font-size:16px;margin-top:6px}
+  .flow-top{max-width:1000px;margin-bottom:10px}.flow-steps>span{padding:8px 12px}.back-button{min-height:48px}
+  .activity-card{max-width:1000px;padding:18px 24px;border-radius:28px}.activity-heading{margin-bottom:12px}.activity-card h1{font-size:30px;line-height:1.2}.question-card h1{margin:12px 0 0}.question-progress{margin-bottom:12px}
+  .guide-conversation{margin:14px 0;gap:20px}.guide-actor .character{width:110px}.speech-bubble{padding:16px 20px}.speech-bubble p{font-size:20px;line-height:1.4}.speech-bubble .question-visual{font-size:clamp(32px,5dvh,64px);line-height:1.4;padding:10px 0}
+  .selection-instruction{font-size:14px;margin-bottom:12px}.choices{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.choice{min-height:72px;padding:14px;font-size:21px;line-height:1.3;overflow-wrap:anywhere}
+  .answer-dock{margin-top:12px;padding-top:12px;gap:12px}.answer-dock .confirm-answer{min-height:56px;padding:12px 22px}.answer-dock .hint-button{min-height:56px}.feedback:empty{display:none}
+  .teaching-art{margin:14px 0;padding:12px}.teaching-main{font-size:clamp(48px,7dvh,90px)}.teaching-picture{font-size:clamp(48px,7dvh,90px)}.lesson-text{margin:0}
+  .activity-card>.primary-button{min-height:52px;padding:12px 24px}.tutorial-disclosure{margin-top:12px;text-align:left}.tutorial-disclosure>summary{cursor:pointer;min-height:48px;padding:12px 16px;border-radius:16px;background:var(--soft);color:var(--deep);font-size:17px;font-weight:800}.tutorial-panel{margin:12px 0;padding:16px}
+  .intro-card{max-width:1000px}.intro-toolbar{padding:10px 18px}.intro-toolbar .secondary-button{min-height:48px}.intro-copy{padding:14px 24px 6px}.intro-copy h1{font-size:30px}.intro-copy p{font-size:19px;line-height:1.45;margin:10px auto 12px}.intro-navigation{padding:12px 24px 16px}.intro-navigation .primary-button{min-height:52px;padding:12px 20px}
+  .story-auto-tools{padding-top:6px}.story-auto-tools p{font-size:13px;line-height:1.3}.story-auto-tools button{margin-top:4px;min-height:44px;padding:6px}.intro-cast{padding:32px 20px 24px}.intro-actor{flex-basis:145px}.character-story{max-width:165px}
+  body[data-screen="welcome"] .welcome-scene{flex-direction:row;min-height:min-content}.welcome-art{min-width:0}.welcome-copy{padding:20px 24px}.welcome-copy h1{font-size:42px;margin:12px 0}.welcome-copy p{font-size:16px}body[data-screen="welcome"] .welcome-copy{width:55%}.sun-halo{width:200px;height:200px}.character-hero{width:180px}.welcome-listen{margin:10px 0 0;min-height:48px}#name-form{margin-top:14px}#name-form input{padding:12px;min-height:50px}.name-voice{min-height:48px;margin:10px 0 6px}#name-form .primary-button{min-height:52px;margin-top:10px;padding:12px}.welcome-copy .name-privacy{font-size:11px;margin-top:10px}.welcome-copy>.text-button{margin-top:8px;min-height:44px}
+  #paint-canvas{width:100%;height:clamp(180px,32dvh,430px);touch-action:none}.paint-palette{margin:12px 0}
+  .celebration{max-width:1000px;padding:20px}.celebration h1{margin:12px 0}.celebration-mascot{margin:12px 0}.character-celebrate{width:clamp(110px,16dvh,200px)}.earned-stars{margin:12px 0}.reward-caption{margin-bottom:14px}
+}
+@media (min-width:681px) and (max-width:1366px) and (orientation:landscape) {
+  .home-scene .world-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .world-copy>strong{font-size:19px}.world-copy{padding:8px 10px 10px}.world-guide{font-size:12px}
+  .home-scene .greeting{margin-bottom:10px;padding-top:8px;padding-bottom:8px}.home-scene .greeting h1{font-size:28px}
+  body:is([data-screen="intro"],[data-screen="questStory"]) .intro-card{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);grid-template-rows:auto 1fr auto auto;grid-template-areas:"toolbar toolbar" "scene copy" "scene auto" "scene navigation"}
+  .intro-card>.intro-toolbar{grid-area:toolbar}.intro-card>.intro-scene{grid-area:scene;min-height:180px}.intro-card>.intro-copy{grid-area:copy;align-self:center;padding:12px 18px}.intro-card>.story-auto-tools{grid-area:auto;padding:6px 12px 0}.intro-card>.intro-navigation{grid-area:navigation;padding:12px 16px 16px}
+  .intro-copy h1{font-size:26px}.intro-copy p{font-size:18px;line-height:1.4}.intro-navigation{gap:8px}.intro-navigation .primary-button{font-size:16px;padding:10px 14px;min-height:48px}.intro-navigation .secondary-button{font-size:14px;padding:10px;min-height:48px}
+}
+@media (min-width:681px) and (max-width:1366px) and (max-height:700px) and (orientation:landscape) {
+  .topbar{min-height:68px}.home-scene .greeting h1{font-size:24px}.home-scene .greeting h1 span{display:inline}.home-scene .greeting p{font-size:14px}.home-scene .greeting{padding-top:6px;padding-bottom:6px;margin-bottom:8px}
+  body[data-screen="home"] .world-art{min-height:72px;flex-basis:72px}body[data-screen="home"] .character-world{min-height:84px}.world-copy{padding:6px 8px 8px}.world-copy>strong{font-size:18px}.world-bottom{margin-top:6px}.progress-track{margin-top:6px}
+  .quest-card{padding:10px 14px;margin-top:10px}.quest-card-copy strong{font-size:20px}
+  .activity-card{padding:12px 16px}.activity-heading{margin-bottom:8px}.activity-card h1{font-size:26px}.guide-conversation{margin:10px 0;gap:14px}.guide-actor .character{width:72px}.speech-bubble{padding:10px 14px}.speech-bubble p{font-size:18px;line-height:1.35}
+  .teaching-art{margin:8px 0;padding:8px}.activity-card>.primary-button{min-height:48px;padding:10px 20px}.tutorial-disclosure{margin-top:8px}.tutorial-disclosure>summary{min-height:44px;padding:10px 14px}
+  .question-progress span{height:8px}.question-card h1{margin-top:6px}.speech-bubble .question-visual{font-size:30px;line-height:1.25;padding:5px 0}
+  .choice{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:56px;padding:10px;font-size:20px}.choice small{flex:0 0 25px}
+  .selection-instruction{margin-bottom:8px}.answer-dock{margin-top:8px;padding-top:8px}.answer-dock .confirm-answer,.answer-dock .hint-button{min-height:52px;height:52px}
+}

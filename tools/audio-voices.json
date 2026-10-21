@@ -1,0 +1,6 @@
+{
+  "Tala": {"voice":"fil-PH-BlessicaNeural","rate":"-10%","pitch":"+0Hz"},
+  "Likha": {"voice":"fil-PH-BlessicaNeural","rate":"-5%","pitch":"+8Hz"},
+  "Titik": {"voice":"fil-PH-AngeloNeural","rate":"-10%","pitch":"+0Hz"},
+  "Bilang": {"voice":"fil-PH-AngeloNeural","rate":"-5%","pitch":"+5Hz"}
+}

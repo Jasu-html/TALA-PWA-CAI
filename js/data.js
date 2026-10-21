@@ -1,4 +1,4 @@
-// Filipino-only curriculum. No audio is generated; see assets/audio/fil/RECORDINGS.md.
+// Filipino-only curriculum. Recorded narration uses the shared MP3 library.
 (function () {
   const q = (prompt, visual, choices, correct, hint) => ({ prompt, visual, choices, answer:choices.indexOf(correct), hint });
   // Rotate options so the correct answer is not always in the same position.
@@ -222,7 +222,43 @@
     items.map(([prompt,correct,a,b])=>q(prompt,visual,[correct,a,b],correct,'Alalahanin ang mabuting gawi: '+correct+'.'))));
   values.push(stage('Bituin ng kabutihan','Dalhin ang kabutihan sa klase, tahanan, at pamayanan.','💛 🤝','⭐',
     [values[0].questions[0],values[2].questions[0],values[3].questions[1],values[6].questions[3],values[8].questions[0]]));
-  window.TALA_DATA={version:2,intro:[
+  const tutorials={
+    quiz:[
+      ['1','Piliin ang sagot.','Pakinggan ang salita at pindutin ang sagot na sa tingin mo ay tama.','☝️'],
+      ['2','Kumpirmahin ang sagot.','Kapag nakapili ka na, pindutin ang Ito ang sagot ko.','✅'],
+      ['3','Ulitin at matuto.','Kung kailangan, subukan muli o gamitin ang pahiwatig.','🌟']
+    ],
+    paint:[
+      ['1','Pumili ng kulay.','Pindutin ang isang kulay para piliin ang iyong gamit.','🎨'],
+      ['2','Gumuhit o magdagdag ng bituin.','Gamitin ang daliri o mouse sa pagguhit.','☝️'],
+      ['3','Tapusin ang obra.','Kapag handa na, pindutin ang Tapos na ang obra ko.','⭐']
+    ]
+  };
+  const welcomeVoice='Tara, sumikat! Ako si Tala. Ano ang pangalan mo? Pindutin ang mikropono at sabihin ang pangalan mo. Kapag handa na, pindutin ang Tara na!';
+  const uiVoice={
+    home:'Kumusta! Saan tayo ngayon? Pumili ng mundo. Pindutin ang larawan upang magsimula.',
+    map:'Piliin ang bukas na yugto sa daan. Ang may kandado ay mabubuksan kapag natapos ang naunang yugto.',
+    questLocked:'Hamon ni Tala. Tapusin muna ang lahat ng yugto sa apat na mundo. Kahit ilang bituin ay maaari. Kaya mo iyan!',
+    questReady:'Hamon ni Tala. Tulungan akong ingatan ang aking ningning! Pumili ng bukas na hamon sa daan.',
+    complete:'Mahusay! Natapos mo ang yugto at nakakuha ka ng mga bituin. Maaari kang maglaro muli o magpatuloy sa daan.',
+    menu:'Menu. Para sa guro o magulang.',questTitle:'Hamon ni Tala.',
+    dashboard:'Dito makikita ang progreso at maitatama ang pangalan ng mag-aaral.',
+    practiceHelp:'Piliin at pakinggan ang sagot. Pagkatapos, pindutin ang Ito ang sagot ko.',
+    confirm:'Ito ang sagot ko.',correct:'Mahusay!',correct2:'Ang galing mo!',correct3:'Tama! Magaling!',correct4:'Napakagaling! Kaya mo iyan!',retry:'Kaya mo iyan. Pumili at subukan muli!',
+    reveal:'Sabay nating tandaan ang tamang sagot.',
+    nextHelp:'Pindutin ang Susunod na tanong upang magpatuloy.',starsHelp:'Pindutin ang Tingnan ang mga bituin.',
+    back:'Bumalik.',next:'Susunod.',skip:'Laktawan ang kuwento.',listen:'Pakinggan.',
+    story:'Ang kuwento ni Tala.',opening:'Balikan ang simula ng hamon.',ending:'Balikan ang tagumpay ni Tala.',
+    start:'Tara na!',practice:'Maglaro na!',replay:'Maglaro muli.',stage:'Buksan ang aralin.',
+    nextQuestion:'Susunod na tanong.',stars:'Tingnan ang mga bituin.',hint:'Pahiwatig.',
+    soundOn:'Bukas na ang musika at mga tunog ng laro.',soundOff:'Patay na ang musika at mga tunog ng laro.',
+    stamp:'Magdagdag ng bituin.',clear:'Burahin ang guhit.',finishPaint:'Tapos na ang obra ko!',
+    reset:'Burahin ang progreso. Magpatulong muna sa guro o magulang.',saved:'Na-save na ang pangalan!',
+    jump:'Pumunta sa susunod na bukas na yugto.',pauseStory:'Ihinto ang awtomatikong pagsunod.',resumeStory:'Ituloy ang awtomatikong pagsunod.',
+    red:'Pula.',blue:'Asul.',yellow:'Dilaw.',green:'Berde.',purple:'Lila.',black:'Itim.'
+  };
+  const moduleVoice={phonics:'Titik at Tunog. Kasama si Titik, matuto ng mga titik at salita.',numbers:'Pagbibilang. Kasama si Bilang, matutong bumilang.',arts:'Hugis at Kulay. Kasama si Likha, kilalanin ang mga hugis at kulay.',values:'Mabuting Gawi. Kasama si Tala, matuto ng mabubuting gawain.'};
+  window.TALA_DATA={version:2,tutorials,welcomeVoice,uiVoice,moduleVoice,intro:[
     {scene:'fall',title:'Ang munting bituin',text:'Ako si Tala, isang munting bituin. Nahulog ako mula sa langit at nawala ang aking ningning.',characters:['Tala']},
     {scene:'friends',title:'Mga bagong kaibigan',text:'Nakilala ko sina Titik, Bilang, at Likha. Sasamahan nila tayong magbasa, magbilang, at lumikha!',characters:['Titik','Bilang','Likha']},
     {scene:'shine',title:'Sama-sama tayong sumikat!',text:'Sa bawat aralin at mabuting gawa, may bagong bituing makokolekta. Tulungan mo akong ibalik ang ningning sa langit. Tara, matuto at maglaro!',characters:['Tala','Titik','Bilang','Likha']}

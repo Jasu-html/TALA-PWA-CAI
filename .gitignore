@@ -1,0 +1,19 @@
+# Local voice-generation runtime and package caches
+.tools/
+.venv-audio/
+__pycache__/
+*.pyc
+*.partial
+# Local synthesized previews and per-run logs (review before redistribution)
+/audio-preview/
+/audio-generation-report.json
+node_modules/
+dist/
+builds/
+/android/.gradle/
+/android/.idea/
+/android/local.properties
+/android/build/
+/android/app/build/
+/android/app/src/main/assets/public/
+/android/capacitor-cordova-android-plugins/

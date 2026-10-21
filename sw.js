@@ -1,5 +1,5 @@
-const CACHE = 'tala-pwa-v20';
-const FILES = ['./','./index.html','./manifest.webmanifest','./css/styles.css?v=20','./css/playful.css?v=20','./css/vibrant.css?v=20','./js/data.js?v=20','./js/quest.js?v=20','./js/storage.js?v=20','./js/speech.js?v=20','./js/sfx.js?v=20','./js/visuals.js?v=20','./js/app.js?v=20','./assets/characters/tala.svg','./assets/characters/likha.svg','./assets/characters/titik.svg','./assets/characters/bilang.svg'];
+const CACHE = 'tala-pwa-v27';
+const FILES = ['./','./index.html','./manifest.webmanifest','./css/styles.css?v=27','./css/playful.css?v=27','./css/vibrant.css?v=27','./css/compact.css?v=27','./js/data.js?v=27','./js/quest.js?v=27','./js/storage.js?v=27','./js/speech.js?v=27','./js/sfx.js?v=27','./js/visuals.js?v=27','./js/native.js?v=27','./js/app.js?v=27','./assets/characters/tala.svg','./assets/characters/likha.svg','./assets/characters/titik.svg','./assets/characters/bilang.svg'];
 self.addEventListener('install',event=>{self.skipWaiting();event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)));});
 self.addEventListener('activate',event=>event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('tala-pwa-')&&k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()])));
 self.addEventListener('fetch',event=>{

@@ -31,7 +31,9 @@
   }
   window.TALA_STORE = {
     get:read,
-    setLearner(name) { const d=read(); d.learner=name.trim() || 'Munting Tala'; d.setupComplete=true; return save(d); },
+    hasHeardGuidance(key) { const heard=read().heardGuidance; return Array.isArray(heard)&&heard.includes(key); },
+    markGuidanceHeard(key) { const d=read(); d.heardGuidance=[...new Set([...(Array.isArray(d.heardGuidance)?d.heardGuidance:[]),key])]; return save(d); },
+    setLearner(name) { const d=read(); d.learner=String(name).replace(/[\u0000-\u001f\u007f]/g,'').replace(/\s+/g,' ').trim().slice(0,24) || 'Munting Tala'; d.setupComplete=true; return save(d); },
     markIntroSeen() { const d=read(); d.introSeen=true; return save(d); },
     markQuestStorySeen(kind) {
       const d=read();

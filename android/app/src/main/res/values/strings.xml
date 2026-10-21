@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TALA</string>
+    <string name="title_activity_main">TALA</string>
+    <string name="package_name">com.tala.learning</string>
+    <string name="custom_url_scheme">com.tala.learning</string>
+</resources>

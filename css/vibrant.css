@@ -34,6 +34,8 @@ body{
   box-shadow:0 7px 0 #5a43a833,0 13px 30px #27375b32;
 }
 .brand-button strong{color:#4b28ad}.brand-star{color:#ffbd23;filter:drop-shadow(0 3px 0 #af6700)}
+.brand-button{min-width:0}.brand-button>span:last-child{min-width:0}.brand-button small{display:block;max-width:290px;white-space:normal;line-height:1.35;text-wrap:balance}.topbar-actions{flex-shrink:0}
+@media(max-width:560px){.brand-button small{display:block;max-width:155px;font-size:8px;line-height:1.3}}
 .icon-button,.wallet{border-color:#d9d6eb;box-shadow:0 4px 0 #d0cde5}
 .icon-button:hover{border-color:#7541e7}
 .pill,.eyebrow{color:var(--deep)}
@@ -196,4 +198,18 @@ body{
 .tutorial-demo{position:relative;display:grid;grid-template-columns:auto 1fr;column-gap:15px;align-items:center;margin:18px 0;padding:17px 18px;border-radius:20px;background:var(--soft);overflow:hidden}.tutorial-hand{grid-row:span 2;font-size:40px;filter:drop-shadow(0 4px 0 #0002)}.tutorial-demo-title{font-size:17px;color:var(--deep)}.tutorial-demo-text{font-size:14px;line-height:1.45}.tutorial-hand-pop{animation:tutorial-hand-pop .45s cubic-bezier(.2,.8,.3,1)}
 .tutorial-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.tutorial-step{display:flex;align-items:center;gap:9px;min-height:62px;padding:9px;border:2px solid var(--soft);border-radius:16px;background:#fff;color:var(--ink);text-align:left}.tutorial-step span{display:grid;place-items:center;flex:0 0 29px;width:29px;height:29px;border-radius:50%;background:var(--soft);color:var(--deep);font-weight:900}.tutorial-step strong{font-size:12px;line-height:1.2}.tutorial-step.is-active{border-color:var(--accent);background:var(--soft);box-shadow:0 3px 0 var(--accent)}
 @keyframes tutorial-hand-pop{0%{transform:translateY(9px) scale(.8) rotate(-12deg);opacity:.35}65%{transform:translateY(-4px) scale(1.12) rotate(5deg);opacity:1}100%{transform:translateY(0) scale(1) rotate(0)}}
+.welcome-listen{margin:16px 0 4px;font-size:15px;min-height:44px}
+.screen-listen{display:flex;margin:0 0 16px auto;font-size:14px;min-height:44px}
+.confirm-answer[hidden],.hint-button[hidden]{display:none}
+.confirm-answer.needs-confirmation:not(:disabled){animation:confirm-nudge 1.4s ease-in-out infinite;outline:3px solid #ffc83d;outline-offset:4px}
+@keyframes confirm-nudge{0%,100%{filter:brightness(1);transform:scale(1)}50%{filter:brightness(1.16);transform:scale(1.025);box-shadow:0 6px 0 var(--deep),0 0 0 7px #ffc83d55}}
+@media(prefers-reduced-motion:reduce){.confirm-answer.needs-confirmation:not(:disabled){animation:none;outline-color:#e9a600}}
+.story-auto-tools{padding:12px 24px 0;text-align:center}.story-auto-tools p{font-size:13px}.story-auto-tools button{min-height:44px;font-size:14px}
+.name-voice{width:100%;min-height:52px;margin:12px 0 8px;border:2px solid #7540e8;background:#f1e9ff;color:#4c209e;justify-content:center}
+.name-voice[aria-pressed="true"]{background:#ffe9dd;border-color:#d65b18;color:#823509;box-shadow:0 0 0 4px #ffb55755}
+.name-voice:disabled{opacity:.6}.welcome-copy .name-voice-status{font-size:13px;line-height:1.5;margin:0 0 4px;text-align:left;min-height:40px}
+.welcome-copy .name-privacy{font-size:11px;line-height:1.5;margin-top:16px;text-align:left}
+.name-editor{margin:26px 0;padding:24px;background:#fff;border:2px solid #d9caff;border-radius:24px;box-shadow:0 5px 0 #c7b4eb44}
+.name-editor h2{font-size:22px}.name-editor p{margin:8px 0 16px}.name-editor form{display:grid;gap:12px;max-width:480px}
+.name-editor input{width:100%;min-height:50px;padding:12px 16px;border:2px solid #c6b5ee;border-radius:16px;background:#faf7ff;color:var(--ink)}
 @media(max-width:560px){.tutorial-panel{padding:15px;margin-top:22px}.tutorial-heading{align-items:flex-start}.tutorial-heading h2{font-size:22px}.tutorial-replay{font-size:12px;padding:8px 10px}.tutorial-demo{padding:14px;column-gap:10px}.tutorial-hand{font-size:31px}.tutorial-demo-title{font-size:15px}.tutorial-demo-text{font-size:12px}.tutorial-steps{gap:6px}.tutorial-step{display:block;text-align:center;padding:8px 4px;min-height:70px}.tutorial-step span{margin:0 auto 5px}.tutorial-step strong{font-size:10px}}

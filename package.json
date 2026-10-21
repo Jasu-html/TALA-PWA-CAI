@@ -1,0 +1,23 @@
+{
+  "name": "tala-learning-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TALA — A Voice-Guided Learning App for Grade 1 Learners",
+  "scripts": {
+    "start": "node tools/serve.cjs",
+    "test:phone": "node tests/phone-layout.cjs",
+    "test:tablet": "node tests/phone-layout.cjs --tablet",
+    "test": "node --test tests/smoke.cjs tests/presentation.cjs tests/offline.cjs tests/audio-catalog.cjs tests/native.cjs",
+    "build:web": "node tools/prepare-android.cjs",
+    "android:sync": "npm run build:web && cap sync android",
+    "android:build": "powershell -ExecutionPolicy Bypass -File tools/build-android.ps1"
+  },
+  "dependencies": {
+    "@capacitor/android": "8.5.3",
+    "@capacitor/core": "8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.3",
+    "@playwright/test": "1.64.1"
+  }
+}

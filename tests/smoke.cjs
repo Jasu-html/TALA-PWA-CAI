@@ -3,15 +3,16 @@ const assert = require('node:assert/strict');
 const vm = require('node:vm');
 const fs = require('node:fs');
 const path = require('node:path');
-function setup(saved,revealItems) {
+function setup(saved,revealItems,options={}) {
   const handlers={}, buttons=[], timers=new Map(), timerDelays=new Map(), observers=[], canvasHandlers={};
   let nextTimer=1,value=JSON.stringify(saved?{learner:'Ana',...saved}:{curriculumVersion:2,learner:'Ana'}),html='';
   function element(dataset={}, disabled=false) {
     const tokens=new Set();
-    return {dataset,disabled,textContent:'',classList:{
+    const listeners={};
+    return {dataset,disabled,textContent:'',listeners,classList:{
       add(...x){x.forEach(t=>tokens.add(t));},remove(...x){x.forEach(t=>tokens.delete(t));},
       toggle(t,on){if(on)tokens.add(t);else tokens.delete(t);},contains:t=>tokens.has(t)
-    },setAttribute(k,v){this[k]=v;},addEventListener(){},scrollIntoView(){}};
+    },setAttribute(k,v){this[k]=v;},addEventListener(name,fn){(listeners[name]||=[]).push(fn);},scrollIntoView(){}};
   }
   function parse(markup) {
     html=markup;buttons.length=0;
@@ -24,6 +25,10 @@ function setup(saved,revealItems) {
   const canvas={width:800,height:480,getContext:()=>({beginPath(){},moveTo(){},arc(){},fill(){},lineTo(){},stroke(){},clearRect(){},fillText(){}}),
     addEventListener:(name,fn)=>canvasHandlers[name]=fn,setPointerCapture(){},getBoundingClientRect:()=>({left:0,top:0,width:800,height:480})};
   const nodes={'#app':{get innerHTML(){return html;},set innerHTML(v){parse(v);},querySelectorAll:()=>revealItems||[]},'#wallet-stars':{},'#toast':element(),'#feedback':{textContent:''},'#paint-canvas':canvas,'#learner-name':{value:''}};
+  nodes['.activity-card']={insertAdjacentHTML:(_,markup)=>parse(html+markup)};
+  nodes['#name-voice-status']=element();nodes['#edit-learner-name']={value:''};
+  for(const selector of ['.tutorial-demo-title','.tutorial-demo-text','.tutorial-hand'])nodes[selector]=element();
+  nodes['.tutorial-panel']={querySelector:selector=>one(selector),querySelectorAll:()=>buttons.filter(b=>b.dataset.demoStep!==undefined)};
   const all=selector=>selector==='[data-choice]'?buttons.filter(b=>b.dataset.choice!==undefined):selector==='[data-paint]'?buttons.filter(b=>b.dataset.paint):[];
   const one=selector=>{const action=selector.match(/^\[data-action="([^"]+)"\]$/);return action?buttons.find(b=>b.dataset.action===action[1]):nodes[selector];};
   const ctx={console,setTimeout(fn,delay){const id=nextTimer++;timers.set(id,fn);timerDelays.set(id,delay);return id;},clearTimeout(id){timers.delete(id);timerDelays.delete(id);},
@@ -37,20 +42,266 @@ function setup(saved,revealItems) {
     observe(){}
     disconnect(){this.disconnected=true;}
   };
-  ctx.window=ctx;vm.createContext(ctx);
-  for(const file of ['data','quest','storage','speech','sfx','visuals','app'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../js',file+'.js'),'utf8'),ctx);
+  Object.assign(ctx,options);ctx.window=ctx;vm.createContext(ctx);
+  for(const file of ['data','quest','storage','speech','sfx','visuals','native','app'])vm.runInContext(fs.readFileSync(path.join(__dirname,'../js',file+'.js'),'utf8'),ctx);
   function click(dataset) {
     const b=buttons.find(b=>Object.entries(dataset).every(([k,v])=>b.dataset[k]===v)) || (['home','dashboard'].includes(dataset.action)?element(dataset):null);
     assert.ok(b,'Button exists: '+JSON.stringify(dataset));
     if(b.disabled)return;
+    for(const fn of b.listeners.click||[])fn();
     for(const fn of [...handlers.click])fn({target:{closest:()=>b}});
   }
+  click.advanceFeedback=()=>{
+    const id=[...timerDelays].find(([,delay])=>[8000,450,800,900,1200,600].includes(delay))?.[0];
+    assert.ok(id,'Automatic answer advance is scheduled');
+    const fn=timers.get(id);timers.delete(id);timerDelays.delete(id);fn();
+  };
   const enter=(module,n=1)=>{click({module});click({level:String(n)});click({action:'practice'});};
   const submitName=name=>{nodes['#learner-name'].value=name;for(const fn of handlers.submit)fn({target:{id:'name-form'},preventDefault(){}});};
-  return {ctx,nodes,click,enter,one,all,canvasHandlers,timers,timerDelays,observers,submitName,saved:()=>JSON.parse(value)};
+  return {ctx,nodes,click,enter,one,all,canvasHandlers,timers,timerDelays,observers,submitName,dispatch:(name,event)=>{for(const fn of handlers[name]||[])fn(event);},saved:()=>JSON.parse(value)};
 }
 const allCoreStages=()=>[['phonics',33],['numbers',15],['arts',15],['values',10]].flatMap(([id,count])=>Array.from({length:count},(_,i)=>id+':'+(i+1)));
 const questSave=(extra={})=>({curriculumVersion:2,completed:allCoreStages(),questOpeningSeen:true,...extra});
+test('Correct-answer praise has four variants and never repeats consecutively, even with identical random values',()=>{
+  const env=setup(),calls=[];env.ctx.TALA_SPEECH.play=(...args)=>calls.push(args);
+  env.ctx.Math=Object.create(Math);env.ctx.Math.random=()=>0;
+  const variants=['correct','correct2','correct3','correct4'].map(key=>env.ctx.TALA_DATA.uiVoice[key]);
+  assert.equal(new Set(variants).size,4);env.enter('phonics');let previous;
+  for(const q of env.ctx.TALA_DATA.modules[0].levels[0].questions){
+    env.click({choice:String(q.answer)});env.click({action:'confirm-answer'});
+    const phrase=calls.at(-1)[1];assert.ok(variants.includes(phrase));assert.notEqual(phrase,previous);previous=phrase;env.click.advanceFeedback();
+  }
+});
+test('Phone Back returns through quiz, lesson, map and home without leaving the app',()=>{
+  const env=setup();env.enter('phonics');
+  assert.equal(env.ctx.TALA_UI.back(),true);assert.equal(env.ctx.document.body.dataset.screen,'lesson');
+  assert.equal(env.ctx.TALA_UI.back(),true);assert.equal(env.ctx.document.body.dataset.screen,'map');
+  assert.equal(env.ctx.TALA_UI.back(),true);assert.equal(env.ctx.document.body.dataset.screen,'home');
+  assert.equal(env.ctx.TALA_UI.back(),false);
+});
+test('Phone Back restores a selected answer from the menu and cancels pending story/answer timers',()=>{
+  const env=setup();env.enter('phonics');env.click({choice:'1'});env.click({action:'dashboard'});
+  env.ctx.TALA_UI.back();assert.equal(env.ctx.document.body.dataset.screen,'practice');
+  assert.equal(env.one('[data-action="confirm-answer"]').disabled,false);
+  assert.equal(env.all('[data-choice]')[1]['aria-pressed'],'true');
+  const q=env.ctx.TALA_DATA.modules[0].levels[0].questions[0];
+  env.click({choice:String(q.answer)});env.click({action:'confirm-answer'});
+  env.ctx.TALA_UI.back();assert.equal([...env.timerDelays.values()].includes(8000),false);assert.equal(env.ctx.document.body.dataset.screen,'lesson');
+  env.click({action:'home'});env.click({action:'intro-open'});env.click({action:'intro-next'});
+  env.ctx.TALA_UI.back();assert.match(env.nodes['#app'].innerHTML,/Ang munting bituin/);
+});
+test('Phone Back from completion returns to the map, then directly to home',()=>{
+  const env=setup();env.enter('phonics');
+  for(const q of env.ctx.TALA_DATA.modules[0].levels[0].questions){env.click({choice:String(q.answer)});env.click({action:'confirm-answer'});env.click.advanceFeedback();}
+  assert.equal(env.ctx.document.body.dataset.screen,'complete');
+  env.ctx.TALA_UI.back();assert.equal(env.ctx.document.body.dataset.screen,'map');
+  env.ctx.TALA_UI.back();assert.equal(env.ctx.document.body.dataset.screen,'home');
+  assert.equal(env.saved().best['phonics:1'],5);
+});
+test('General introductions play once per device, persist on reload, and can always be replayed',()=>{
+  const players=[];
+  class Audio{constructor(src){this.src=src;players.push(this);}play(){return Promise.resolve();}pause(){}}
+  const env=setup(undefined,undefined,{Audio});
+  const finish=()=>{for(const player of players){if(!player.finished){player.finished=true;player.onended();}}};
+  finish();assert.ok(env.saved().heardGuidance.includes('home'));
+  let count=players.length;env.click({action:'home'});assert.equal(players.length,count);
+  env.click({action:'screen-listen'});assert.ok(players.length>count);finish();
+  env.click({module:'phonics'});finish();assert.ok(env.saved().heardGuidance.includes('map:phonics'));
+  env.click({action:'home'});count=players.length;env.click({module:'phonics'});assert.equal(players.length,count);
+  const saved=env.saved();count=players.length;const reload=setup(saved,undefined,{Audio});assert.equal(players.length,count);
+  reload.click({module:'phonics'});assert.equal(players.length,count);
+  reload.click({action:'screen-listen'});assert.ok(players.length>count);
+});
+test('Started introductions are remembered even if interrupted, but blocked introductions are not',async()=>{
+  const env=setup();await new Promise(resolve=>setImmediate(resolve));
+  assert.ok(env.saved().heardGuidance.includes('home'));
+  const calls=[];env.ctx.TALA_SPEECH.play=(...args)=>calls.push(args);
+  env.click({module:'phonics'});env.click({action:'home'});
+  assert.equal(calls.some(args=>args[1]===env.ctx.TALA_DATA.uiVoice.home),false);
+  const blocked=setup(undefined,undefined,{Audio:class{play(){return Promise.reject(Object.assign(new Error(),{name:'NotAllowedError'}));}pause(){}}});
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal(blocked.ctx.TALA_STORE.hasHeardGuidance('home'),false);
+});
+test('Three-minute reminders reset on interaction, do not interrupt audio, and stop in the background',()=>{
+  const env=setup({heardGuidance:['home','map:phonics']}),calls=[];
+  env.ctx.TALA_SPEECH.play=(...args)=>calls.push(args);env.ctx.TALA_SPEECH.isPlaying=()=>false;
+  const idle=()=>[...env.timerDelays].find(([,delay])=>delay===180000)[0];
+  const old=idle();env.dispatch('pointermove',{});assert.equal(env.timers.has(old),false);
+  let id=idle(),fn=env.timers.get(id);env.timers.delete(id);env.timerDelays.delete(id);fn();
+  assert.equal(calls.at(-1)[1],env.ctx.TALA_DATA.uiVoice.home);
+  env.ctx.TALA_SPEECH.isPlaying=()=>true;const count=calls.length;
+  id=idle();fn=env.timers.get(id);env.timers.delete(id);env.timerDelays.delete(id);fn();assert.equal(calls.length,count);
+  env.ctx.document.hidden=true;env.dispatch('visibilitychange',{});assert.equal([...env.timerDelays.values()].includes(180000),false);
+  env.ctx.document.hidden=false;env.dispatch('visibilitychange',{});assert.ok(idle());
+  const stale=env.timers.get(idle());env.click({module:'phonics'});const before=calls.length;stale();assert.equal(calls.length,before);
+});
+test('Selecting an answer pulses confirmation silently; correct answers advance after feedback without a Next button',()=>{
+  const env=setup(),calls=[];env.ctx.TALA_SPEECH.play=(...args)=>calls.push(args);env.enter('phonics');
+  const question=env.ctx.TALA_DATA.modules[0].levels[0].questions[0],confirm=env.one('[data-action="confirm-answer"]');
+  assert.equal(confirm.classList.contains('needs-confirmation'),false);
+  env.click({choice:String(question.answer)});assert.equal(confirm.classList.contains('needs-confirmation'),true);
+  env.click({action:'confirm-answer'});assert.equal(confirm.hidden,true);assert.equal(confirm.classList.contains('needs-confirmation'),false);
+  assert.equal(env.one('[data-action="next-question"]'),undefined);
+  assert.ok(['correct','correct2','correct3','correct4'].some(key=>calls.at(-1)[1]===env.ctx.TALA_DATA.uiVoice[key]));assert.equal(calls.at(-1)[2].before,undefined);assert.equal(calls.at(-1)[2].after,undefined);
+  calls.at(-1)[2].onEnded();assert.ok([...env.timerDelays.values()].includes(450));
+  env.click.advanceFeedback();assert.match(env.nodes['#app'].innerHTML,/Tanong 2 sa/);
+});
+test('Answer auto-next cancels on navigation, recovers from missing feedback, and never advances hidden screens',()=>{
+  const env=setup(),calls=[];env.ctx.TALA_SPEECH.play=(...args)=>calls.push(args);env.enter('phonics');
+  const q=env.ctx.TALA_DATA.modules[0].levels[0].questions[0];
+  env.click({choice:String(q.answer)});env.click({action:'confirm-answer'});const feedback=calls.at(-1)[2];
+  env.ctx.document.hidden=true;env.dispatch('visibilitychange',{});assert.equal([...env.timerDelays.values()].includes(8000),false);
+  env.ctx.document.hidden=false;env.dispatch('visibilitychange',{});assert.ok([...env.timerDelays.values()].includes(600));
+  env.click({action:'home'});feedback.onEnded();assert.equal([...env.timerDelays.values()].includes(450),false);
+  env.enter('phonics');env.click({choice:String(q.answer)});env.click({action:'confirm-answer'});calls.at(-1)[2].onError();
+  assert.ok([...env.timerDelays.values()].includes(900));env.click.advanceFeedback();assert.match(env.nodes['#app'].innerHTML,/Tanong 2 sa/);
+});
+test('Stories advance five seconds after narration ends, replay cancels old timers, and final pages finish',()=>{
+  const env=setup(),calls=[];env.ctx.TALA_SPEECH.play=(...args)=>calls.push(args);
+  const fire=()=>{const id=[...env.timerDelays].find(([,delay])=>delay===5000)?.[0];assert.ok(id);const fn=env.timers.get(id);env.timers.delete(id);env.timerDelays.delete(id);fn();};
+  env.click({action:'intro-open'});
+  assert.equal([...env.timerDelays.values()].includes(5000),false);
+  calls.at(-1)[2].onEnded();assert.equal([...env.timerDelays.values()].includes(5000),true);
+  env.click({action:'intro-listen'});assert.equal([...env.timerDelays.values()].includes(5000),false);
+  calls.at(-1)[2].onEnded();fire();assert.equal(calls.at(-1)[1],env.ctx.TALA_DATA.intro[1].text);
+  const stale=calls.at(-1)[2].onEnded;env.click({action:'intro-back'});stale();assert.equal([...env.timerDelays.values()].includes(5000),false);
+  for(let i=0;i<3;i++){calls.at(-1)[2].onEnded();fire();}
+  assert.equal(env.ctx.document.body.dataset.screen,'home');assert.equal(env.saved().introSeen,true);
+});
+test('Story pause, navigation, and tab hiding cancel auto-next without silently completing the story',()=>{
+  const env=setup(),calls=[];env.ctx.TALA_SPEECH.play=(...args)=>calls.push(args);
+  env.click({action:'intro-open'});const stale=calls.at(-1)[2].onEnded;
+  env.click({action:'story-auto'});stale();assert.equal([...env.timerDelays.values()].includes(5000),false);
+  env.click({action:'story-auto'});calls.at(-1)[2].onEnded();assert.equal([...env.timerDelays.values()].includes(5000),true);
+  env.ctx.document.hidden=true;env.dispatch('visibilitychange',{});assert.equal([...env.timerDelays.values()].includes(5000),false);
+  env.ctx.document.hidden=false;env.click({action:'intro-listen'});calls.at(-1)[2].onEnded();
+  env.click({action:'dashboard'});assert.equal([...env.timerDelays.values()].includes(5000),false);
+});
+test('Quest opening and ending auto-next use the same five-second completion rule',()=>{
+  const env=setup(questSave({questOpeningSeen:false,completed:[...allCoreStages(),...Array.from({length:10},(_,i)=>'quest:'+(i+1))]})),calls=[];
+  env.ctx.TALA_SPEECH.play=(...args)=>calls.push(args);
+  const finishPage=()=>{calls.at(-1)[2].onEnded();const id=[...env.timerDelays].find(([,delay])=>delay===5000)[0];const fn=env.timers.get(id);env.timers.delete(id);env.timerDelays.delete(id);fn();};
+  env.click({module:'quest'});for(let i=0;i<3;i++)finishPage();
+  assert.equal(env.saved().questEndingSeen,true);assert.equal(env.ctx.document.body.dataset.screen,'home');
+  env.click({module:'quest'});for(let i=0;i<3;i++)finishPage();
+  assert.equal(env.saved().questOpeningSeen,true);assert.equal(env.ctx.document.body.dataset.screen,'map');
+});
+test('Recorded interface guidance covers home, modules and retries without reading navigation or confirmation labels',()=>{
+  const env=setup(),calls=[];env.ctx.TALA_SPEECH.play=(...args)=>calls.push(args);env.ctx.TALA_SPEECH.speak=()=>assert.fail('Do not require installed TTS');
+  env.click({action:'home'});assert.equal(calls.at(-1)[1],env.ctx.TALA_DATA.uiVoice.home);
+  for(const module of env.ctx.TALA_DATA.modules){env.click({module:module.id});assert.ok(calls.at(-1)[2].before.includes(env.ctx.TALA_DATA.moduleVoice[module.id]));env.click({action:'home'});}
+  env.click({module:'quest'});assert.equal(calls.at(-1)[1],env.ctx.TALA_DATA.uiVoice.questLocked);
+  env.click({action:'dashboard'});assert.equal(calls.at(-1)[1],env.ctx.TALA_DATA.uiVoice.dashboard);
+  env.click({action:'home'});env.enter('phonics');
+  const q=env.ctx.TALA_DATA.modules[0].levels[0].questions[0];
+  env.click({choice:String((q.answer+1)%q.choices.length)});env.click({action:'confirm-answer'});
+  assert.equal(calls.at(-1)[1],env.ctx.TALA_DATA.uiVoice.retry);assert.equal(calls.at(-1)[2].before,undefined);
+  env.click({choice:String(q.answer)});env.click({action:'confirm-answer'});
+  assert.ok(['correct','correct2','correct3','correct4'].some(key=>calls.at(-1)[1]===env.ctx.TALA_DATA.uiVoice[key]));assert.equal(calls.at(-1)[2].after,undefined);
+});
+test('Recorded label, content and instruction sequence plays in order and cancels on new input',async()=>{
+  const players=[];const ctx={Audio:class{constructor(src){this.src=src;players.push(this);}play(){return Promise.resolve();}pause(){this.paused=true;}}};
+  ctx.window=ctx;vm.createContext(ctx);vm.runInContext(fs.readFileSync(path.join(__dirname,'../js/speech.js'),'utf8'),ctx);
+  let ended=0;await ctx.TALA_SPEECH.play('Titik','Tanong',{before:['Bumalik.'],after:['Piliin.'],onEnded:()=>ended++});
+  assert.equal(players.length,1);assert.match(players[0].src,/tala\/bumalik.mp3/);
+  players[0].onended();assert.match(players[1].src,/titik\/tanong.mp3/);assert.equal(ended,0);
+  players[1].onended();assert.match(players[2].src,/tala\/piliin.mp3/);players[2].onended();assert.equal(ended,1);
+  await ctx.TALA_SPEECH.play('Tala','Una',{after:['Pangalawa']});const stale=players.at(-1);
+  await ctx.TALA_SPEECH.play('Tala','Bago');const count=players.length;stale.onended();assert.equal(players.length,count);assert.equal(stale.paused,true);
+});
+test('Blocked or failed story narration never starts the five-second timer',async()=>{
+  const env=setup({learner:'Munting Tala',introSeen:false},undefined,{Audio:class{play(){return Promise.reject(Object.assign(new Error(),{name:'NotAllowedError'}));}pause(){}}});
+  await new Promise(resolve=>setImmediate(resolve));
+  assert.equal([...env.timerDelays.values()].includes(5000),false);
+  assert.equal(env.ctx.document.body.dataset.screen,'intro');
+});
+test('Welcome has recorded guidance and keeps typing available without voice recognition',()=>{
+  const env=setup({learner:'Munting Tala',introSeen:true});
+  assert.match(env.nodes['#app'].innerHTML,/Pakinggan si Tala/);
+  assert.equal(env.one('[data-action="name-voice"]').disabled,true);
+  const calls=[];env.ctx.TALA_SPEECH.play=(...args)=>calls.push(args);
+  env.click({action:'welcome-listen'});assert.deepEqual(calls[0].slice(0,2),['Tala',env.ctx.TALA_DATA.welcomeVoice]);
+  env.submitName('Ana');assert.equal(env.saved().learner,'Ana');
+});
+test('Voice naming asks consent, uses Filipino, fills only the draft, and requires confirmation',()=>{
+  const instances=[];
+  class Recognition{constructor(){instances.push(this);}start(){this.started=true;this.onstart();}abort(){this.aborted=true;}}
+  const env=setup({learner:'Munting Tala',introSeen:true},undefined,{SpeechRecognition:Recognition,confirm:()=>true});
+  assert.equal(instances.length,0);
+  env.click({action:'name-voice'});const r=instances[0];assert.equal(r.lang,'fil-PH');assert.equal(r.continuous,false);
+  r.onresult({results:[[{transcript:'Ako si María Clara.'}]]});
+  assert.equal(env.nodes['#learner-name'].value,'María Clara');assert.equal(env.saved().setupComplete,undefined);
+  assert.equal(r.aborted,true);assert.match(env.nodes['#name-voice-status'].textContent,/Narinig: María Clara/);
+  env.submitName(env.nodes['#learner-name'].value);assert.equal(env.saved().learner,'María Clara');
+});
+test('Voice naming handles declined consent, errors, typing, timeout, hidden tab, and stale results',()=>{
+  let allowed=false;const instances=[];
+  class Recognition{constructor(){instances.push(this);}start(){}abort(){this.aborted=true;}}
+  const env=setup({learner:'Munting Tala',introSeen:true},undefined,{webkitSpeechRecognition:Recognition,confirm:()=>allowed});
+  env.click({action:'name-voice'});assert.equal(instances.length,0);allowed=true;
+  env.click({action:'name-voice'});instances.at(-1).onerror({error:'not-allowed'});
+  assert.match(env.nodes['#name-voice-status'].textContent,/Hindi pinayagan/);
+  env.click({action:'name-voice'});const stale=instances.at(-1).onresult;
+  env.nodes['#learner-name'].value='Manuel';env.dispatch('input',{target:{id:'learner-name'}});
+  stale({results:[[{transcript:'Wrong'}]]});assert.equal(env.nodes['#learner-name'].value,'Manuel');
+  env.click({action:'name-voice'});const r=instances.at(-1);
+  const timeout=[...env.timerDelays].find(([,ms])=>ms===15000)[0];env.timers.get(timeout)();assert.equal(r.aborted,true);
+  env.click({action:'name-voice'});env.ctx.document.hidden=true;env.dispatch('visibilitychange',{});assert.equal(instances.at(-1).aborted,true);
+  env.ctx.document.hidden=false;env.click({action:'name-voice'});env.click({action:'name-voice'});assert.equal(instances.at(-1).aborted,true);
+  env.ctx.document.hidden=false;env.click({action:'name-voice'});env.click({action:'dashboard'});assert.equal(instances.at(-1).aborted,true);
+});
+test('Parents can correct the learner name from the menu without changing progress',()=>{
+  const env=setup({learner:'Anah',completed:['phonics:1'],stars:3,best:{'phonics:1':3},attempts:{'phonics:1':2}});
+  env.click({action:'dashboard'});assert.match(env.nodes['#app'].innerHTML,/edit-name-form/);
+  const before=env.saved();env.nodes['#edit-learner-name'].value='  Ana  María  ';
+  env.dispatch('submit',{target:{id:'edit-name-form'},preventDefault(){}});
+  const after=env.saved();assert.equal(after.learner,'Ana María');
+  for(const key of ['completed','stars','best','attempts'])assert.deepEqual(after[key],before[key]);
+  assert.match(env.nodes['#app'].innerHTML,/Progreso ni Ana María/);
+  env.nodes['#edit-learner-name'].value='   ';env.dispatch('submit',{target:{id:'edit-name-form'},preventDefault(){}});
+  assert.equal(env.saved().learner,'Ana María');
+});
+test('Lessons, every next question, painting, and story pages automatically request their recordings',()=>{
+  const {ctx,click}=setup(questSave({questEndingSeen:true,completed:[...allCoreStages(),...Array.from({length:10},(_,i)=>'quest:'+(i+1))]})),calls=[];
+  ctx.TALA_SPEECH.play=(...args)=>calls.push(args);
+  click({module:'phonics'});click({level:'1'});
+  const l=ctx.TALA_DATA.modules[0].levels[0];
+  assert.deepEqual(calls.at(-1).slice(0,2),['Titik',l.lesson]);
+  click({action:'practice'});assert.deepEqual(calls.at(-1).slice(0,2),['Titik',l.questions[0].prompt]);
+  click({choice:String(l.questions[0].answer)});click({action:'confirm-answer'});click.advanceFeedback();
+  assert.deepEqual(calls.at(-1).slice(0,2),['Titik',l.questions[1].prompt]);
+  click({action:'home'});click({module:'arts'});click({level:'15'});click({action:'practice'});
+  assert.deepEqual(calls.at(-1).slice(0,2),['Likha','Gamitin ang iyong imahinasyon. Bawat guhit ay espesyal!']);
+  click({action:'home'});click({action:'intro-open'});
+  assert.deepEqual(calls.at(-1).slice(0,2),['Tala',ctx.TALA_DATA.intro[0].text]);
+  click({action:'intro-next'});assert.deepEqual(calls.at(-1).slice(0,2),['Tala',ctx.TALA_DATA.intro[1].text]);
+  click({action:'intro-skip'});click({module:'quest'});click({action:'quest-opening'});
+  assert.deepEqual(calls.at(-1).slice(0,2),['Tala',ctx.TALA_QUEST.stories.opening[0].text]);
+  click({action:'quest-story-next'});assert.deepEqual(calls.at(-1).slice(0,2),['Tala',ctx.TALA_QUEST.stories.opening[1].text]);
+  click({action:'quest-story-skip'});click({action:'quest-ending'});
+  assert.deepEqual(calls.at(-1).slice(0,2),['Tala',ctx.TALA_QUEST.stories.ending[0].text]);
+});
+test('Tutorial clicks narrate the chosen step and replay waits for completion, cancelling on navigation',()=>{
+  const {ctx,click}=setup(),calls=[];
+  ctx.TALA_SPEECH.play=(...args)=>calls.push(args);
+  click({module:'phonics'});click({level:'1'});
+  click({demoStep:'1'});
+  const steps=ctx.TALA_DATA.tutorials.quiz;
+  assert.equal(calls.at(-1)[0],'Titik');assert.equal(calls.at(-1)[1],steps[1][1]+' '+steps[1][2]);
+  click({action:'demo-replay'});assert.equal(calls.at(-1)[1],steps[0][1]+' '+steps[0][2]);
+  let count=calls.length;calls.at(-1)[2].onEnded();assert.equal(calls.length,count+1);
+  assert.equal(calls.at(-1)[1],steps[1][1]+' '+steps[1][2]);
+  const pending=calls.at(-1)[2].onEnded;click({action:'home'});count=calls.length;pending();assert.equal(calls.length,count);
+});
+test('Narration completion does not fire after stop; blocked autoplay offers the listen button',async()=>{
+  const players=[],toasts=[],duck=[];
+  const ctx={Audio:class{constructor(){players.push(this);}play(){return this.blocked?Promise.reject(Object.assign(new Error(),{name:'NotAllowedError'})):Promise.resolve();}pause(){this.paused=true;}},TALA_UI:{toast:text=>toasts.push(text)},TALA_SFX:{setNarrating:value=>duck.push(value)}};
+  ctx.window=ctx;vm.createContext(ctx);vm.runInContext(fs.readFileSync(path.join(__dirname,'../js/speech.js'),'utf8'),ctx);
+  let ended=0;await ctx.TALA_SPEECH.play('Tala','Kuwento',{onEnded:()=>ended++});
+  ctx.TALA_SPEECH.stop();players[0].onended();assert.equal(ended,0);assert.equal(players[0].paused,true);
+  ctx.Audio.prototype.blocked=true;
+  await ctx.TALA_SPEECH.play('Tala','Kuwento');assert.match(toasts.at(-1),/Pindutin ang Pakinggan/);assert.equal(duck.at(-1),false);
+});
 test('Quest requires every core stage, regardless of stars, and locks later rounds',()=>{
   const completed=allCoreStages().filter(id=>id!=='arts:15');
   const env=setup(questSave({completed:[...completed,'quest:1','arts:999'],best:Object.fromEntries(completed.map(id=>[id,5]))})),{ctx,click,nodes}=env;
@@ -97,7 +348,7 @@ test('All ten Quest rounds save stars, open the ending, and survive reload',()=>
     const questions=ctx.TALA_QUEST.generate(ctx.TALA_STORE.get(),round);
     click({action:'practice'});
     assert.match(nodes['#app'].innerHTML,/quest-walker/);
-    for(const q of questions){click({choice:String(q.answer)});click({action:'confirm-answer'});click({action:'next-question'});}
+    for(const q of questions){click({choice:String(q.answer)});click({action:'confirm-answer'});click.advanceFeedback();}
     const d=ctx.TALA_STORE.get();assert.equal(d.best['quest:'+round],5);assert.equal(d.attempts['quest:'+round],1);
     assert.equal(d.results['quest:'+round].length,questions.length);
     assert.ok(d.results['quest:'+round].every(q=>d.completed.includes(q.sourceModule+':'+q.sourceLevel)));
@@ -108,7 +359,7 @@ test('All ten Quest rounds save stars, open the ending, and survive reload',()=>
   assert.equal(ctx.TALA_STORE.get().stars,50);
   click({module:'quest'});click({level:'1'});click({action:'practice'});
   const replay=ctx.TALA_QUEST.generate(ctx.TALA_STORE.get(),1);
-  for(const q of replay){click({choice:String(q.answer)});click({action:'confirm-answer'});click({action:'next-question'});}
+  for(const q of replay){click({choice:String(q.answer)});click({action:'confirm-answer'});click.advanceFeedback();}
   assert.equal(ctx.TALA_STORE.get().stars,50);assert.equal(ctx.TALA_STORE.get().attempts['quest:1'],2);
   const reloaded=setup(env.saved());reloaded.click({module:'quest'});
   assert.doesNotMatch(reloaded.nodes['#app'].innerHTML,/data-level="10" disabled/);
@@ -119,15 +370,15 @@ test('Quest preview and hint recordings keep their source character and never su
   const clips=[];ctx.TALA_SPEECH.play=(...args)=>clips.push(args);ctx.TALA_SPEECH.speak=()=>{};
   click({module:'quest'});click({level:'1'});
   const questions=ctx.TALA_QUEST.generate(ctx.TALA_STORE.get(),1),q=questions[0];
-  click({action:'practice'});assert.deepEqual(clips.at(-1),[q.audioGuide,q.prompt]);
+  click({action:'practice'});assert.deepEqual(clips.at(-1).slice(0,2),[q.audioGuide,q.prompt]);
   assert.equal(one('[data-action="confirm-answer"]').disabled,true);
   const wrong=(q.answer+1)%q.choices.length;
-  click({choice:String(wrong)});assert.deepEqual(clips.at(-1),[q.audioGuide,ctx.TALA_SPEECH.spokenText(q.choices[wrong])]);
+  click({choice:String(wrong)});assert.deepEqual(clips.at(-1).slice(0,2),[q.audioGuide,ctx.TALA_SPEECH.spokenText(q.choices[wrong])]);
   assert.equal(ctx.TALA_STORE.get().stars,0);assert.equal(one('[data-action="next-question"]'),undefined);
-  click({action:'hint'});assert.deepEqual(clips.at(-1),[q.audioGuide,q.hint]);
+  click({action:'hint'});assert.deepEqual(clips.at(-1).slice(0,2),[q.audioGuide,q.hint]);
   for(let i=0;i<3;i++){click({choice:String(wrong)});click({action:'confirm-answer'});}
-  assert.ok(one('[data-action="next-question"]'));click({action:'next-question'});
-  for(const q of questions.slice(1)){click({choice:String(q.answer)});click({action:'confirm-answer'});click({action:'next-question'});}
+  assert.equal(one('[data-action="next-question"]'),undefined);click.advanceFeedback();
+  for(const q of questions.slice(1)){click({choice:String(q.answer)});click({action:'confirm-answer'});click.advanceFeedback();}
   assert.equal(ctx.TALA_STORE.get().best['quest:1'],4);
   assert.equal(ctx.TALA_STORE.get().results['quest:1'][0].misses,3);
 });
@@ -152,7 +403,7 @@ test('Quest opening introduces Anino after all modules, saves on completion, and
   assert.match(nodes['#app'].innerHTML,/Bumalik ang ningning/);assert.equal(one('[data-action="quest-story-back"]').disabled,true);
   assert.equal(ctx.TALA_STORE.get().questOpeningSeen,false);
   for(let i=0;i<3;i++){
-    click({action:'quest-story-listen'});assert.deepEqual(recordings.at(-1),['Tala',ctx.TALA_QUEST.stories.opening[i].text]);
+    click({action:'quest-story-listen'});assert.deepEqual(recordings.at(-1).slice(0,2),['Tala',ctx.TALA_QUEST.stories.opening[i].text]);
     if(i===1){assert.match(nodes['#app'].innerHTML,/anino-body/);click({action:'quest-story-back'});click({action:'quest-story-next'});}
     click({action:'quest-story-next'});
   }
@@ -169,7 +420,7 @@ test('One-star final challenge saves before the ending, resumes the ending, and 
   ctx.TALA_SPEECH.speak=()=>{};
   click({module:'quest'});assert.doesNotMatch(nodes['#app'].innerHTML,/data-action="quest-ending"/);
   click({level:'10'});const questions=ctx.TALA_QUEST.generate(ctx.TALA_STORE.get(),10);click({action:'practice'});
-  for(const q of questions){const wrong=String((q.answer+1)%q.choices.length);for(let i=0;i<3;i++){click({choice:wrong});click({action:'confirm-answer'});}click({action:'next-question'});}
+  for(const q of questions){const wrong=String((q.answer+1)%q.choices.length);for(let i=0;i<3;i++){click({choice:wrong});click({action:'confirm-answer'});}click.advanceFeedback();}
   assert.equal(ctx.document.body.dataset.screen,'questStory');assert.match(nodes['#app'].innerHTML,/Nagtagumpay tayo/);
   assert.equal(ctx.TALA_STORE.get().best['quest:10'],1);assert.equal(ctx.TALA_STORE.get().attempts['quest:10'],1);
   assert.equal(ctx.TALA_STORE.get().results['quest:10'].length,10);assert.equal(ctx.TALA_STORE.get().questEndingSeen,false);
@@ -178,7 +429,7 @@ test('One-star final challenge saves before the ending, resumes the ending, and 
   reload.ctx.TALA_SPEECH.play=(...args)=>clips.push(args);
   reload.click({module:'quest'});assert.equal(reload.ctx.document.body.dataset.screen,'questStory');
   for(let i=0;i<3;i++){
-    reload.click({action:'quest-story-listen'});assert.deepEqual(clips.at(-1),['Tala',reload.ctx.TALA_QUEST.stories.ending[i].text]);
+    reload.click({action:'quest-story-listen'});assert.deepEqual(clips.at(-1).slice(0,2),['Tala',reload.ctx.TALA_QUEST.stories.ending[i].text]);
     if(i===2)assert.match(reload.nodes['#app'].innerHTML,/Salamat, Ana!/);
     reload.click({action:'quest-story-next'});
   }
@@ -268,21 +519,21 @@ test('Level reveals share a 120ms queue across separate scroll callbacks',()=>{
   observer.callback([entry(third)]);
   assert.equal(second.classList.contains('is-visible'),false);
   assert.equal(third.classList.contains('is-visible'),false);
-  assert.equal(timers.size,1);
-  const [id,run]=timers.entries().next().value;
+  assert.equal([...timerDelays.values()].filter(delay=>delay===120).length,1);
+  const id=[...timerDelays].find(([,delay])=>delay===120)[0],run=timers.get(id);
   assert.equal(timerDelays.get(id),120);
   timers.delete(id);timerDelays.delete(id);run();
   assert.ok(second.classList.contains('is-visible'));
   assert.equal(third.classList.contains('is-visible'),false);
   observer.callback([entry(third,false)]);
-  const [nextId,nextRun]=timers.entries().next().value;
+  const nextId=[...timerDelays].find(([,delay])=>delay===120)[0],nextRun=timers.get(nextId);
   timers.delete(nextId);timerDelays.delete(nextId);nextRun();
   assert.equal(third.classList.contains('is-visible'),false);
   observer.callback([entry(third)]);
   assert.ok(third.classList.contains('is-visible'));
   click({module:'phonics'});
   assert.ok(observer.disconnected);
-  assert.equal(timers.size,0);
+  assert.equal([...timerDelays.values()].filter(delay=>delay===120).length,0);
 });
 test('All four modules have complete content and valid, distinct options',()=>{
   const {ctx}=setup();const modules=ctx.TALA_DATA.modules;
@@ -321,17 +572,17 @@ test('Selecting/reselecting only plays option audio; confirmation is required',(
   assert.equal(ctx.TALA_STORE.get().completed.length,0);
   assert.equal(one('[data-action="confirm-answer"]').disabled,false);
   click({action:'confirm-answer'});
-  assert.ok(one('[data-action="next-question"]'));
+  assert.equal(one('[data-action="next-question"]'),undefined);
   assert.equal(ctx.TALA_STORE.get().stars,0);
 });
 test('Wrong confirmations allow retry; third miss reveals answer then advances',()=>{
   const {ctx,enter,click,one,nodes}=setup();ctx.TALA_SPEECH.speak=()=>{};
   enter('phonics');
   for(let i=0;i<3;i++){click({choice:'1'});click({action:'confirm-answer'});}
-  assert.ok(one('[data-action="next-question"]'));
+  assert.equal(one('[data-action="next-question"]'),undefined);
   assert.match(nodes['#feedback'].textContent,/Sabay nating tandaan/);
   assert.equal(ctx.TALA_STORE.get().completed.length,0);
-  click({action:'next-question'});
+  click.advanceFeedback();
   assert.match(nodes['#app'].innerHTML,/Tanong 2 sa 5/);
   assert.equal(one('[data-action="confirm-answer"]').disabled,true);
 });
@@ -342,7 +593,7 @@ test('All 72 quiz stages finish, save once, score accurately, and unlock next st
     for(let i=0;i<m.levels.length;i++){
       const l=m.levels[i];if(l.type==='paint')continue;
       enter(m.id,i+1);
-      for(const q of l.questions){click({choice:String(q.answer)});click({action:'confirm-answer'});click({action:'next-question'});}
+      for(const q of l.questions){click({choice:String(q.answer)});click({action:'confirm-answer'});click.advanceFeedback();}
       stages++;
       assert.match(nodes['#app'].innerHTML,/Isang bagong/);
       const id=m.id+':'+(i+1),saved=ctx.TALA_STORE.get();
@@ -358,10 +609,10 @@ test('A first-question retry earns four stars and replay adds only the improveme
   const {ctx,enter,click}=setup();ctx.TALA_SPEECH.speak=()=>{};
   const questions=ctx.TALA_DATA.modules[0].levels[0].questions;
   enter('phonics');click({choice:'1'});click({action:'confirm-answer'});
-  for(const q of questions){click({choice:String(q.answer)});click({action:'confirm-answer'});click({action:'next-question'});}
+  for(const q of questions){click({choice:String(q.answer)});click({action:'confirm-answer'});click.advanceFeedback();}
   assert.equal(ctx.TALA_STORE.get().stars,4);
   click({action:'replay'});
-  for(const q of questions){click({choice:String(q.answer)});click({action:'confirm-answer'});click({action:'next-question'});}
+  for(const q of questions){click({choice:String(q.answer)});click({action:'confirm-answer'});click.advanceFeedback();}
   assert.equal(ctx.TALA_STORE.get().stars,5);
   assert.equal(ctx.TALA_STORE.get().attempts['phonics:1'],2);
 });
@@ -409,7 +660,7 @@ test('Missing option audio stays silent and does not block answer confirmation',
   assert.equal(spoken,0);
   assert.equal(one('[data-action="confirm-answer"]').disabled,false);
   assert.match(nodes['#toast'].textContent,/Wala pang recording/);
-  click({action:'confirm-answer'});assert.ok(one('[data-action="next-question"]'));
+  click({action:'confirm-answer'});assert.equal(one('[data-action="next-question"]'),undefined);
 });
 test('Every stage and question has an exact recording script',()=>{
   const {ctx}=setup();

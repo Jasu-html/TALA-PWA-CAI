@@ -1,6 +1,8 @@
 # Mga recording ni TALA
 
-Ang app ay gumagamit ng sarili mong MP3 recordings para sa lesson, tanong, hint, at sagot. Hindi ito gumagawa ng audio. Kapag wala pa ang file, magpapakita ito ng maikling notice at hindi ito gagamit ng English TTS.
+Ang app ay gumagamit ng shared MP3 recordings para sa lesson, tanong, hint, sagot, at mga kuwento. May development tool para gumawa ng buong 819-file library; maaari mo ring palitan ang anumang clip ng sariling recording. Tingnan ang [AUDIO_GENERATION.md](../../../../AUDIO_GENERATION.md). Hindi gumagawa ng bagong audio ang app habang naglalaro. Kapag wala pa ang file, magpapakita ito ng maikling notice at hindi ito gagamit ng TTS fallback.
+
+Filipino ang mga pangungusap at salita. English na pangalan ng titik ang ginagamit sa paisa-isang titik at pares nito: A = “ey”, B = “bee”. Hindi ito ang dating phonics experiment na A = “ah”.
 
 ## Bagong shared phrase folder
 

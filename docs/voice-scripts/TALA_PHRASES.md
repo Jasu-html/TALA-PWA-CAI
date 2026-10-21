@@ -1,233 +1,297 @@
 # TALA — Tala phrase library
 
-Bagong kuwento ng huling hamon: [Tala at Anino — pambungad at wakas](TALA_QUEST_STORY.md), anim na linya na isasalaysay ni Tala.
-
-Para sa tatlong bagong pambungad na recording, tingnan ang [Tala intro script](TALA_INTRO.md). Pareho ang folder: `assets/audio/fil/shared/tala/`.
-
-Para sa isang gabay sa lahat ng Quest rounds, tingnan ang [Hamon ni Tala script](TALA_QUEST.md). Ang mga tanong at sagot sa Quest ay gumagamit ng dati nang recordings ng kani-kanilang character.
-
 Folder: assets/audio/fil/shared/tala
 
-Isang recording lang bawat unique na phrase. Gamitin ang eksaktong filename; huwag gumawa ng copies para sa ibang yugto o tanong.
+Isang recording lang bawat natatanging filename. Ang mga linya ay mula sa kasalukuyang curriculum.
 
-- bumisita-si-ana-kay-lola-binati-niya-ito-at-magalang-na-nagtanong-kung-maaari-siyang-magmano-natuwa-si-lola-sa-magalang-na-pagbati.mp3 — Bumisita si A a kay Lola. Bi ati  iya ito at magala g  a  agta o g ku g maaa i siya g magma o. Natuwa si Lola sa magala g  a pagbati.
-- paano-babatiin-si-lola.mp3 — Paa o babatii  si Lola?
-- alalahanin-ang-mabuting-gawi-magandang-umaga-po.mp3 — Alalaha i  a g mabuti g gawi: Maga da g umaga po!.
-- magandang-umaga-po.mp3 — Maga da g umaga po!
+287 reusable recordings. Huwag basahin ang emoji o filename. Ang mga titik at pares ng titik ay kailangang pakinggan at suriin bago gamitin sa pagtuturo.
+
+Mga gabay sa pag-arte: [unang kuwento](TALA_INTRO.md), [gabay sa hamon](TALA_QUEST.md), at [Tala at Anino](TALA_QUEST_STORY.md).
+
+- bumisita-si-ana-kay-lola-binati-niya-ito-at-magalang-na-nagtanong-kung-maaari-siyang-magmano-natuwa-si-lola-sa-magalang-na-pagbati.mp3 — Bumisita si Ana kay Lola. Binati niya ito at magalang na nagtanong kung maaari siyang magmano. Natuwa si Lola sa magalang na pagbati.
+- paano-babatiin-si-lola.mp3 — Paano babatiin si Lola?
+- alalahanin-ang-mabuting-gawi-magandang-umaga-po.mp3 — Alalahanin ang mabuting gawi: Magandang umaga po!.
+- magandang-umaga-po.mp3 — Magandang umaga po!
 - hoy.mp3 — Hoy!
-- huwag-pansinin.mp3 — Huwag pa si i 
-- ano-ang-maaari-mong-itanong.mp3 — A o a g maaa i mo g ita o g?
-- alalahanin-ang-mabuting-gawi-maaari-po-bang-magmano.mp3 — Alalaha i  a g mabuti g gawi: Maaa i po ba g magma o?.
-- bigyan-mo-ako.mp3 — Bigya  mo ako!
+- huwag-pansinin.mp3 — Huwag pansinin
+- ano-ang-maaari-mong-itanong.mp3 — Ano ang maaari mong itanong?
+- alalahanin-ang-mabuting-gawi-maaari-po-bang-magmano.mp3 — Alalahanin ang mabuting gawi: Maaari po bang magmano?.
+- bigyan-mo-ako.mp3 — Bigyan mo ako!
 - umalis-ka.mp3 — Umalis ka!
-- maaari-po-bang-magmano.mp3 — Maaa i po ba g magma o?
-- paano-makikipag-usap-sa-nakatatanda.mp3 — Paa o makikipag-usap sa  akatata da?
-- alalahanin-ang-mabuting-gawi-magalang.mp3 — Alalaha i  a g mabuti g gawi: Magala g.
-- pabalang.mp3 — Pabala g
-- magalang.mp3 — Magala g
+- maaari-po-bang-magmano.mp3 — Maaari po bang magmano?
+- paano-makikipag-usap-sa-nakatatanda.mp3 — Paano makikipag-usap sa nakatatanda?
+- alalahanin-ang-mabuting-gawi-magalang.mp3 — Alalahanin ang mabuting gawi: Magalang.
+- pabalang.mp3 — Pabalang
+- magalang.mp3 — Magalang
 - pasigaw.mp3 — Pasigaw
-- may-bisitang-nakatatanda-ano-ang-gagawin.mp3 — May bisita g  akatata da. A o a g gagawi ?
-- alalahanin-ang-mabuting-gawi-batiin-siya.mp3 — Alalaha i  a g mabuti g gawi: Batii  siya.
-- batiin-siya.mp3 — Batii  siya
-- talikuran-siya.mp3 — Taliku a  siya
-- sigawan-siya.mp3 — Sigawa  siya
-- ano-ang-ipinakita-ni-ana.mp3 — A o a g ipi akita  i A a?
-- alalahanin-ang-mabuting-gawi-paggalang.mp3 — Alalaha i  a g mabuti g gawi: Paggala g.
+- may-bisitang-nakatatanda-ano-ang-gagawin.mp3 — May bisitang nakatatanda. Ano ang gagawin?
+- alalahanin-ang-mabuting-gawi-batiin-siya.mp3 — Alalahanin ang mabuting gawi: Batiin siya.
+- batiin-siya.mp3 — Batiin siya
+- talikuran-siya.mp3 — Talikuran siya
+- sigawan-siya.mp3 — Sigawan siya
+- ano-ang-ipinakita-ni-ana.mp3 — Ano ang ipinakita ni Ana?
+- alalahanin-ang-mabuting-gawi-paggalang.mp3 — Alalahanin ang mabuting gawi: Paggalang.
 - pag-aaway.mp3 — Pag-aaway
-- panunukso.mp3 — Pa u ukso
-- paggalang.mp3 — Paggala g
-- tinanong-si-ben-kung-nais-niyang-kumain-sumagot-siya-ng-opo-salamat-po-magalang-siyang-sumagot-sa-kanyang-tiyahin.mp3 — Ti a o g si Be  ku g  ais  iya g kumai . Sumagot siya  g Opo, salamat po. Magala g siya g sumagot sa ka ya g tiyahi .
-- paano-magalang-na-sasagot-ng-oo.mp3 — Paa o magala g  a sasagot  g oo?
-- alalahanin-ang-mabuting-gawi-opo.mp3 — Alalaha i  a g mabuti g gawi: Opo.
+- panunukso.mp3 — Panunukso
+- paggalang.mp3 — Paggalang
+- tinanong-si-ben-kung-nais-niyang-kumain-sumagot-siya-ng-opo-salamat-po-magalang-siyang-sumagot-sa-kanyang-tiyahin.mp3 — Tinanong si Ben kung nais niyang kumain. Sumagot siya ng Opo, salamat po. Magalang siyang sumagot sa kanyang tiyahin.
+- paano-magalang-na-sasagot-ng-oo.mp3 — Paano magalang na sasagot ng oo?
+- alalahanin-ang-mabuting-gawi-opo.mp3 — Alalahanin ang mabuting gawi: Opo.
 - opo.mp3 — Opo
-- ay.mp3 — ay
-- buuin-salamat.mp3 — Buui : Salamat ___.
-- alalahanin-ang-mabuting-gawi-po.mp3 — Alalaha i  a g mabuti g gawi: po.
+- ay.mp3 — Ay
+- buuin-salamat.mp3 — Buuin: Salamat ___.
+- alalahanin-ang-mabuting-gawi-po.mp3 — Alalahanin ang mabuting gawi: po.
 - po.mp3 — po
-- tinawag-ka-ng-iyong-lolo-ano-ang-sagot.mp3 — Ti awag ka  g iyo g lolo. A o a g sagot?
-- alalahanin-ang-mabuting-gawi-bakit-po.mp3 — Alalaha i  a g mabuti g gawi: Bakit po?.
+- tinawag-ka-ng-iyong-lolo-ano-ang-sagot.mp3 — Tinawag ka ng iyong lolo. Ano ang sagot?
+- alalahanin-ang-mabuting-gawi-bakit-po.mp3 — Alalahanin ang mabuting gawi: Bakit po?.
 - huwag.mp3 — Huwag!
 - bakit-po.mp3 — Bakit po?
-- ano.mp3 — A o?!
-- paano-hihingi-ng-tubig.mp3 — Paa o hihi gi  g tubig?
-- alalahanin-ang-mabuting-gawi-pahingi-po-ng-tubig.mp3 — Alalaha i  a g mabuti g gawi: Pahi gi po  g tubig..
-- pahingi-po-ng-tubig.mp3 — Pahi gi po  g tubig.
+- ano.mp3 — Ano?!
+- paano-hihingi-ng-tubig.mp3 — Paano hihingi ng tubig?
+- alalahanin-ang-mabuting-gawi-pahingi-po-ng-tubig.mp3 — Alalahanin ang mabuting gawi: Pahingi po ng tubig..
+- pahingi-po-ng-tubig.mp3 — Pahingi po ng tubig.
 - tubig-bilis.mp3 — Tubig! Bilis!
-- akin-iyan.mp3 — Aki  iya !
-- ano-ang-ipinapakita-ng-po-at-opo.mp3 — A o a g ipi apakita  g po at opo?
-- pang-aasar.mp3 — Pa g-aasa 
+- akin-iyan.mp3 — Akin iyan!
+- ano-ang-ipinapakita-ng-po-at-opo.mp3 — Ano ang ipinapakita ng po at opo?
+- pang-aasar.mp3 — Pang-aasar
 - galit.mp3 — Galit
-- nanghiram-si-mia-ng-lapis-nagsabi-siya-ng-pakiusap-maaari-bang-humiram-pagkatapos-nagsabi-siya-ng-salamat-nang-mabangga-ang-kaibigan-sinabi-niyang-pasensya-na.mp3 — Na ghi am si Mia  g lapis. Nagsabi siya  g Pakiusap, maaa i ba g humi am? Pagkatapos,  agsabi siya  g Salamat. Na g maba gga a g kaibiga , si abi  iya g Pase sya  a.
-- ano-ang-sasabihin-kapag-tinulungan.mp3 — A o a g sasabihi  kapag ti ulu ga ?
-- alalahanin-ang-mabuting-gawi-salamat.mp3 — Alalaha i  a g mabuti g gawi: Salamat!.
+- nanghiram-si-mia-ng-lapis-nagsabi-siya-ng-pakiusap-maaari-bang-humiram-pagkatapos-nagsabi-siya-ng-salamat-nang-mabangga-ang-kaibigan-sinabi-niyang-pasensya-na.mp3 — Nanghiram si Mia ng lapis. Nagsabi siya ng Pakiusap, maaari bang humiram? Pagkatapos, nagsabi siya ng Salamat. Nang mabangga ang kaibigan, sinabi niyang Pasensya na.
+- ano-ang-sasabihin-kapag-tinulungan.mp3 — Ano ang sasabihin kapag tinulungan?
+- alalahanin-ang-mabuting-gawi-salamat.mp3 — Alalahanin ang mabuting gawi: Salamat!.
 - salamat.mp3 — Salamat!
 - ayoko.mp3 — Ayoko!
-- bilisan-mo.mp3 — Bilisa  mo!
-- ano-ang-sasabihin-kapag-nakasakit.mp3 — A o a g sasabihi  kapag  akasakit?
-- alalahanin-ang-mabuting-gawi-pasensya-na.mp3 — Alalaha i  a g mabuti g gawi: Pase sya  a..
-- kasalanan-mo.mp3 — Kasala a  mo!
-- wala-akong-pakialam.mp3 — Wala ako g pakialam.
-- pasensya-na.mp3 — Pase sya  a.
-- paano-magalang-na-hihiram.mp3 — Paa o magala g  a hihi am?
-- alalahanin-ang-mabuting-gawi-pakiusap-maaari-bang-humiram.mp3 — Alalaha i  a g mabuti g gawi: Pakiusap, maaa i ba g humi am?.
-- kukunin-ko-na.mp3 — Kuku i  ko  a.
-- pakiusap-maaari-bang-humiram.mp3 — Pakiusap, maaa i ba g humi am?
-- akin-na-iyan.mp3 — Aki   a iya !
-- ano-ang-sasabihin-matapos-humiram.mp3 — A o a g sasabihi  matapos humi am?
-- alalahanin-ang-mabuting-gawi-salamat-sa-pagpapahiram.mp3 — Alalaha i  a g mabuti g gawi: Salamat sa pagpapahi am..
-- salamat-sa-pagpapahiram.mp3 — Salamat sa pagpapahi am.
-- akin-na-ito.mp3 — Aki   a ito.
-- hindi-ko-ibabalik.mp3 — Hi di ko ibabalik.
-- paano-magalang-na-dadaan.mp3 — Paa o magala g  a dadaa ?
-- alalahanin-ang-mabuting-gawi-makikiraan-po.mp3 — Alalaha i  a g mabuti g gawi: Makiki aa  po..
+- bilisan-mo.mp3 — Bilisan mo!
+- ano-ang-sasabihin-kapag-nakasakit.mp3 — Ano ang sasabihin kapag nakasakit?
+- alalahanin-ang-mabuting-gawi-pasensya-na.mp3 — Alalahanin ang mabuting gawi: Pasensya na..
+- kasalanan-mo.mp3 — Kasalanan mo!
+- wala-akong-pakialam.mp3 — Wala akong pakialam.
+- pasensya-na.mp3 — Pasensya na.
+- paano-magalang-na-hihiram.mp3 — Paano magalang na hihiram?
+- alalahanin-ang-mabuting-gawi-pakiusap-maaari-bang-humiram.mp3 — Alalahanin ang mabuting gawi: Pakiusap, maaari bang humiram?.
+- kukunin-ko-na.mp3 — Kukunin ko na.
+- pakiusap-maaari-bang-humiram.mp3 — Pakiusap, maaari bang humiram?
+- akin-na-iyan.mp3 — Akin na iyan!
+- ano-ang-sasabihin-matapos-humiram.mp3 — Ano ang sasabihin matapos humiram?
+- alalahanin-ang-mabuting-gawi-salamat-sa-pagpapahiram.mp3 — Alalahanin ang mabuting gawi: Salamat sa pagpapahiram..
+- salamat-sa-pagpapahiram.mp3 — Salamat sa pagpapahiram.
+- akin-na-ito.mp3 — Akin na ito.
+- hindi-ko-ibabalik.mp3 — Hindi ko ibabalik.
+- paano-magalang-na-dadaan.mp3 — Paano magalang na dadaan?
+- alalahanin-ang-mabuting-gawi-makikiraan-po.mp3 — Alalahanin ang mabuting gawi: Makikiraan po..
 - tabi.mp3 — Tabi!
 - itutulak-kita.mp3 — Itutulak kita.
-- makikiraan-po.mp3 — Makiki aa  po.
-- may-mga-krayola-si-leo-walang-dalang-krayola-ang-kaibigan-niya-kaya-nagbahagi-siya-pagkatapos-gumuhit-nagtulungan-silang-magligpit.mp3 — May mga k ayola si Leo. Wala g dala g k ayola a g kaibiga   iya kaya  agbahagi siya. Pagkatapos gumuhit,  agtulu ga  sila g magligpit.
-- walang-krayola-ang-kaibigan-ano-ang-maaari-mong-gawin.mp3 — Wala g k ayola a g kaibiga . A o a g maaa i mo g gawi ?
-- alalahanin-ang-mabuting-gawi-magpahiram.mp3 — Alalaha i  a g mabuti g gawi: Magpahi am.
-- magpahiram.mp3 — Magpahi am
-- manukso.mp3 — Ma ukso
+- makikiraan-po.mp3 — Makikiraan po.
+- may-mga-krayola-si-leo-walang-dalang-krayola-ang-kaibigan-niya-kaya-nagbahagi-siya-pagkatapos-gumuhit-nagtulungan-silang-magligpit.mp3 — May mga krayola si Leo. Walang dalang krayola ang kaibigan niya kaya nagbahagi siya. Pagkatapos gumuhit, nagtulungan silang magligpit.
+- walang-krayola-ang-kaibigan-ano-ang-maaari-mong-gawin.mp3 — Walang krayola ang kaibigan. Ano ang maaari mong gawin?
+- alalahanin-ang-mabuting-gawi-magpahiram.mp3 — Alalahanin ang mabuting gawi: Magpahiram.
+- magpahiram.mp3 — Magpahiram
+- manukso.mp3 — Manukso
 - itago-lahat.mp3 — Itago lahat
-- maraming-kailangang-ligpitin-ano-ang-gagawin.mp3 — Ma ami g kaila ga g ligpiti . A o a g gagawi ?
-- alalahanin-ang-mabuting-gawi-tumulong.mp3 — Alalaha i  a g mabuti g gawi: Tumulo g.
+- maraming-kailangang-ligpitin-ano-ang-gagawin.mp3 — Maraming kailangang ligpitin. Ano ang gagawin?
+- alalahanin-ang-mabuting-gawi-tumulong.mp3 — Alalahanin ang mabuting gawi: Tumulong.
 - umalis-agad.mp3 — Umalis agad
 - magkalat-pa.mp3 — Magkalat pa
-- tumulong.mp3 — Tumulo g
-- paano-magpahiram.mp3 — Paa o magpahi am?
-- alalahanin-ang-mabuting-gawi-iabot-nang-maingat.mp3 — Alalaha i  a g mabuti g gawi: Iabot  a g mai gat.
-- sirain-muna.mp3 — Si ai  mu a
-- iabot-nang-maingat.mp3 — Iabot  a g mai gat
+- tumulong.mp3 — Tumulong
+- paano-magpahiram.mp3 — Paano magpahiram?
+- alalahanin-ang-mabuting-gawi-iabot-nang-maingat.mp3 — Alalahanin ang mabuting gawi: Iabot nang maingat.
+- sirain-muna.mp3 — Sirain muna
+- iabot-nang-maingat.mp3 — Iabot nang maingat
 - ihagis.mp3 — Ihagis
-- kapag-may-humiram-ano-ang-mabuting-paalala.mp3 — Kapag may humi am, a o a g mabuti g paalala?
-- alalahanin-ang-mabuting-gawi-ingatan-at-ibalik.mp3 — Alalaha i  a g mabuti g gawi: I gata  at ibalik..
-- ingatan-at-ibalik.mp3 — I gata  at ibalik.
-- huwag-mong-ibalik.mp3 — Huwag mo g ibalik.
-- itapon-mo.mp3 — Itapo  mo.
-- ano-ang-bayanihan.mp3 — A o a g baya iha ?
-- alalahanin-ang-mabuting-gawi-pagtutulungan.mp3 — Alalaha i  a g mabuti g gawi: Pagtutulu ga .
-- pagtutulungan.mp3 — Pagtutulu ga 
-- bago-kumain-naghugas-ng-kamay-si-liza-gamit-ang-sabon-at-tubig-hinugasan-niya-ang-palad-likod-ng-kamay-at-pagitan-ng-mga-daliri-nagbanlaw-siya-at-nagpatuyo.mp3 — Bago kumai ,  aghugas  g kamay si Liza gamit a g sabo  at tubig. Hi ugasa   iya a g palad, likod  g kamay, at pagita   g mga dali i. Nagba law siya at  agpatuyo.
-- ano-ang-gagawin-bago-kumain.mp3 — A o a g gagawi  bago kumai ?
-- alalahanin-ang-mabuting-gawi-maghugas-ng-kamay.mp3 — Alalaha i  a g mabuti g gawi: Maghugas  g kamay.
-- maghugas-ng-kamay.mp3 — Maghugas  g kamay
-- maglaro-sa-putik.mp3 — Magla o sa putik
-- punasan-sa-damit.mp3 — Pu asa  sa damit
-- ano-ang-kasama-ng-tubig-sa-paghuhugas.mp3 — A o a g kasama  g tubig sa paghuhugas?
-- alalahanin-ang-mabuting-gawi-sabon.mp3 — Alalaha i  a g mabuti g gawi: Sabo .
-- buhangin.mp3 — Buha gi 
-- pandikit.mp3 — Pa dikit
-- sabon.mp3 — Sabo 
-- aling-bahagi-ang-lilinisin.mp3 — Ali g bahagi a g lili isi ?
-- alalahanin-ang-mabuting-gawi-pati-pagitan-ng-daliri.mp3 — Alalaha i  a g mabuti g gawi: Pati pagita   g dali i.
-- isang-daliri-lang.mp3 — Isa g dali i la g
-- pati-pagitan-ng-daliri.mp3 — Pati pagita   g dali i
-- palad-lang.mp3 — Palad la g
-- ano-ang-gagawin-pagkatapos-magsabon.mp3 — A o a g gagawi  pagkatapos magsabo ?
-- alalahanin-ang-mabuting-gawi-magbanlaw.mp3 — Alalaha i  a g mabuti g gawi: Magba law.
-- magbanlaw.mp3 — Magba law
-- humawak-ng-basura.mp3 — Humawak  g basu a
-- kumain-agad.mp3 — Kumai  agad
-- paano-patutuyuin-ang-malinis-na-kamay.mp3 — Paa o patutuyui  a g mali is  a kamay?
-- alalahanin-ang-mabuting-gawi-malinis-na-tuwalya.mp3 — Alalaha i  a g mabuti g gawi: Mali is  a tuwalya.
-- maruming-damit.mp3 — Ma umi g damit
+- kapag-may-humiram-ano-ang-mabuting-paalala.mp3 — Kapag may humiram, ano ang mabuting paalala?
+- alalahanin-ang-mabuting-gawi-ingatan-at-ibalik.mp3 — Alalahanin ang mabuting gawi: Ingatan at ibalik..
+- ingatan-at-ibalik.mp3 — Ingatan at ibalik.
+- huwag-mong-ibalik.mp3 — Huwag mong ibalik.
+- itapon-mo.mp3 — Itapon mo.
+- ano-ang-bayanihan.mp3 — Ano ang bayanihan?
+- alalahanin-ang-mabuting-gawi-pagtutulungan.mp3 — Alalahanin ang mabuting gawi: Pagtutulungan.
+- pagtutulungan.mp3 — Pagtutulungan
+- bago-kumain-naghugas-ng-kamay-si-liza-gamit-ang-sabon-at-tubig-hinugasan-niya-ang-palad-likod-ng-kamay-at-pagitan-ng-mga-daliri-nagbanlaw-siya-at-nagpatuyo.mp3 — Bago kumain, naghugas ng kamay si Liza gamit ang sabon at tubig. Hinugasan niya ang palad, likod ng kamay, at pagitan ng mga daliri. Nagbanlaw siya at nagpatuyo.
+- ano-ang-gagawin-bago-kumain.mp3 — Ano ang gagawin bago kumain?
+- alalahanin-ang-mabuting-gawi-maghugas-ng-kamay.mp3 — Alalahanin ang mabuting gawi: Maghugas ng kamay.
+- maghugas-ng-kamay.mp3 — Maghugas ng kamay
+- maglaro-sa-putik.mp3 — Maglaro sa putik
+- punasan-sa-damit.mp3 — Punasan sa damit
+- ano-ang-kasama-ng-tubig-sa-paghuhugas.mp3 — Ano ang kasama ng tubig sa paghuhugas?
+- alalahanin-ang-mabuting-gawi-sabon.mp3 — Alalahanin ang mabuting gawi: Sabon.
+- buhangin.mp3 — Buhangin
+- pandikit.mp3 — Pandikit
+- sabon.mp3 — Sabon
+- aling-bahagi-ang-lilinisin.mp3 — Aling bahagi ang lilinisin?
+- alalahanin-ang-mabuting-gawi-pati-pagitan-ng-daliri.mp3 — Alalahanin ang mabuting gawi: Pati pagitan ng daliri.
+- isang-daliri-lang.mp3 — Isang daliri lang
+- pati-pagitan-ng-daliri.mp3 — Pati pagitan ng daliri
+- palad-lang.mp3 — Palad lang
+- ano-ang-gagawin-pagkatapos-magsabon.mp3 — Ano ang gagawin pagkatapos magsabon?
+- alalahanin-ang-mabuting-gawi-magbanlaw.mp3 — Alalahanin ang mabuting gawi: Magbanlaw.
+- magbanlaw.mp3 — Magbanlaw
+- humawak-ng-basura.mp3 — Humawak ng basura
+- kumain-agad.mp3 — Kumain agad
+- paano-patutuyuin-ang-malinis-na-kamay.mp3 — Paano patutuyuin ang malinis na kamay?
+- alalahanin-ang-mabuting-gawi-malinis-na-tuwalya.mp3 — Alalahanin ang mabuting gawi: Malinis na tuwalya.
+- maruming-damit.mp3 — Maruming damit
 - sahig.mp3 — Sahig
-- malinis-na-tuwalya.mp3 — Mali is  a tuwalya
-- masayang-naglaro-sina-ana-at-ben-pagkatapos-ibinalik-nila-ang-mga-laruan-sa-kahon-naging-maayos-at-ligtas-ang-daanan.mp3 — Masaya g  agla o si a A a at Be . Pagkatapos, ibi alik  ila a g mga la ua  sa kaho . Nagi g maayos at ligtas a g daa a .
-- ano-ang-gagawin-pagkatapos-maglaro.mp3 — A o a g gagawi  pagkatapos magla o?
-- alalahanin-ang-mabuting-gawi-iligpit-ang-laruan.mp3 — Alalaha i  a g mabuti g gawi: Iligpit a g la ua .
-- iligpit-ang-laruan.mp3 — Iligpit a g la ua 
-- iwan-sa-sahig.mp3 — Iwa  sa sahig
-- itago-sa-ilalim-ng-kama.mp3 — Itago sa ilalim  g kama
-- saan-ilalagay-ang-laruan.mp3 — Saa  ilalagay a g la ua ?
-- alalahanin-ang-mabuting-gawi-sa-tamang-lalagyan.mp3 — Alalaha i  a g mabuti g gawi: Sa tama g lalagya .
-- sa-hagdan.mp3 — Sa hagda 
-- sa-daanan.mp3 — Sa daa a 
-- sa-tamang-lalagyan.mp3 — Sa tama g lalagya 
-- may-laruan-sa-daanan-ano-ang-gagawin.mp3 — May la ua  sa daa a . A o a g gagawi ?
-- alalahanin-ang-mabuting-gawi-iligpit-nang-maingat.mp3 — Alalaha i  a g mabuti g gawi: Iligpit  a g mai gat.
-- dagdagan-pa.mp3 — Dagdaga  pa
-- iligpit-nang-maingat.mp3 — Iligpit  a g mai gat
-- sipain.mp3 — Sipai 
-- bakit-mahalagang-magligpit.mp3 — Bakit mahalaga g magligpit?
-- alalahanin-ang-mabuting-gawi-upang-maayos-at-ligtas.mp3 — Alalaha i  a g mabuti g gawi: Upa g maayos at ligtas.
-- upang-maayos-at-ligtas.mp3 — Upa g maayos at ligtas
-- upang-makalat.mp3 — Upa g makalat
-- upang-may-matisod.mp3 — Upa g may matisod
-- may-kaibigang-nagliligpit-ano-ang-gagawin.mp3 — May kaibiga g  agliligpit. A o a g gagawi ?
-- manood-lang-palagi.mp3 — Ma ood la g palagi
+- malinis-na-tuwalya.mp3 — Malinis na tuwalya
+- masayang-naglaro-sina-ana-at-ben-pagkatapos-ibinalik-nila-ang-mga-laruan-sa-kahon-naging-maayos-at-ligtas-ang-daanan.mp3 — Masayang naglaro sina Ana at Ben. Pagkatapos, ibinalik nila ang mga laruan sa kahon. Naging maayos at ligtas ang daanan.
+- ano-ang-gagawin-pagkatapos-maglaro.mp3 — Ano ang gagawin pagkatapos maglaro?
+- alalahanin-ang-mabuting-gawi-iligpit-ang-laruan.mp3 — Alalahanin ang mabuting gawi: Iligpit ang laruan.
+- iligpit-ang-laruan.mp3 — Iligpit ang laruan
+- iwan-sa-sahig.mp3 — Iwan sa sahig
+- itago-sa-ilalim-ng-kama.mp3 — Itago sa ilalim ng kama
+- saan-ilalagay-ang-laruan.mp3 — Saan ilalagay ang laruan?
+- alalahanin-ang-mabuting-gawi-sa-tamang-lalagyan.mp3 — Alalahanin ang mabuting gawi: Sa tamang lalagyan.
+- sa-hagdan.mp3 — Sa hagdan
+- sa-daanan.mp3 — Sa daanan
+- sa-tamang-lalagyan.mp3 — Sa tamang lalagyan
+- may-laruan-sa-daanan-ano-ang-gagawin.mp3 — May laruan sa daanan. Ano ang gagawin?
+- alalahanin-ang-mabuting-gawi-iligpit-nang-maingat.mp3 — Alalahanin ang mabuting gawi: Iligpit nang maingat.
+- dagdagan-pa.mp3 — Dagdagan pa
+- iligpit-nang-maingat.mp3 — Iligpit nang maingat
+- sipain.mp3 — Sipain
+- bakit-mahalagang-magligpit.mp3 — Bakit mahalagang magligpit?
+- alalahanin-ang-mabuting-gawi-upang-maayos-at-ligtas.mp3 — Alalahanin ang mabuting gawi: Upang maayos at ligtas.
+- upang-maayos-at-ligtas.mp3 — Upang maayos at ligtas
+- upang-makalat.mp3 — Upang makalat
+- upang-may-matisod.mp3 — Upang may matisod
+- may-kaibigang-nagliligpit-ano-ang-gagawin.mp3 — May kaibigang nagliligpit. Ano ang gagawin?
+- manood-lang-palagi.mp3 — Manood lang palagi
 - ikalat-ulit.mp3 — Ikalat ulit
-- nakikinig-si-ana-habang-nagsasalita-ang-guro-kapag-nais-niyang-sumagot-nagtataas-siya-ng-kamay-at-naghihintay-ng-pagkakataon.mp3 — Nakiki ig si A a haba g  agsasalita a g gu o. Kapag  ais  iya g sumagot,  agtataas siya  g kamay at  aghihi tay  g pagkakatao .
-- ano-ang-gagawin-habang-nagsasalita-ang-guro.mp3 — A o a g gagawi  haba g  agsasalita a g gu o?
-- alalahanin-ang-mabuting-gawi-makinig.mp3 — Alalaha i  a g mabuti g gawi: Maki ig.
-- makinig.mp3 — Maki ig
+- nakikinig-si-ana-habang-nagsasalita-ang-guro-kapag-nais-niyang-sumagot-nagtataas-siya-ng-kamay-at-naghihintay-ng-pagkakataon.mp3 — Nakikinig si Ana habang nagsasalita ang guro. Kapag nais niyang sumagot, nagtataas siya ng kamay at naghihintay ng pagkakataon.
+- ano-ang-gagawin-habang-nagsasalita-ang-guro.mp3 — Ano ang gagawin habang nagsasalita ang guro?
+- alalahanin-ang-mabuting-gawi-makinig.mp3 — Alalahanin ang mabuting gawi: Makinig.
+- makinig.mp3 — Makinig
 - sumigaw.mp3 — Sumigaw
 - tumakbo.mp3 — Tumakbo
-- paano-hihingi-ng-pagkakataong-sumagot.mp3 — Paa o hihi gi  g pagkakatao g sumagot?
-- alalahanin-ang-mabuting-gawi-itaas-ang-kamay.mp3 — Alalaha i  a g mabuti g gawi: Itaas a g kamay.
+- paano-hihingi-ng-pagkakataong-sumagot.mp3 — Paano hihingi ng pagkakataong sumagot?
+- alalahanin-ang-mabuting-gawi-itaas-ang-kamay.mp3 — Alalahanin ang mabuting gawi: Itaas ang kamay.
 - sumabat.mp3 — Sumabat
 - tumayo-sa-mesa.mp3 — Tumayo sa mesa
-- itaas-ang-kamay.mp3 — Itaas a g kamay
-- may-kaklaseng-nagsasalita-ano-ang-gagawin.mp3 — May kaklase g  agsasalita. A o a g gagawi ?
-- alalahanin-ang-mabuting-gawi-hintaying-matapos.mp3 — Alalaha i  a g mabuti g gawi: Hi tayi g matapos.
-- sigawan.mp3 — Sigawa 
-- hintaying-matapos.mp3 — Hi tayi g matapos
-- tawanan.mp3 — Tawa a 
-- may-pila-sa-labas-ano-ang-gagawin.mp3 — May pila sa labas. A o a g gagawi ?
-- alalahanin-ang-mabuting-gawi-hintayin-ang-turno.mp3 — Alalaha i  a g mabuti g gawi: Hi tayi  a g tu o.
-- hintayin-ang-turno.mp3 — Hi tayi  a g tu o
-- sumingit.mp3 — Sumi git
-- manulak.mp3 — Ma ulak
-- nagkamali-ang-kaklase-ano-ang-mabuting-gawin.mp3 — Nagkamali a g kaklase. A o a g mabuti g gawi ?
-- alalahanin-ang-mabuting-gawi-hikayatin-siyang-sumubok.mp3 — Alalaha i  a g mabuti g gawi: Hikayati  siya g sumubok.
-- pagtawanan.mp3 — Pagtawa a 
-- asarin.mp3 — Asa i 
-- hikayatin-siyang-sumubok.mp3 — Hikayati  siya g sumubok
-- nakita-ni-ben-ang-nabasag-niyang-tasa-sinabi-niya-ang-totoo-sa-nakatatanda-at-humingi-ng-tulong-hindi-niya-hinawakan-ang-matutulis-na-bubog.mp3 — Nakita  i Be  a g  abasag  iya g tasa. Si abi  iya a g totoo sa  akatata da at humi gi  g tulo g. Hi di  iya hi awaka  a g matutulis  a bubog.
-- may-nasira-kang-gamit-ano-ang-gagawin.mp3 — May  asi a ka g gamit. A o a g gagawi ?
-- alalahanin-ang-mabuting-gawi-sabihin-ang-totoo.mp3 — Alalaha i  a g mabuti g gawi: Sabihi  a g totoo.
-- sabihin-ang-totoo.mp3 — Sabihi  a g totoo
-- magsinungaling.mp3 — Magsi u gali g
+- itaas-ang-kamay.mp3 — Itaas ang kamay
+- may-kaklaseng-nagsasalita-ano-ang-gagawin.mp3 — May kaklaseng nagsasalita. Ano ang gagawin?
+- alalahanin-ang-mabuting-gawi-hintaying-matapos.mp3 — Alalahanin ang mabuting gawi: Hintaying matapos.
+- sigawan.mp3 — Sigawan
+- hintaying-matapos.mp3 — Hintaying matapos
+- tawanan.mp3 — Tawanan
+- may-pila-sa-labas-ano-ang-gagawin.mp3 — May pila sa labas. Ano ang gagawin?
+- alalahanin-ang-mabuting-gawi-hintayin-ang-turno.mp3 — Alalahanin ang mabuting gawi: Hintayin ang turno.
+- hintayin-ang-turno.mp3 — Hintayin ang turno
+- sumingit.mp3 — Sumingit
+- manulak.mp3 — Manulak
+- nagkamali-ang-kaklase-ano-ang-mabuting-gawin.mp3 — Nagkamali ang kaklase. Ano ang mabuting gawin?
+- alalahanin-ang-mabuting-gawi-hikayatin-siyang-sumubok.mp3 — Alalahanin ang mabuting gawi: Hikayatin siyang sumubok.
+- pagtawanan.mp3 — Pagtawanan
+- asarin.mp3 — Asarin
+- hikayatin-siyang-sumubok.mp3 — Hikayatin siyang sumubok
+- nakita-ni-ben-ang-nabasag-niyang-tasa-sinabi-niya-ang-totoo-sa-nakatatanda-at-humingi-ng-tulong-hindi-niya-hinawakan-ang-matutulis-na-bubog.mp3 — Nakita ni Ben ang nabasag niyang tasa. Sinabi niya ang totoo sa nakatatanda at humingi ng tulong. Hindi niya hinawakan ang matutulis na bubog.
+- may-nasira-kang-gamit-ano-ang-gagawin.mp3 — May nasira kang gamit. Ano ang gagawin?
+- alalahanin-ang-mabuting-gawi-sabihin-ang-totoo.mp3 — Alalahanin ang mabuting gawi: Sabihin ang totoo.
+- sabihin-ang-totoo.mp3 — Sabihin ang totoo
+- magsinungaling.mp3 — Magsinungaling
 - isisi-sa-iba.mp3 — Isisi sa iba
-- may-bubog-sa-sahig-ano-ang-gagawin.mp3 — May bubog sa sahig. A o a g gagawi ?
-- alalahanin-ang-mabuting-gawi-humingi-ng-tulong-sa-nakatatanda.mp3 — Alalaha i  a g mabuti g gawi: Humi gi  g tulo g sa  akatata da.
-- pulutin-gamit-ang-kamay.mp3 — Puluti  gamit a g kamay
-- tapakan.mp3 — Tapaka 
-- humingi-ng-tulong-sa-nakatatanda.mp3 — Humi gi  g tulo g sa  akatata da
-- may-gawaing-kaya-mong-gawin-ano-ang-maaari-mong-gawin.mp3 — May gawai g kaya mo g gawi . A o a g maaa i mo g gawi ?
-- manigaw.mp3 — Ma igaw
+- may-bubog-sa-sahig-ano-ang-gagawin.mp3 — May bubog sa sahig. Ano ang gagawin?
+- alalahanin-ang-mabuting-gawi-humingi-ng-tulong-sa-nakatatanda.mp3 — Alalahanin ang mabuting gawi: Humingi ng tulong sa nakatatanda.
+- pulutin-gamit-ang-kamay.mp3 — Pulutin gamit ang kamay
+- tapakan.mp3 — Tapakan
+- humingi-ng-tulong-sa-nakatatanda.mp3 — Humingi ng tulong sa nakatatanda
+- may-gawaing-kaya-mong-gawin-ano-ang-maaari-mong-gawin.mp3 — May gawaing kaya mong gawin. Ano ang maaari mong gawin?
+- manigaw.mp3 — Manigaw
 - magkalat.mp3 — Magkalat
-- may-nagpapahinga-paano-kikilos.mp3 — May  agpapahi ga. Paa o kikilos?
-- alalahanin-ang-mabuting-gawi-mahinahon.mp3 — Alalaha i  a g mabuti g gawi: Mahi aho .
-- mahinahon.mp3 — Mahi aho 
-- maingay.mp3 — Mai gay
-- may-nakitang-gamit-na-hindi-sa-iyo-ano-ang-gagawin.mp3 — May  akita g gamit  a hi di sa iyo. A o a g gagawi ?
-- alalahanin-ang-mabuting-gawi-ibalik-sa-may-ari.mp3 — Alalaha i  a g mabuti g gawi: Ibalik sa may-a i.
+- may-nagpapahinga-paano-kikilos.mp3 — May nagpapahinga. Paano kikilos?
+- alalahanin-ang-mabuting-gawi-mahinahon.mp3 — Alalahanin ang mabuting gawi: Mahinahon.
+- mahinahon.mp3 — Mahinahon
+- maingay.mp3 — Maingay
+- may-nakitang-gamit-na-hindi-sa-iyo-ano-ang-gagawin.mp3 — May nakitang gamit na hindi sa iyo. Ano ang gagawin?
+- alalahanin-ang-mabuting-gawi-ibalik-sa-may-ari.mp3 — Alalahanin ang mabuting gawi: Ibalik sa may-ari.
 - itago.mp3 — Itago
-- sirain.mp3 — Si ai 
-- ibalik-sa-may-ari.mp3 — Ibalik sa may-a i
-- namasyal-si-mia-kasama-ang-nakatatanda-itinapon-niya-ang-balot-sa-basurahan-nang-makakita-ng-ligaw-na-hayop-hindi-niya-ito-nilapitan-at-humingi-siya-ng-tulong-sa-nakatatanda.mp3 — Namasyal si Mia kasama a g  akatata da. Iti apo   iya a g balot sa basu aha . Na g makakita  g ligaw  a hayop, hi di  iya ito  ilapita  at humi gi siya  g tulo g sa  akatata da.
-- saan-itatapon-ang-balot.mp3 — Saa  itatapo  a g balot?
-- alalahanin-ang-mabuting-gawi-sa-basurahan.mp3 — Alalaha i  a g mabuti g gawi: Sa basu aha .
-- sa-basurahan.mp3 — Sa basu aha 
+- sirain.mp3 — Sirain
+- ibalik-sa-may-ari.mp3 — Ibalik sa may-ari
+- namasyal-si-mia-kasama-ang-nakatatanda-itinapon-niya-ang-balot-sa-basurahan-nang-makakita-ng-ligaw-na-hayop-hindi-niya-ito-nilapitan-at-humingi-siya-ng-tulong-sa-nakatatanda.mp3 — Namasyal si Mia kasama ang nakatatanda. Itinapon niya ang balot sa basurahan. Nang makakita ng ligaw na hayop, hindi niya ito nilapitan at humingi siya ng tulong sa nakatatanda.
+- saan-itatapon-ang-balot.mp3 — Saan itatapon ang balot?
+- alalahanin-ang-mabuting-gawi-sa-basurahan.mp3 — Alalahanin ang mabuting gawi: Sa basurahan.
+- sa-basurahan.mp3 — Sa basurahan
 - sa-ilog.mp3 — Sa ilog
 - sa-kalsada.mp3 — Sa kalsada
-- may-di-kilalang-hayop-ano-ang-ligtas-gawin.mp3 — May di-kilala g hayop. A o a g ligtas gawi ?
-- alalahanin-ang-mabuting-gawi-lumayo-at-magsabi-sa-nakatatanda.mp3 — Alalaha i  a g mabuti g gawi: Lumayo at magsabi sa  akatata da.
-- hilain-ang-buntot.mp3 — Hilai  a g bu tot
-- habulin.mp3 — Habuli 
-- lumayo-at-magsabi-sa-nakatatanda.mp3 — Lumayo at magsabi sa  akatata da
-- may-bulaklak-sa-pampublikong-hardin-ano-ang-gagawin.mp3 — May bulaklak sa pampubliko g ha di . A o a g gagawi ?
-- alalahanin-ang-mabuting-gawi-alagaan-at-huwag-pitasin.mp3 — Alalaha i  a g mabuti g gawi: Alagaa  at huwag pitasi .
-- alagaan-at-huwag-pitasin.mp3 — Alagaa  at huwag pitasi 
-- bunutin.mp3 — Bu uti 
-- tatawid-ka-ng-kalsada-ano-ang-gagawin.mp3 — Tatawid ka  g kalsada. A o a g gagawi ?
-- alalahanin-ang-mabuting-gawi-magpatulong-sa-kasama-mong-nakatatanda.mp3 — Alalaha i  a g mabuti g gawi: Magpatulo g sa kasama mo g  akatata da.
-- magpatulong-sa-kasama-mong-nakatatanda.mp3 — Magpatulo g sa kasama mo g  akatata da
+- may-di-kilalang-hayop-ano-ang-ligtas-gawin.mp3 — May di-kilalang hayop. Ano ang ligtas gawin?
+- alalahanin-ang-mabuting-gawi-lumayo-at-magsabi-sa-nakatatanda.mp3 — Alalahanin ang mabuting gawi: Lumayo at magsabi sa nakatatanda.
+- hilain-ang-buntot.mp3 — Hilain ang buntot
+- habulin.mp3 — Habulin
+- lumayo-at-magsabi-sa-nakatatanda.mp3 — Lumayo at magsabi sa nakatatanda
+- may-bulaklak-sa-pampublikong-hardin-ano-ang-gagawin.mp3 — May bulaklak sa pampublikong hardin. Ano ang gagawin?
+- alalahanin-ang-mabuting-gawi-alagaan-at-huwag-pitasin.mp3 — Alalahanin ang mabuting gawi: Alagaan at huwag pitasin.
+- alagaan-at-huwag-pitasin.mp3 — Alagaan at huwag pitasin
+- bunutin.mp3 — Bunutin
+- tatawid-ka-ng-kalsada-ano-ang-gagawin.mp3 — Tatawid ka ng kalsada. Ano ang gagawin?
+- alalahanin-ang-mabuting-gawi-magpatulong-sa-kasama-mong-nakatatanda.mp3 — Alalahanin ang mabuting gawi: Magpatulong sa kasama mong nakatatanda.
+- magpatulong-sa-kasama-mong-nakatatanda.mp3 — Magpatulong sa kasama mong nakatatanda
 - tumakbo-mag-isa.mp3 — Tumakbo mag-isa
-- maglaro-sa-gitna.mp3 — Magla o sa git a
-- may-matandang-may-dalang-mabigat-ano-ang-maaari-mong-gawin.mp3 — May mata da g may dala g mabigat. A o a g maaa i mo g gawi ?
-- alalahanin-ang-mabuting-gawi-magtanong-nang-magalang-kung-kailangan-ng-tulong.mp3 — Alalaha i  a g mabuti g gawi: Magta o g  a g magala g ku g kaila ga   g tulo g.
-- harangan.mp3 — Ha a ga 
-- magtanong-nang-magalang-kung-kailangan-ng-tulong.mp3 — Magta o g  a g magala g ku g kaila ga   g tulo g
-- dalhin-ang-kabutihan-sa-klase-tahanan-at-pamayanan.mp3 — Dalhi  a g kabutiha  sa klase, taha a , at pamaya a .
+- maglaro-sa-gitna.mp3 — Maglaro sa gitna
+- may-matandang-may-dalang-mabigat-ano-ang-maaari-mong-gawin.mp3 — May matandang may dalang mabigat. Ano ang maaari mong gawin?
+- alalahanin-ang-mabuting-gawi-magtanong-nang-magalang-kung-kailangan-ng-tulong.mp3 — Alalahanin ang mabuting gawi: Magtanong nang magalang kung kailangan ng tulong.
+- harangan.mp3 — Harangan
+- magtanong-nang-magalang-kung-kailangan-ng-tulong.mp3 — Magtanong nang magalang kung kailangan ng tulong
+- dalhin-ang-kabutihan-sa-klase-tahanan-at-pamayanan.mp3 — Dalhin ang kabutihan sa klase, tahanan, at pamayanan.
+- ako-si-tala-isang-munting-bituin-nahulog-ako-mula-sa-langit-at-nawala-ang-aking-ningning.mp3 — Ako si Tala, isang munting bituin. Nahulog ako mula sa langit at nawala ang aking ningning.
+- nakilala-ko-sina-titik-bilang-at-likha-sasamahan-nila-tayong-magbasa-magbilang-at-lumikha.mp3 — Nakilala ko sina Titik, Bilang, at Likha. Sasamahan nila tayong magbasa, magbilang, at lumikha!
+- sa-bawat-aralin-at-mabuting-gawa-may-bagong-bituing-makokolekta-tulungan-mo-akong-ibalik-ang-ningning-sa-langit-tara-matuto-at-maglaro.mp3 — Sa bawat aralin at mabuting gawa, may bagong bituing makokolekta. Tulungan mo akong ibalik ang ningning sa langit. Tara, matuto at maglaro!
+- tara-sumikat-ako-si-tala-ano-ang-pangalan-mo-pindutin-ang-mikropono-at-sabihin-ang-pangalan-mo-kapag-handa-na-pindutin-ang-tara-na.mp3 — Tara, sumikat! Ako si Tala. Ano ang pangalan mo? Pindutin ang mikropono at sabihin ang pangalan mo. Kapag handa na, pindutin ang Tara na!
+- kumusta-saan-tayo-ngayon-pumili-ng-mundo-pindutin-ang-larawan-upang-magsimula.mp3 — Kumusta! Saan tayo ngayon? Pumili ng mundo. Pindutin ang larawan upang magsimula.
+- piliin-ang-bukas-na-yugto-sa-daan-ang-may-kandado-ay-mabubuksan-kapag-natapos-ang-naunang-yugto.mp3 — Piliin ang bukas na yugto sa daan. Ang may kandado ay mabubuksan kapag natapos ang naunang yugto.
+- hamon-ni-tala-tapusin-muna-ang-lahat-ng-yugto-sa-apat-na-mundo-kahit-ilang-bituin-ay-maaari-kaya-mo-iyan.mp3 — Hamon ni Tala. Tapusin muna ang lahat ng yugto sa apat na mundo. Kahit ilang bituin ay maaari. Kaya mo iyan!
+- hamon-ni-tala-tulungan-akong-ingatan-ang-aking-ningning-pumili-ng-bukas-na-hamon-sa-daan.mp3 — Hamon ni Tala. Tulungan akong ingatan ang aking ningning! Pumili ng bukas na hamon sa daan.
+- mahusay-natapos-mo-ang-yugto-at-nakakuha-ka-ng-mga-bituin-maaari-kang-maglaro-muli-o-magpatuloy-sa-daan.mp3 — Mahusay! Natapos mo ang yugto at nakakuha ka ng mga bituin. Maaari kang maglaro muli o magpatuloy sa daan.
+- menu-para-sa-guro-o-magulang.mp3 — Menu. Para sa guro o magulang.
+- hamon-ni-tala.mp3 — Hamon ni Tala.
+- dito-makikita-ang-progreso-at-maitatama-ang-pangalan-ng-mag-aaral.mp3 — Dito makikita ang progreso at maitatama ang pangalan ng mag-aaral.
+- piliin-at-pakinggan-ang-sagot-pagkatapos-pindutin-ang-ito-ang-sagot-ko.mp3 — Piliin at pakinggan ang sagot. Pagkatapos, pindutin ang Ito ang sagot ko.
+- ito-ang-sagot-ko.mp3 — Ito ang sagot ko.
+- mahusay.mp3 — Mahusay!
+- ang-galing-mo.mp3 — Ang galing mo!
+- tama-magaling.mp3 — Tama! Magaling!
+- napakagaling-kaya-mo-iyan.mp3 — Napakagaling! Kaya mo iyan!
+- kaya-mo-iyan-pumili-at-subukan-muli.mp3 — Kaya mo iyan. Pumili at subukan muli!
+- sabay-nating-tandaan-ang-tamang-sagot.mp3 — Sabay nating tandaan ang tamang sagot.
+- pindutin-ang-susunod-na-tanong-upang-magpatuloy.mp3 — Pindutin ang Susunod na tanong upang magpatuloy.
+- pindutin-ang-tingnan-ang-mga-bituin.mp3 — Pindutin ang Tingnan ang mga bituin.
+- bumalik.mp3 — Bumalik.
+- susunod.mp3 — Susunod.
+- laktawan-ang-kuwento.mp3 — Laktawan ang kuwento.
+- pakinggan.mp3 — Pakinggan.
+- ang-kuwento-ni-tala.mp3 — Ang kuwento ni Tala.
+- balikan-ang-simula-ng-hamon.mp3 — Balikan ang simula ng hamon.
+- balikan-ang-tagumpay-ni-tala.mp3 — Balikan ang tagumpay ni Tala.
+- tara-na.mp3 — Tara na!
+- maglaro-na.mp3 — Maglaro na!
+- maglaro-muli.mp3 — Maglaro muli.
+- buksan-ang-aralin.mp3 — Buksan ang aralin.
+- susunod-na-tanong.mp3 — Susunod na tanong.
+- tingnan-ang-mga-bituin.mp3 — Tingnan ang mga bituin.
+- pahiwatig.mp3 — Pahiwatig.
+- bukas-na-ang-musika-at-mga-tunog-ng-laro.mp3 — Bukas na ang musika at mga tunog ng laro.
+- patay-na-ang-musika-at-mga-tunog-ng-laro.mp3 — Patay na ang musika at mga tunog ng laro.
+- magdagdag-ng-bituin.mp3 — Magdagdag ng bituin.
+- burahin-ang-guhit.mp3 — Burahin ang guhit.
+- tapos-na-ang-obra-ko.mp3 — Tapos na ang obra ko!
+- burahin-ang-progreso-magpatulong-muna-sa-guro-o-magulang.mp3 — Burahin ang progreso. Magpatulong muna sa guro o magulang.
+- na-save-na-ang-pangalan.mp3 — Na-save na ang pangalan!
+- pumunta-sa-susunod-na-bukas-na-yugto.mp3 — Pumunta sa susunod na bukas na yugto.
+- ihinto-ang-awtomatikong-pagsunod.mp3 — Ihinto ang awtomatikong pagsunod.
+- ituloy-ang-awtomatikong-pagsunod.mp3 — Ituloy ang awtomatikong pagsunod.
+- pula.mp3 — Pula.
+- asul.mp3 — Asul.
+- dilaw.mp3 — Dilaw.
+- berde.mp3 — Berde.
+- lila.mp3 — Lila.
+- itim.mp3 — Itim.
+- titik-at-tunog-kasama-si-titik-matuto-ng-mga-titik-at-salita.mp3 — Titik at Tunog. Kasama si Titik, matuto ng mga titik at salita.
+- pagbibilang-kasama-si-bilang-matutong-bumilang.mp3 — Pagbibilang. Kasama si Bilang, matutong bumilang.
+- hugis-at-kulay-kasama-si-likha-kilalanin-ang-mga-hugis-at-kulay.mp3 — Hugis at Kulay. Kasama si Likha, kilalanin ang mga hugis at kulay.
+- mabuting-gawi-kasama-si-tala-matuto-ng-mabubuting-gawain.mp3 — Mabuting Gawi. Kasama si Tala, matuto ng mabubuting gawain.
+- natapos-mo-ang-lahat-ng-aralin-dahil-sa-iyong-pagsisikap-bumalik-na-ang-aking-ningning-salamat-kaibigan.mp3 — Natapos mo ang lahat ng aralin! Dahil sa iyong pagsisikap, bumalik na ang aking ningning. Salamat, kaibigan!
+- ngunit-biglang-lumitaw-si-anino-gusto-niyang-agawin-ang-aking-ningning-at-itago-ito-sa-kaniyang-ulap-hindi-natin-hahayaang-mawala-ang-liwanag.mp3 — Ngunit biglang lumitaw si Anino! Gusto niyang agawin ang aking ningning at itago ito sa kaniyang ulap. Hindi natin hahayaang mawala ang liwanag!
+- gamitin-natin-ang-iyong-mga-natutuhan-tapusin-ang-sampung-hamon-upang-maprotektahan-ang-aking-ningning-ayos-lang-magkamali-susubok-tayong-muli-nang-magkasama.mp3 — Gamitin natin ang iyong mga natutuhan! Tapusin ang sampung hamon upang maprotektahan ang aking ningning. Ayos lang magkamali. Susubok tayong muli, nang magkasama!
+- natapos-mo-ang-sampung-hamon-dahil-sa-iyong-tiyaga-at-kaalaman-hindi-na-maagaw-ni-anino-ang-aking-ningning-unti-unti-siyang-lumiit-at-lumayo.mp3 — Natapos mo ang sampung hamon! Dahil sa iyong tiyaga at kaalaman, hindi na maagaw ni Anino ang aking ningning. Unti-unti siyang lumiit at lumayo.
+- muli-akong-kumikislap-sa-langit-kasama-sina-titik-bilang-at-likha-ipinagdiriwang-natin-ang-iyong-tagumpay-ang-bawat-pagsubok-mo-ay-naging-liwanag.mp3 — Muli akong kumikislap sa langit! Kasama sina Titik, Bilang, at Likha, ipinagdiriwang natin ang iyong tagumpay. Ang bawat pagsubok mo ay naging liwanag!
+- salamat-sa-pagtulong-sa-akin-masipag-na-mag-aaral-patuloy-kang-magbasa-magbilang-lumikha-at-gumawa-ng-mabuti-lagi-mong-tandaan-may-sarili-kang-ningning.mp3 — Salamat sa pagtulong sa akin, masipag na mag-aaral! Patuloy kang magbasa, magbilang, lumikha, at gumawa ng mabuti. Lagi mong tandaan: may sarili kang ningning!
+- balikan-natin-ang-mga-araling-natutuhan-mo-piliin-at-pakinggan-ang-sagot-saka-pindutin-ang-ito-ang-sagot-ko-kaya-mo-ito.mp3 — Balikan natin ang mga araling natutuhan mo. Piliin at pakinggan ang sagot, saka pindutin ang Ito ang sagot ko. Kaya mo ito!
+- piliin-ang-sagot-pakinggan-ang-salita-at-pindutin-ang-sagot-na-sa-tingin-mo-ay-tama.mp3 — Piliin ang sagot. Pakinggan ang salita at pindutin ang sagot na sa tingin mo ay tama.
+- kumpirmahin-ang-sagot-kapag-nakapili-ka-na-pindutin-ang-ito-ang-sagot-ko.mp3 — Kumpirmahin ang sagot. Kapag nakapili ka na, pindutin ang Ito ang sagot ko.
+- ulitin-at-matuto-kung-kailangan-subukan-muli-o-gamitin-ang-pahiwatig.mp3 — Ulitin at matuto. Kung kailangan, subukan muli o gamitin ang pahiwatig.

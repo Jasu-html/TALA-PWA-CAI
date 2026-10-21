@@ -1,0 +1,14 @@
+{
+  "appId": "com.tala.learning",
+  "appName": "TALA",
+  "webDir": "dist",
+  "loggingBehavior": "none",
+  "server": { "androidScheme": "https" },
+  "android": {
+    "backgroundColor": "#101b4d",
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SystemBars": { "style": "DARK", "hidden": false, "insetsHandling": "disable" }
+  }
+}

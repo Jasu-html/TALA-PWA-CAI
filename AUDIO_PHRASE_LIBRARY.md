@@ -37,4 +37,8 @@ Ang mga lumang per-stage SCRIPT.md files ay iniwan bilang reference, pero hindi 
 
 Dating kailangan: 1,863 linked recording destinations.
 
-Bagong workflow: humigit-kumulang 809 unique phrase files sa kasalukuyang curriculum, dahil pinagsasama ang paulit-ulit na tanong, hint, option, salita, titik, at bilang.
+Bagong workflow: 819 unique phrase files sa kasalukuyang curriculum at mga kuwento: Titik 434, Tala 231, Likha 84, at Bilang 70. Pinagsasama ang paulit-ulit na tanong, hint, option, salita, titik, at bilang.
+
+## Opsyonal na AI voice workflow
+
+Tingnan ang [AUDIO_GENERATION.md](AUDIO_GENERATION.md) para sa local Edge TTS samples, generator, voice profiles, pronunciation overrides, at mga limitasyon sa paggamit ng serbisyo. Ang `audio-manifest.json` at apat na phrase list ay nabubuo mula sa mismong curriculum gamit ang `node tools/audio-catalog.cjs --write`, kaya naayos ang dating nawawalang mga letra sa mga linya. Nananatiling hiwalay sa app recordings ang mga preview.

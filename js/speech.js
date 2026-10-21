@@ -38,21 +38,40 @@
   const path = (moduleOrCharacter, levelOrText, clip) => clip === undefined
     ? sharedPath(moduleOrCharacter, levelOrText)
     : `assets/audio/fil/${moduleOrCharacter}/${levelOrText}/${clip}.mp3`;
-  async function play(character, text) {
+  async function play(character, text, options = {}) {
     stop(); const token = generation;
-    const player = new Audio(sharedPath(character, text)); recording = player;
-    player.onended = player.onerror = () => {
-      if (token === generation) { recording = null; window.TALA_SFX?.setNarrating(false); }
-    };
-    window.TALA_SFX?.setNarrating(true);
-    try { await player.play(); }
-    catch {
-      if (token === generation) {
-        recording = null;
-        window.TALA_SFX?.setNarrating(false);
-        window.TALA_UI?.toast('Wala pang recording para dito.');
+    const extra=clip=>typeof clip==='string'?{character:'Tala',text:clip,optional:true}:{...clip,optional:true};
+    const clips=[...(options.before||[]).map(extra),{character,text},...(options.after||[]).map(extra)];
+    let index=0,started=false;
+    async function next() {
+      if(token!==generation)return;
+      const clip=clips[index++];
+      if(!clip){recording=null;window.TALA_SFX?.setNarrating(false);options.onEnded?.();return;}
+      const player = new Audio(sharedPath(clip.character, clip.text)); recording = player;
+      let settled=false;
+      player.onended = () => {
+        if (token === generation&&!settled) {settled=true;next();}
+      };
+      const failed = error => {
+        if (token !== generation||settled) return;
+        settled=true;
+        // A missing interface label must not block the actual question or lesson.
+        if(clip.optional&&error?.name!=='NotAllowedError'){next();return;}
+        recording = null; window.TALA_SFX?.setNarrating(false);
+        window.TALA_UI?.toast(error?.name === 'NotAllowedError'
+          ? 'Pindutin ang Pakinggan para marinig ang boses.'
+          : 'Wala pang recording para dito.');
+        options.onError?.(error);
+      };
+      player.onerror = failed;
+      window.TALA_SFX?.setNarrating(true);
+      try {
+        await player.play();
+        if(token===generation&&!started){started=true;options.onStarted?.();}
       }
+      catch (error) { failed(error); }
     }
+    await next();
   }
-  window.TALA_SPEECH = { speak, play, stop, path, sharedPath, fileName, spokenText };
+  window.TALA_SPEECH = { speak, play, stop, path, sharedPath, fileName, spokenText, isPlaying:()=>recording!==null };
 })();

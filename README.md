@@ -2,7 +2,7 @@
 
 TALA is a Filipino-only, offline-first Progressive Web App for Grade 1 learners. It teaches early letters and words, counting, shapes and colors, and good values through short lessons, picture-based questions, character guides, stars, and a winding level path.
 
-This repository contains the current web presentation build. It is intentionally buildless: it uses HTML, CSS, and browser JavaScript, so it can be demonstrated immediately and later wrapped as an Android APK with Capacitor or another PWA wrapper.
+The web app uses HTML, CSS, and browser JavaScript without a bundler, so it can be demonstrated immediately. A Capacitor Android wrapper and Gradle project are also included for building a test APK with all lessons and recordings bundled.
 
 ## What is currently included
 
@@ -16,20 +16,22 @@ This repository contains the current web presentation build. It is intentionally
 - **Hamon ni Tala (Quest Quiz)** unlocks after completing every stage in all four core worlds, including the drawing finale. Any star rating counts; five stars are not required. Rounds 1-3 have eight questions; rounds 4-10 have ten. Each round draws from completed lessons, removes duplicate questions within the round, and unlocks the next round on completion. Later rounds favor harder learned questions, with a 2/2/2/2 or 3/3/2/2 subject mix.
 - A three-panel Quest opening introduces **Anino**, a shadow who tries to steal Tala's restored shine. Completing all ten rounds, at any star rating, opens a three-panel ending where Tala regains her light and thanks the learner by name on screen. Both stories have replay controls and optional recorded narration. Progress is saved before the ending begins.
 - 360 quiz questions, with Filipino text and picture/visual choices.
-- Select an answer first, listen to its word recording, then press **Ito ang sagot ko** to confirm it.
+- Select an answer first, listen to its word recording, then press **Ito ang sagot ko** to confirm it. This button gently pulses after selection (static highlight with reduced motion); its label is not spoken. Correct answers automatically advance after success feedback, with no Next button. After three misses the correct answer is narrated before advancing.
 - Three unsuccessful confirmations reveal the correct answer so the experience stays encouraging and no-fail.
 - First-try accuracy awards 1-5 stars. Replaying a stage only adds stars above the previous best.
 - Progress and learner name are stored locally in the browser.
+- The welcome screen automatically plays Tala's guidance, with a replay button. Supported browsers offer Filipino voice input for the learner's name after a parent-permission notice. The recognized name stays in the editable field until “Tara na!” is pressed. Teachers/parents can correct it from ☰ → “Pangalan ng mag-aaral” without resetting progress.
+- Voice naming is optional, browser-dependent, and may need internet and a secure context (HTTPS or localhost). The browser may send speech to its recognition provider; TALA does not save an audio recording. Typing remains available. The microphone stops on navigation, tab hiding, manual typing, cancellation, or after 15 seconds. This is separate from cached MP3 playback, which works offline after caching. See [browser speech-recognition behavior](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API).
 - Next stages and Quest rounds unlock after the previous one is completed. Completing a Quest round lights a constellation point; the teacher/parent progress view also lists Quest stars and attempts.
 - Placeholder avatars for TALA, LIKHA, TITIK, and BILANG appear throughout the home screen, maps, lessons, questions, painting activity, and celebrations.
 - Saturated child-friendly colors, background scenery, moving particles, scroll reveals, domino-style level entrances, confetti, and reduced-motion support.
 - Offline Web Audio effects for taps, selections, correct answers, retries, hints, stamps, painting, level completion, and scrolling piano-like notes.
 - Four looping local Web Audio themes: forest for Titik, beach for Bilang, garden for Likha, and village for Tala.
-- Filipino browser text-to-speech is used only for general interface encouragement when a Filipino voice is installed. Lesson and question recordings are supplied by the project owner.
+- Recorded Filipino introductions for welcome, home, each module map, Hamon ni Tala, menu, and completion play once per device/browser. “Pakinggan” always replays them; three minutes without interaction offers a reminder without interrupting active audio. Heard introductions persist across app restarts and are cleared by progress reset. Navigation uses sound effects rather than repeated spoken labels. Questions, choices, hints, stories, and brief answer feedback remain voiced.
 
 ## What is not included yet
 
-This is not the old native Android/Kotlin project. There is no Gradle project, Jetpack Compose UI, Room database, Firebase backend, account system, PIN-protected teacher dashboard, PDF reporting, avatar shop, tracing activity, or drag-and-drop activity in the current PWA. The current teacher/parent screen is a local progress summary. Those larger features may be added later, but they should not be treated as implemented features.
+This is not the old native Android/Kotlin implementation: the Android project wraps the current web app. There is no Jetpack Compose UI, Room database, Firebase backend, account system, PIN-protected teacher dashboard, PDF reporting, avatar shop, tracing activity, or drag-and-drop activity in the current PWA. The current teacher/parent screen is a local progress summary. Those larger features may be added later, but they should not be treated as implemented features.
 
 ## Run locally
 
@@ -76,7 +78,9 @@ tools/serve.cjs             Dependency-free local development server
 
 ## Adding the recorded Filipino audio
 
-The app does not generate or include the lesson/question recordings. Use the reusable phrase lists:
+Tala's intro and challenge stories automatically advance **five seconds after the voiceover ends**. Learners can pause auto-next, replay a page, or use Back/Next/Skip. Leaving the screen or hiding the app cancels any pending advance. If narration cannot play, the story stays on its current page. Quiz answers still require explicit confirmation, but correct answers advance automatically after feedback. The confirmation button pulses after a choice is selected and is never read aloud. No Next button is shown. After three misses the correct answer is voiced before advancing.
+
+The app loads lesson/question recordings from shared MP3 files. The full generated library uses Filipino narration and English names for single-letter/letter-pair clips (A = “ey”, B = “bee”). It covers the curriculum and story paths in the 887-entry manifest. Human recordings can be substituted at the same filenames. See the [audio generation workflow](AUDIO_GENERATION.md), [voice notes](VOICE_RESEARCH.md), and reusable phrase lists:
 
 - [AUDIO_PHRASE_LIBRARY.md](AUDIO_PHRASE_LIBRARY.md) — overview and naming rules
 - [TITIK_PHRASES.md](docs/voice-scripts/TITIK_PHRASES.md)
@@ -110,9 +114,9 @@ The service worker checks the network for HTML, CSS, and JavaScript, then falls 
 
 The app is designed for touch screens and small phone displays. It includes safe-area spacing for phone status bars, a sticky navigation bar that becomes solid while scrolling, keyboard-visible focus states, labeled controls, `aria-live` feedback, and a reduced-motion mode. The app remains Filipino-only; English text is limited to developer documentation and code comments.
 
-## Future Android packaging
+## Android test APK
 
-Once the PWA is ready for distribution, it can be wrapped with Capacitor, synced into an Android project, and built as a debug or release APK. That packaging step is not part of this repository yet. The current local PWA is the source of truth for the implemented experience.
+The repository includes a Capacitor Android project. Run `npm ci`, then `npm run android:build` on Windows with JDK 21 and Android SDK 36 installed. Debug APKs are written to `builds/TALA-debug.apk` and a versioned filename. All recordings and lessons are bundled for offline use. Android 1.0.1 includes protected black system-bar space, in-app phone Back navigation, compact phone layouts, and native Filipino voice-name recognition via the phone's speech service (often Google). See [Android build and phone testing](ANDROID_BUILD.md) for installation, permissions, rebuild instructions, and separate native progress storage. Release signing and store publishing are not configured.
 
 ## Related documentation
 

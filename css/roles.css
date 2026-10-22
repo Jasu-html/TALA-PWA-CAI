@@ -1,0 +1,30 @@
+/* Smaller student task shortcut; it is not a dashboard card. */
+body[data-screen="home"] .classroom-task{flex:0 0 auto;justify-content:space-between;flex-wrap:nowrap;padding:5px 10px;margin:0 0 7px;gap:8px;min-height:48px;text-align:left;}
+.classroom-task strong{font-size:14px;}.classroom-task button{min-height:36px;padding:6px 10px;font-size:14px;white-space:nowrap;}
+body[data-screen="home"]:has(.classroom-task) .app-shell{height:100dvh;min-height:100dvh;}
+/* Size the artwork to its available frame rather than a larger intrinsic minimum. */
+body[data-screen="home"] .world-art .world-symbol{inset:0;display:flex;align-items:center;justify-content:center;}
+body[data-screen="home"] .world-art .character-world{height:100%;min-height:0;max-height:100%;width:auto;max-width:85%;aspect-ratio:4/5;flex:0 1 auto;}
+body[data-screen="home"] .world-art .character-image{width:100%;height:100%;object-fit:contain;object-position:center;}
+body[data-screen="home"] .screen-listen{top:16px;position:absolute;right:24px;transform:none;}
+body[data-screen="home"]:has(.classroom-task) .screen-listen{top:72px;transform:none;}
+body[data-screen="tasks"] .app-shell{display:flex;flex-direction:column;min-height:100dvh;}
+body[data-screen="tasks"] #app{display:flex;flex:1;flex-direction:column;}
+body[data-screen="tasks"] .screen{flex:1;display:flex;flex-direction:column;}
+body[data-screen="tasks"] .tasks-page{width:100%;flex:1;display:flex;flex-direction:column;gap:8px;margin:0 auto;}
+.tasks-page>.compact-disclosure{margin-top:auto;}.tasks-page>.task-section{flex:1;display:flex;flex-direction:column;justify-content:center;}.tasks-page .task-empty{padding:clamp(14px,3dvh,26px);}
+.tasks-page>.task-section>.task-card{min-height:clamp(180px,32dvh,320px);padding:clamp(16px,3dvh,28px);}.tasks-page>.task-section>.task-card img{width:100px;height:150px;flex-basis:100px;}.tasks-page>.task-section>.task-card h2{font-size:24px;}.tasks-page>.task-section>.task-card .primary-button{min-height:52px;padding:12px 22px;}
+body[data-screen="settings"] .settings-page{min-height:calc(100dvh - 180px);display:flex;flex-direction:column;justify-content:space-between;gap:12px;}
+.settings-page .volume-control{margin:20px 0;}.settings-page .volume-control input{height:36px;}
+body[data-role="teacher"] .wallet,body[data-role="teacher"] .footer-note{display:none;}
+body[data-role="teacher"] .brand-button:after{content:"TEACHER";font-size:11px;padding:5px 8px;border:1px solid #b5a6d8;border-radius:8px;margin-left:6px;color:#eee6ff;background:#2e345f;}
+body[data-role="teacher"] .bottom-nav{background:#d4e4f0;border-color:#819aaf;}
+body[data-role="teacher"] .bottom-nav button[aria-current]{background:#155775;box-shadow:0 3px 0 #0c3448;}
+.teacher-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0;}.teacher-summary>div{padding:16px;border:2px solid #9baec9;border-radius:18px;background:#dce8f1;}.teacher-summary strong{display:block;font-size:30px;color:#155775;}.teacher-summary span{font-size:14px;color:#2d4159;}
+.teacher-settings .settings-page{padding:0;background:none;max-width:none;}.teacher-settings .settings-page>.eyebrow,.teacher-settings .settings-page>h1,.teacher-settings .settings-page>.compact-disclosure{display:none;}
+.start-role-choice{display:flex;gap:12px;flex-direction:column;align-items:stretch;}.start-role-choice .start-parent{border:2px solid #b6b4e5;padding:12px 20px;border-radius:18px;background:#32325d;color:#e9e3fb;min-height:48px;font-size:17px;font-weight:800;}
+.start-role-choice>.start-parent:not(.role-teacher-choice){border:0;background:none;min-height:44px;padding:6px;font-size:13px;font-weight:600;}
+@media(min-width:760px) and (orientation:landscape){.start-role-choice{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:12px 40px;}.start-role-choice .start-cast{grid-row:1/7;min-width:0;}.start-role-choice .character-start{width:25%;min-width:0;height:100%;flex:0 1 25%;aspect-ratio:auto;margin:0;}.start-role-choice>.role-teacher-choice{grid-column:1;justify-self:stretch;}}
+@media(max-width:680px){body[data-screen="tasks"] .tasks-page{min-height:0;}.teacher-summary{gap:6px;}.teacher-summary>div{padding:10px;}.teacher-summary strong{font-size:24px;}.teacher-summary span{font-size:12px;}.classroom-task strong{font-size:13px;}body[data-role="teacher"] .brand-button:after{font-size:9px;padding:4px;}}
+@media(max-height:680px){body[data-screen="tasks"] .tasks-page{gap:4px;}.tasks-page>.task-section{margin-top:8px;}.tasks-page .task-empty{padding:12px;}.settings-page .volume-control{margin:14px 0;}}
+@media(max-width:359px),(max-height:680px){.tasks-page>.task-section>.task-card{min-height:160px;padding:12px;}.tasks-page>.task-section>.task-card img{width:64px;height:100px;flex-basis:64px;}.tasks-page>.task-section>.task-card h2{font-size:20px;}}

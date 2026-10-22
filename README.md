@@ -4,6 +4,24 @@ TALA is an offline-first Progressive Web App for Grade 1 learners, with Filipino
 
 The web app uses HTML, CSS, and browser JavaScript without a bundler, so it can be demonstrated immediately. A Capacitor Android wrapper and Gradle project are also included for building a test APK with all lessons and recordings bundled.
 
+## Separate Teacher / Student modes (1.3.0)
+
+The launch screen offers **Maglaro bilang Student** and **Buksan bilang Teacher**. Teacher Mode uses its own **Dashboard / Make Activity / Settings** icon bar; it never routes the teacher to built-in learner games. The dashboard shows roster/progress summaries. Make Activity holds the custom lesson library, builder, recordings, previews and assignment forms. Teacher Settings includes sound controls, exports and logout. Selecting a student explicitly locks Teacher Mode and returns to role choice for learner handoff. Existing local PIN, guardian consent and saved data remain in place.
+
+Student Home now has a compact teacher-task shortcut and uncropped character artwork. Mga Gawain fills the viewport with a larger task card; student Settings fills more space and can scroll. See [Teacher and Student modes](docs/TEACHER_STUDENT_MODES.md).
+
+## Navigation and rewards (1.1.2)
+
+The header menu has been replaced with a fixed bottom bar: **Home → Mga Gawain → Tagumpay → Settings**, displayed as original SVG icons without visible labels or emoji (accessible labels/tooltips remain). Settings contains separate saved music and SFX/ambience sliders; recorded voice guides keep their existing volume. Teacher reports and profiles are now on the separate Teacher Dashboard, with existing PIN protection unchanged.
+
+**Mga Gawain** shows the active learner’s current teacher assignment, resumable classroom quiz, and completed core stages available to replay. Without Classroom Mode it shows completed stages and a clear link to explore Home; it does not invent assignments or resumable sessions. Teacher Mode currently holds one assignment per learner, not an assignment queue.
+
+There are [78 achievements](docs/ACHIEVEMENTS.md), calculated independently from each learner’s saved progress. Previously completed activities count automatically. The bar reserves space below the content; short screens can still scroll rather than clip controls or shrink text.
+
+## Teacher Lesson Builder (1.2.0)
+
+Choose **Buksan bilang Teacher** at startup, unlock the PIN, then open **Make Activity** (book icon) or **Teacher Lesson Builder** on the dashboard. Create custom module/stage/level titles, multiple-choice questions, pictures and optional recorded/uploaded instruction, question, hint and answer audio. Preview, publish immutable revisions and assign levels to **Mga Gawain**. Results stay separate from built-in stars. Media is local in IndexedDB; self-contained lesson packages transfer media between devices, while classroom backups transfer learner assignments/results separately. See the [full builder guide](docs/TEACHER_LESSON_BUILDER.md) for limits and steps. Physical-phone microphone testing is still needed.
+
 ## What is currently included
 
 The app now opens with an animated loading screen and a dedicated **Magsimula /
@@ -35,7 +53,7 @@ offline-startup, export/deletion, and failed-boot checks.
 - Three unsuccessful confirmations reveal the correct answer so the experience stays encouraging and no-fail.
 - First-try accuracy awards 1-5 stars. Replaying a stage only adds stars above the previous best.
 - Progress and learner name are stored locally in the browser.
-- The welcome screen automatically plays Tala's guidance, with a replay button. Supported browsers offer Filipino voice input for the learner's name after a parent-permission notice. The recognized name stays in the editable field until “Tara na!” is pressed. Teachers/parents can correct it from ☰ → “Pangalan ng mag-aaral” without resetting progress.
+- The welcome screen automatically plays Tala's guidance, with a replay button. Supported browsers offer Filipino voice input for the learner's name after a parent-permission notice. The recognized name stays in the editable field until “Tara na!” is pressed. Teachers/parents can correct it from Settings → Progreso at learner profiles → “Pangalan ng mag-aaral” without resetting progress.
 - Voice naming is optional, browser-dependent, and may need internet and a secure context (HTTPS or localhost). The browser may send speech to its recognition provider; TALA does not save an audio recording. Typing remains available. The microphone stops on navigation, tab hiding, manual typing, cancellation, or after 15 seconds. This is separate from cached MP3 playback, which works offline after caching. See [browser speech-recognition behavior](https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API/Using_the_Web_Speech_API).
 - Next stages and Quest rounds unlock after the previous one is completed. Completing a Quest round lights a constellation point; the teacher/parent progress view also lists Quest stars and attempts.
 - Supplied character PNGs for Tala, Likha, Titik, and Bilang appear throughout the app, with Neutral, Talking, and Happy expressions tied to narration and answer feedback.
@@ -46,7 +64,28 @@ offline-startup, export/deletion, and failed-boot checks.
 
 ## What is not included yet
 
-This is not the old native Android/Kotlin implementation: the Android project wraps the current web app. There is no Jetpack Compose UI, Room database, Firebase backend, account system, PIN-protected teacher dashboard, PDF reporting, avatar shop, tracing activity, or drag-and-drop activity in the current PWA. The current teacher/parent screen is a local progress summary. Those larger features may be added later, but they should not be treated as implemented features.
+This is not the old native Android/Kotlin implementation: the Android project wraps the current web app. There is no Jetpack Compose UI, Room database, Firebase backend, online account/sync system, PDF reporting, avatar shop, tracing activity, or drag-and-drop activity in the current PWA. Skill-mastery charts and curriculum alignment still need teacher review; they should not be treated as implemented features.
+
+## Teacher Classroom Mode — first milestone (1.1.0)
+
+The title screen now opens a separate teacher workspace with a 6-digit PIN,
+recovery code and timed lockout. Existing progress migrates into the first student
+profile. Teachers can add/search/edit/archive profiles, select a learner and
+assign one core activity. Progress, guardian approval and microphone permissions
+are isolated per student; teacher setup never substitutes for guardian approval.
+
+New classroom activity attempts keep confirmations, selected answers, hint/reveal
+evidence and dates. Interrupted quizzes can resume; drawing strokes cannot.
+The roster shows recent independent first responses and full attempt history.
+CSV exports contain raw answer records. JSON backup/restore replaces the local
+classroom with validation and preview; it does not merge devices or import PINs
+and consent records. Android exports/imports use system document pickers.
+
+This remains a review/test build. PIN access is not storage encryption. The
+updated privacy notice requires renewed approval, and actual school use needs
+school/privacy-officer authorization review. Use demo records for testing first.
+See [Teacher guide](USER_GUIDE.md), [milestone/remaining work](docs/CLASSROOM_ROADMAP.md),
+and `npm run test:classroom` for browser verification.
 
 ## Run locally
 
@@ -133,6 +172,11 @@ The four current SVGs are placeholders. Replace them using the guidance in [asse
 ## Data and progress
 
 Curriculum content is defined in `js/data.js`. Progress is stored locally under the browser key `tala-pwa-progress-v1`; it does not leave the device. The teacher/parent menu includes a reset action for clearing the demo learner and progress.
+
+When Classroom Mode is configured, `tala-classroom-v1` is the authoritative record
+for all profiles, permissions and attempt history. The original single-learner
+keys are compatibility mirrors, not the source of classroom truth. Use the UI's
+backup/restore and scoped reset/deletion rather than removing keys manually.
 
 The service worker checks the network for HTML, CSS, and JavaScript, then falls back to the current release cache when offline. Images and recordings use the cache first. CSS and JavaScript URLs include a release version to avoid pairing new markup with stale styles. Keep these URLs in `index.html`, the cache name, and the matching file list in `sw.js` in sync for each release.
 

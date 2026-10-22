@@ -53,7 +53,7 @@ async function top(page,label){
   const context=await browser.newContext({viewport:{width:390,height:844},serviceWorkers:'block',reducedMotion:'reduce'});
   await context.addInitScript(()=>{
     localStorage.setItem('tala-pwa-progress-v1',JSON.stringify({curriculumVersion:2,learner:'Ana',introSeen:true,setupComplete:true,heardGuidance:['home','map:phonics']}));
-    localStorage.setItem('tala-public-preferences-v1',JSON.stringify({version:'2026-10-21.2',guardian:true,terms:true,processing:true}));
+    localStorage.setItem('tala-public-preferences-v1',JSON.stringify({version:'2026-10-23.2',guardian:true,terms:true,processing:true}));
     HTMLMediaElement.prototype.play=()=>Promise.resolve();
   });
   const page=await context.newPage();await page.goto('http://127.0.0.1:4173/');await page.waitForSelector('#launch-splash',{state:'detached'});
@@ -88,8 +88,9 @@ async function top(page,label){
   await page.locator('[data-action="practice"]').click();
   for(const [label,selector]of [['question counter','.question-counter'],['instructions','.selection-instruction'],['answer','.choice'],['answer border','.choice']])await sample(page,label,selector,{kind:label==='answer border'?'border':'text',minFont:label==='answer'?16:12});
   await page.locator('[data-choice="0"]').click();await sample(page,'selected answer','.choice.selected',{minFont:16});await sample(page,'selected answer boundary','.choice.selected',{kind:'border'});await sample(page,'confirm enabled','.confirm-answer');
-  await page.locator('header [data-action="dashboard"]').click();
+  await page.locator('[data-action="nav-settings"]').click();await page.locator('[data-action="parent-open"]').click();
   const [,a,op,b]=(await page.locator('label[for="adult-answer"]').innerText()).match(/(\d+) ([×+]) (\d+)/);await page.locator('#adult-answer').fill(String(op==='×'?+a*+b:+a+ +b));await page.locator('#adult-gate-form button[type="submit"]').click();
+  await page.locator('[data-action="parent-progress"]').click();
   await top(page,'menu');
   await sample(page,'menu replay guidance','.screen-listen');
   await sample(page,'menu eyebrow','.dashboard-title .eyebrow');
@@ -98,7 +99,8 @@ async function top(page,label){
   await page.screenshot({path:path.join(output,(baseline?'before':'after')+'-menu.png'),fullPage:true});
   if(!baseline){
     await page.evaluate(()=>TALA_STORE.complete('quest:1',3));
-    await page.locator('header [data-action="dashboard"]').click();
+    await page.locator('[data-action="nav-settings"]').click();await page.locator('[data-action="parent-open"]').click();
+    await page.locator('[data-action="parent-progress"]').click();
     await sample(page,'report filled stars','.quest-report .rating-star.is-filled',{minimum:3});
   }
   await page.locator('[data-action="parent-open"]').click();await sample(page,'parent body','.public-settings p',{minFont:16});await sample(page,'parent destructive','.danger-button');

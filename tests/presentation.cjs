@@ -168,6 +168,20 @@ test('First interaction during narration starts the louder game mix already duck
   assert.equal(gains[1].gain.value,.30);
   assert.equal(gains[2].gain.value,.25);
 });
+test('Music and SFX sliders persist independently, clamp values and preserve narration ducking',()=>{
+  const {ctx,gains,saved}=audioSetup();
+  ctx.TALA_SFX.setVolumes({music:.4,sfx:.2});ctx.TALA_SFX.play('tap');
+  assert.equal(gains[0].gain.value,.48);assert.equal(gains[1].gain.value,.72*.4);
+  assert.equal(gains[2].gain.value,.60*.2);assert.equal(gains[3].gain.value,.2);
+  ctx.TALA_SFX.setNarrating(true);assert.equal(gains[1].gain.value,.30*.4);assert.equal(gains[2].gain.value,.25*.2);
+  ctx.TALA_SFX.setVolumes({music:0});assert.equal(gains[1].gain.value,0);assert.equal(gains[3].gain.value,.2);
+  ctx.TALA_SFX.setNarrating(false);assert.equal(gains[1].gain.value,0);
+  const next=audioSetup(saved).ctx.TALA_SFX;assert.equal(next.getVolumes().music,0);assert.equal(next.getVolumes().sfx,.2);
+  next.setVolumes({music:10,sfx:-2});assert.equal(next.getVolumes().music,1);assert.equal(next.getVolumes().sfx,0);
+  next.setVolumes({music:NaN,sfx:Infinity});assert.equal(next.getVolumes().music,1);assert.equal(next.getVolumes().sfx,0);
+  next.resetPreferences();assert.equal(next.getVolumes().music,1);assert.equal(next.getVolumes().sfx,1);
+});
+
 test('Offline shell includes all new visual and audio code assets',()=>{
   const ctx={self:{addEventListener(){}}};vm.createContext(ctx);
   vm.runInContext(fs.readFileSync(path.join(root,'sw.js'),'utf8'),ctx);const files=vm.runInContext('FILES',ctx);

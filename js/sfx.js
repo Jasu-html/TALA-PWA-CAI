@@ -1,6 +1,6 @@
 // Offline procedural sound design: five musical identities and gentle world ambience.
 (function () {
-  let context, master, musicBus, ambienceBus, musicTimer, world = null, desiredWorld = null, enabled = true, narrating = false;
+  let context, master, effectsBus, musicBus, ambienceBus, musicTimer, world = null, desiredWorld = null, enabled = true, narrating = false;
   let tapTurn = 0, scrollStep = 0, lastScrollNote = -Infinity;
   const effects = new Set(), musicNotes = new Set(), scrollNotes = new Set(), ambience = new Set();
   let noiseBuffer;
@@ -9,6 +9,16 @@
   const mix={master:.48,music:.72,musicUnderVoice:.30,ambience:.60,ambienceUnderVoice:.25};
   try { enabled = localStorage.getItem('tala-sfx-enabled') !== 'false'; } catch {}
 
+  let volumes={music:1,sfx:1};
+  try{const saved=JSON.parse(localStorage.getItem('tala-audio-volumes-v1'));for(const key of ['music','sfx'])if(typeof saved?.[key]==='number'&&Number.isFinite(saved[key]))volumes[key]=Math.max(0,Math.min(1,saved[key]));}catch{}
+  function setVolumes(next){
+    for(const key of ['music','sfx'])if(typeof next?.[key]==='number'&&Number.isFinite(next[key]))volumes[key]=Math.max(0,Math.min(1,next[key]));
+    try{localStorage.setItem('tala-audio-volumes-v1',JSON.stringify(volumes));}catch{}
+    soften(effectsBus,volumes.sfx);
+    soften(musicBus,(narrating?mix.musicUnderVoice:mix.music)*volumes.music);
+    soften(ambienceBus,(narrating?mix.ambienceUnderVoice:mix.ambience)*volumes.sfx);
+    return {...volumes};
+  }
   const scores = {
     tap: [
       [[659,0,.05,'sine',.27],[988,.035,.055,'sine',.15]],
@@ -17,6 +27,7 @@
     ],
     select: [[523,0,.08,'sine',.25],[784,.045,.1,'triangle',.16]],
     enter: [[392,0,.1,'triangle',.22],[523,.08,.13,'sine',.21],[659,.17,.16,'sine',.19]],
+    achievement: [[784,0,.18,'sine',.18],[988,.10,.20,'sine',.16],[1175,.21,.25,'triangle',.12],[1568,.34,.55,'sine',.15],[988,.34,.45,'sine',.07]],
     correct: [[523,0,.12,'triangle',.28],[659,.09,.14,'triangle',.24],[784,.18,.25,'sine',.25]],
     retry: [[440,0,.13,'sine',.14],[523,.12,.2,'sine',.14]],
     hint: [[880,0,.12,'sine',.16],[1175,.1,.2,'sine',.14]],
@@ -54,8 +65,9 @@
       if (!context) {
         context = new Audio();
         master = context.createGain(); master.gain.value = mix.master; master.connect(context.destination);
-        musicBus = context.createGain(); musicBus.gain.value = narrating ? mix.musicUnderVoice : mix.music; musicBus.connect(master);
-        ambienceBus = context.createGain(); ambienceBus.gain.value = narrating ? mix.ambienceUnderVoice : mix.ambience; ambienceBus.connect(master);
+        musicBus = context.createGain(); musicBus.gain.value = (narrating ? mix.musicUnderVoice : mix.music)*volumes.music; musicBus.connect(master);
+        ambienceBus = context.createGain(); ambienceBus.gain.value = (narrating ? mix.ambienceUnderVoice : mix.ambience)*volumes.sfx; ambienceBus.connect(master);
+        effectsBus=context.createGain();effectsBus.gain.value=volumes.sfx;effectsBus.connect(master);
       }
       if (context.state === 'suspended') context.resume().catch(() => {});
       return context.state !== 'closed';
@@ -148,7 +160,7 @@
     stopEffects();
     const score = name === 'tap' ? scores.tap[tapTurn++ % scores.tap.length] : scores[name] || scores.tap[0];
     const time = context.currentTime;
-    try { for (const [f,d,l,t,v] of score) note(f,time+d,l,t,v,master,effects); }
+    try { for (const [f,d,l,t,v] of score) note(f,time+d,l,t,v,effectsBus,effects); }
     catch { stopEffects(); }
     if (desiredWorld && !world) setWorld(desiredWorld);
   }
@@ -186,9 +198,9 @@
     if (scrollNotes.size >= 12) release(scrollNotes);
     try {
       // A soft struck fundamental with two faster-decaying piano-like harmonics.
-      note(frequency,time,.6,'sine',.14,master,scrollNotes,.006);
-      note(frequency*2,time,.25,'sine',.033,master,scrollNotes,.005);
-      note(frequency*3,time,.13,'sine',.012,master,scrollNotes,.004);
+      note(frequency,time,.6,'sine',.14,effectsBus,scrollNotes,.006);
+      note(frequency*2,time,.25,'sine',.033,effectsBus,scrollNotes,.005);
+      note(frequency*3,time,.13,'sine',.012,effectsBus,scrollNotes,.004);
     } catch { release(scrollNotes); }
   }
   function setWorld(module) {
@@ -204,8 +216,8 @@
   function setNarrating(value) {
     narrating = !!value;
     if (narrating) release(scrollNotes);
-    soften(musicBus,narrating?mix.musicUnderVoice:mix.music);
-    soften(ambienceBus,narrating?mix.ambienceUnderVoice:mix.ambience);
+    soften(musicBus,(narrating?mix.musicUnderVoice:mix.music)*volumes.music);
+    soften(ambienceBus,(narrating?mix.ambienceUnderVoice:mix.ambience)*volumes.sfx);
   }
   function toggle() {
     enabled = !enabled;
@@ -220,7 +232,7 @@
       if (context?.state === 'running') context.suspend().catch(() => {});
     } else if(context&&desiredWorld&&enabled)setWorld(desiredWorld);
   });
-  window.TALA_SFX = { play, scroll, stop, setWorld, enterWorld, setNarrating, toggle, isEnabled: () => enabled,
-    resetPreferences(){stop();enabled=true;desiredWorld=null;}
+  window.TALA_SFX = { getVolumes:()=>({...volumes}),setVolumes,play, scroll, stop, setWorld, enterWorld, setNarrating, toggle, isEnabled: () => enabled,
+    resetPreferences(){stop();enabled=true;desiredWorld=null;setVolumes({music:1,sfx:1});}
   };
 })();

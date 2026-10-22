@@ -1,6 +1,6 @@
 (function () {
   const app=document.querySelector('#app');
-  const state={screen:'welcome',module:'phonics',level:1,question:0,selected:null,misses:0,firstTry:0,results:[],submitted:false,earned:0,stars:0};
+  const state={screen:'welcome',module:'phonics',level:1,question:0,selected:null,misses:0,firstTry:0,results:[],submitted:false,earned:0,stars:0,hintsUsed:0};
   let timer, version=0, toastTimer;
   let introPage=0;
   let questStoryKind='opening',questStoryPage=0;
@@ -12,6 +12,9 @@
   const captureRoute=()=>({state:JSON.parse(JSON.stringify(state)),introPage,questStoryKind,questStoryPage,questQuestions:[...questQuestions]});
   function goBack(){
     if(state.screen==='start')return false;
+    if(window.TALA_ROLES?.isTeacher()&&state.screen!=='customPlay'){go(state.screen==='classroom'?'start':'classroom',false);return true;}
+    if(state.screen==='builder'){go('classroom',false);return true;}
+    if(state.screen==='customPlay'){go(window.TALA_BUILDER?.isPreview()?'builder':'tasks',false);return true;}
     if(window.TALA_PUBLIC?.back(state.screen))return true;
     // A world trail is a root destination, never a return to an old victory screen.
     if(state.screen==='map'){go(store().setupComplete?'home':'welcome',false);return true;}
@@ -177,7 +180,8 @@
       questQuestions=TALA_QUEST.generate(store(),state.level);
       if(!questQuestions.length){go('map');toast('Tapusin muna ang iba pang aralin kasama ang mga kaibigan ko.');return;}
     }
-    state.question=0; state.selected=null; state.misses=0; state.firstTry=0; state.results=[]; state.submitted=false; go('practice');
+    try{window.TALA_CLASSROOM?.begin(key());}catch(error){toast('Hindi masimulan ang activity. Ipa-check kay Teacher ang storage.');return;}
+    state.question=0; state.selected=null; state.misses=0; state.firstTry=0; state.results=[]; state.submitted=false;state.hintsUsed=0; go('practice');
   }
   const key=(id=state.module,n=state.level)=>`${id}:${n}`;
   const done=(id,n)=>store().completed.includes(key(id,n));
@@ -248,7 +252,12 @@
   function syncSoundButton() { const button=document.querySelector('[data-action="sound-toggle"]');if(!button)return;const enabled=TALA_SFX.isEnabled();button.textContent=enabled?'🔊':'🔇';button.setAttribute('aria-pressed',String(enabled));button.setAttribute('aria-label',enabled?'Patayin ang tunog ng laro':'Buksan ang tunog ng laro'); }
   const star='<span class="star-face" aria-hidden="true"><i></i></span>';
   const back=action=>`<button class="back-button" data-action="${action}">← <span>Bumalik</span></button>`;
+  function classroom(){return window.TALA_TEACHER.screen();}
+  function checkpoint(){try{if(state.screen==='practice'&&level().type!=='paint')window.TALA_CLASSROOM?.checkpoint(captureRoute());}catch(error){toast('Hindi ma-save ang activity. Ipa-check kay Teacher ang storage.');}}
   function go(screen,remember=true) {
+    screen=window.TALA_ROLES?.resolve(screen)||screen;
+    window.TALA_BUILDER?.leave(screen);
+    if(screen==='dashboard'&&window.TALA_CLASSROOM?.configured())screen='classroom';
     if(window.TALA_PUBLIC?.needsConsent(screen))screen='start';
     transitionCleanup();
     if(['home','welcome','start'].includes(screen))navigation.length=0;
@@ -261,7 +270,10 @@
     clearTimeout(timer); paintCleanup(); paintCleanup=()=>{}; tutorialCleanup(); tutorialCleanup=()=>{}; version++; TALA_SPEECH.stop(); state.screen=screen;
     document.body.dataset.screen=screen;
     document.querySelector('#wallet-stars').textContent=store().stars;
-    app.innerHTML=`<section class="screen">${['home','map','complete','dashboard'].includes(screen)?'<button class="listen-button screen-listen" data-action="screen-listen" aria-label="Pakinggan muli ang gabay">🔊 Pakinggan ang gabay</button>':''}${({welcome,home,map,lesson,practice,complete,dashboard,intro,questStory,...(window.TALA_PUBLIC?.screens||{})})[screen]()}${screen==='home'?questCard()+'<button class="text-button story-replay" data-action="intro-open">✦ Ang kuwento ni Tala</button>':''}${screen==='dashboard'?nameEditor()+questReport()+(window.TALA_PUBLIC?.parentLink()||''):''}${state.module==='quest'&&['map','complete'].includes(screen)&&TALA_QUEST.eligible(store())?constellation()+questStoryControls():''}</section>`;
+    app.innerHTML=`<section class="screen">${['home','map','complete','dashboard'].includes(screen)?'<button class="listen-button screen-listen" data-action="screen-listen" aria-label="Pakinggan muli ang gabay">🔊 Pakinggan ang gabay</button>':''}${({welcome,home,map,lesson,practice,complete,dashboard,intro,questStory,classroom,...(window.TALA_ROLES?.screens||{}),...(window.TALA_BUILDER?.screens||{}),...(window.TALA_NAV?.screens||{}),...(window.TALA_PUBLIC?.screens||{})})[screen]()}${screen==='home'?questCard()+'<button class="text-button story-replay" data-action="intro-open">✦ Ang kuwento ni Tala</button>':''}${screen==='dashboard'?nameEditor()+questReport()+(window.TALA_PUBLIC?.parentLink()||''):''}${state.module==='quest'&&['map','complete'].includes(screen)&&TALA_QUEST.eligible(store())?constellation()+questStoryControls():''}</section>`;
+    window.TALA_NAV?.render(screen);
+    if(window.TALA_TEACHER&&screen==='start'){const play=document.querySelector('[data-action="start-game"]');if(play){play.innerHTML='Maglaro bilang Student';play.insertAdjacentHTML('afterend','<button class="start-parent role-teacher-choice" data-action="teacher-open">Buksan bilang Teacher</button>');document.querySelector('.start-main')?.classList.add('start-role-choice');}}
+    if(window.TALA_TEACHER&&screen==='home')document.querySelector('.screen')?.insertAdjacentHTML('afterbegin',TALA_TEACHER.learnerPanel());
     if(screen==='lesson') {
       const card=document.querySelector('.activity-card');
       if(card?.insertAdjacentHTML) card.insertAdjacentHTML('beforeend','<details class="tutorial-disclosure"><summary>🔊 Paano ito laruin?</summary>'+tutorial()+'</details>');
@@ -271,7 +283,7 @@
     updateTopbar();
     setupScrollReveal();
     syncSoundButton();
-    TALA_SFX.setWorld(['home','welcome','start'].includes(screen)?'home':['map','lesson','practice'].includes(screen)?(state.module==='quest'?'values':state.module):null);
+    TALA_SFX.setWorld(['home','welcome','start','achievements','settings'].includes(screen)?'home':['map','lesson','practice'].includes(screen)?(state.module==='quest'?'values':state.module):null);
     if(screen==='complete')TALA_SFX.play('complete');
     if (screen==='practice' && level().type==='paint') setupPainting();
     if(screen==='practice'&&level().type!=='paint'&&state.selected!==null){
@@ -290,6 +302,7 @@
     narrateScreen();
     resetIdle();
     renderedRoute=captureRoute();
+    checkpoint();
   }
   function questCount() {return TALA_QUEST.world.levels.filter((_,i)=>done('quest',i+1)).length;}
   function questCard() {
@@ -435,7 +448,7 @@
     return flow(true)+'<div class="activity-card question-card '+m.color+'"><div class="activity-heading"><span class="pill">Yugto '+state.level+' · '+m.guide+'</span><span class="question-counter">Tanong '+(state.question+1)+' sa '+l.questions.length+'</span></div><div class="question-progress" aria-label="Progreso">'+l.questions.map((_,i)=>'<span class="'+(i<state.question?'done':i===state.question?'current':'')+'"></span>').join('')+'</div><h1>'+item.prompt+'</h1>'+guide(m.guide,'<div class="bubble-audio">'+audio(item.prompt)+'</div><div class="question-visual">'+item.visual+'</div>')+'<p class="selection-instruction"><span class="instruction-step">1</span> Piliin at pakinggan. <span class="instruction-step">2</span> Kumpirmahin.</p><div class="choices" role="group" aria-label="Mga pagpipilian">'+item.choices.map((c,i)=>'<button class="choice" data-choice="'+i+'" data-audio-text="'+esc(c)+'" aria-pressed="false"><span>'+c+'</span><small>🔊</small></button>').join('')+'</div><div class="answer-dock"><p id="feedback" class="feedback" role="status"></p><button class="primary-button confirm-answer" data-action="confirm-answer" disabled>Ito ang sagot ko ✓</button><button class="hint-button" data-action="hint">💡 Pahiwatig</button></div></div>';
   }
   function finishStage(stars) {
-    const result=TALA_STORE.complete(key(),stars,state.results);
+    let result;try{result=TALA_STORE.complete(key(),stars,state.results);}catch(error){toast('Hindi ma-save ang resulta. Ipa-check kay Teacher ang storage, saka ituloy muli ang activity.');return;}
     state.earned=result.earned;state.stars=stars;
     if(state.module==='quest'&&TALA_QUEST.finished(store())&&!store().questEndingSeen){openQuestStory('ending');return;}
     go('complete');
@@ -444,13 +457,14 @@
     if(state.question+1>=level().questions.length) {
       const accuracy=state.firstTry/level().questions.length*100;
       finishStage(accuracy>=90?5:accuracy>=75?4:accuracy>=60?3:accuracy>=40?2:1);
-    } else { state.question++;state.selected=null;state.misses=0;state.submitted=false;go('practice'); }
+    } else { state.question++;state.selected=null;state.misses=0;state.hintsUsed=0;state.submitted=false;go('practice'); }
   }
   function confirmAnswer() {
     if(state.screen!=='practice'||level().type==='paint'||state.selected===null||state.submitted)return;
     const buttons=[...document.querySelectorAll('[data-choice]')];
     const feedback=document.querySelector('#feedback'),confirm=document.querySelector('[data-action="confirm-answer"]');
     const correct=state.selected===question().answer;
+    try{window.TALA_CLASSROOM?.response({confirmationId:key()+':'+state.question+':'+state.misses,questionKey:state.module==='quest'?question().sourceModule+':'+question().sourceLevel+':'+question().sourceQuestion:key()+':'+(state.question+1),prompt:question().prompt,selectedAnswer:question().choices[state.selected],correct,hintsUsed:state.hintsUsed||0,revealed:!correct&&state.misses>=2});}catch(error){toast('Hindi ma-save ang sagot. Ipa-check ang storage kay Teacher.');return;}
     confirm.classList.remove('needs-confirmation');
     TALA_SPEECH.stop();
     if(correct||state.misses>=2) {
@@ -508,11 +522,21 @@
   }
   function toast(message) { const el=document.querySelector('#toast'); el.textContent=message; el.classList.add('show'); clearTimeout(toastTimer); toastTimer=setTimeout(()=>el.classList.remove('show'),4000); }
   window.TALA_UI={toast,back:goBack};
+  window.TALA_ROLES?.init({go});
+  window.TALA_BUILDER?.init({go,toast,screen:()=>state.screen});
+  window.TALA_NAV?.init({go,store,openTask(task){state.module=task.moduleId;state.level=task.level;go('lesson');}});
+  window.TALA_TEACHER?.init({go,toast,screen:()=>state.screen,
+    reset(){navigation.length=0;renderedRoute=null;questQuestions=[];Object.assign(state,{screen:'start',module:'phonics',level:1,question:0,selected:null,misses:0,hintsUsed:0,firstTry:0,results:[],submitted:false,earned:0,stars:0});},
+    resume(route){if(!route?.state)return;const s=route.state,m=s.module==='quest'?TALA_QUEST.world:TALA_DATA.modules.find(m=>m.id===s.module);if(!m?.levels[s.level-1]||s.screen!=='practice'||!Number.isInteger(s.question)||s.question<0){toast('Hindi maituloy ang lumang activity. Buksan muli ang level.');return;}const questions=s.module==='quest'?route.questQuestions:m.levels[s.level-1].questions;if(!questions?.[s.question]){toast('Nagbago ang activity. Buksan muli ang level.');return;}navigation.length=0;Object.assign(state,s);questQuestions=route.questQuestions||[];go('practice',false);},
+    assigned(assignment){const m=TALA_DATA.modules.find(m=>m.id===assignment?.moduleId);if(!m?.levels[assignment?.level-1])return;state.module=m.id;state.level=assignment.level;navigation.length=0;go('lesson');}
+  });
   window.TALA_PUBLIC?.init({go,store,avatar,toast,screen:()=>state.screen,tap:()=>TALA_SFX.play('tap'),soundEnabled:TALA_SFX.isEnabled,toggleSound:()=>{TALA_SFX.toggle();syncSoundButton();},stopVoice:stopNameVoice,resetSound:()=>{TALA_SFX.resetPreferences();syncSoundButton();}});
   document.addEventListener('submit',event=>{
+    if(window.TALA_TEACHER&&(event.target.id?.startsWith('teacher-')||event.target.classList?.contains('teacher-edit')||event.target.classList?.contains('teacher-assignment'))){void TALA_TEACHER.submit(event);return;}
     if(window.TALA_PUBLIC?.handleSubmit(event))return;
     if(event.target.id==='edit-name-form'){
       event.preventDefault();
+      if(window.TALA_CLASSROOM?.configured()&&!TALA_CLASSROOM.isUnlocked()){go('classroom');return;}
       const name=document.querySelector('#edit-learner-name').value.trim();
       if(!name){toast('Ilagay muna ang pangalan.');return;}
       TALA_STORE.setLearner(name);pendingVoice=voice.saved;go('dashboard');toast('Na-save na ang pangalan!');return;
@@ -524,13 +548,17 @@
     const button=event.target.closest('button'); if(!button||button.disabled)return;
     const {action,module:moduleId,level:levelNumber,recording,choice}=button.dataset;
     renderedRoute=captureRoute();
+    if(window.TALA_ROLES?.handle(button))return;
+    if(window.TALA_BUILDER?.handle(button))return;
+    if(window.TALA_NAV?.handle(button))return;
+    if(window.TALA_TEACHER?.handle(button))return;
     if(window.TALA_PUBLIC?.handle(button))return;
     if(button.classList.contains('back-button')){pendingVoice='';TALA_SFX.play('tap');goBack();return;}
     pendingVoice='';
     if(action==='screen-listen'){narrateScreen(true);return;}
     if(action==='name-voice'&&state.screen==='welcome'){startNameVoice();return;}
     if(action==='welcome-listen'&&state.screen==='welcome'){stopNameVoice();guidance('welcome','Tala',TALA_DATA.welcomeVoice,{},true);return;}
-    if(action==='sound-toggle'){TALA_SFX.toggle();syncSoundButton();say('Tala',TALA_SFX.isEnabled()?voice.soundOn:voice.soundOff);return;}
+    if(action==='sound-toggle'){TALA_SFX.toggle();syncSoundButton();if(['settings','teacherSettings'].includes(state.screen))go(state.screen,false);say('Tala',TALA_SFX.isEnabled()?voice.soundOn:voice.soundOff);return;}
     // Navigation uses short sound effects; introductions are remembered separately.
     if(action==='story-auto'&&['intro','questStory'].includes(state.screen)){
       cancelStoryTimer();storyAuto=!storyAuto;
@@ -565,6 +593,7 @@
     if(action==='practice'||action==='replay')startPractice();
     if(action==='jump-stage')document.querySelector('#stage-'+button.dataset.target)?.scrollIntoView({behavior:'smooth',block:'center'});
     if(action==='hint'&&state.screen==='practice'&&!state.submitted){
+      state.hintsUsed=(state.hintsUsed||0)+1;
       mood('thinking');
       document.querySelector('#feedback').textContent=question().hint;
       say(recordingGuide(),question().hint);
@@ -585,6 +614,7 @@
     if(action==='paint-finish'&&state.screen==='practice'&&level().type==='paint')finishStage(5);
     if(button.dataset.paint){pendingVoice=({'#e55a59':voice.red,'#4f85db':voice.blue,'#efc53b':voice.yellow,'#54ad77':voice.green,'#9a6bcc':voice.purple,'#30365e':voice.black})[button.dataset.paint]||'';}
     if(pendingVoice)say('Tala',pendingVoice);
+    checkpoint();
   });
   document.addEventListener('input',event=>{if(event.target.id==='learner-name'&&nameRecognition){stopNameVoice();nameStatus('Maaari mong itama ang pangalan bago magpatuloy.');}});
   for(const type of ['click','pointerdown','pointermove','keydown','input'])document.addEventListener(type,resetIdle,{passive:true});
@@ -596,7 +626,7 @@
   // Native builds load the bundled assets directly; only the browser PWA needs a service worker.
   if(!window.Capacitor?.isNativePlatform?.()&&'serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js',{updateViaCache:'none'}).catch(()=>{}));
   // A failed legal/consent script must never silently fall back to ungated learning.
-  if(document.querySelector('#launch-splash')&&(!window.TALA_PUBLIC||!window.TALA_LEGAL)){window.TALA_LAUNCH?.fail();return;}
+  if(document.querySelector('#launch-splash')&&(!window.TALA_PUBLIC||!window.TALA_LEGAL||!window.TALA_CLASSROOM||!window.TALA_TEACHER||!window.TALA_ROLES||!window.TALA_BUILDER||!window.TALA_NAV)){window.TALA_LAUNCH?.fail();return;}
   go(window.TALA_PUBLIC?'start':!store().introSeen?'intro':store().setupComplete?'home':'welcome');
   window.TALA_LAUNCH?.ready();
 })();

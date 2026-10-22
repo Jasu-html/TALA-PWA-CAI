@@ -10,7 +10,10 @@
     "test:sound": "node tests/sound-design.cjs",
     "test:launch": "node tests/public-launch.cjs",
     "test:theme": "node tests/theme-audit.cjs",
-    "test": "node --test tests/smoke.cjs tests/presentation.cjs tests/offline.cjs tests/audio-catalog.cjs tests/native.cjs tests/icons.cjs",
+    "test:classroom": "node tests/classroom-browser.cjs",
+    "test:builder": "node tests/builder-browser.cjs",
+    "test:roles": "node tests/roles-browser.cjs",
+    "test": "node --test tests/smoke.cjs tests/presentation.cjs tests/offline.cjs tests/audio-catalog.cjs tests/native.cjs tests/icons.cjs tests/classroom.cjs tests/files.cjs tests/navigation.cjs tests/builder.cjs tests/roles.cjs",
     "build:web": "node tools/prepare-android.cjs",
     "android:sync": "npm run build:web && cap sync android",
     "android:build": "powershell -ExecutionPolicy Bypass -File tools/build-android.ps1"

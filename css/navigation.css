@@ -1,0 +1,58 @@
+/* Fixed navigation reserves real viewport space, including Android safe areas. */
+.achievement-notice{position:fixed;z-index:150;top:calc(env(safe-area-inset-top,0px) + 12px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:12px;width:min(420px,calc(100% - 24px));padding:15px;background:#fff0cf;color:#36204b;border:2px solid #b97b17;border-radius:22px;box-shadow:0 6px 0 #724219,0 14px 32px #080b3666;animation:badge-arrive .45s cubic-bezier(.2,.9,.3,1.2) both;}
+.achievement-notice-icon{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;border-radius:16px;background:#f6ca59;color:#623500;}.achievement-notice .nav-icon{width:30px;height:30px;}
+.achievement-notice>div{flex:1;min-width:0;}.achievement-notice strong,.achievement-notice span:not(.achievement-notice-icon),.achievement-notice small{display:block;}.achievement-notice strong{font-size:13px;color:#68400e;}.achievement-notice div>span{font-size:18px;font-weight:800;line-height:1.3;margin:3px 0;}.achievement-notice small{font-size:12px;color:#5e4266;}
+.achievement-notice button{flex:0 0 44px;width:44px;height:44px;border:0;border-radius:14px;background:#ead6b1;color:#36204b;font-size:26px;}.achievement-notice button:focus-visible{outline:3px solid #5b21b6;outline-offset:2px;}
+@keyframes badge-arrive{from{opacity:0;transform:translate(-50%,-24px) scale(.94)}to{opacity:1;transform:translate(-50%,0) scale(1)}}
+@media(prefers-reduced-motion:reduce){.achievement-notice{animation:none;}}
+body[data-motion="reduce"] .achievement-notice{animation:none;}
+body[data-bottom-nav="true"] #app::after{content:"";display:block;min-height:calc(76px + env(safe-area-inset-bottom,0px));flex:0 0 calc(76px + env(safe-area-inset-bottom,0px));}
+.bottom-nav[hidden]{display:none;}
+.bottom-nav{position:fixed;z-index:60;bottom:0;left:0;right:0;display:flex;justify-content:center;gap:8px;padding:7px 12px calc(7px + env(safe-area-inset-bottom,0px));background:#e4def7;border-top:2px solid #aaa0cb;box-shadow:0 -5px 22px #0d143a33;}
+.bottom-nav button{flex:1;max-width:240px;min-height:54px;display:flex;align-items:center;justify-content:center;gap:7px;border:0;border-radius:16px;background:transparent;color:#45376c;font:inherit;font-size:14px;font-weight:700;cursor:pointer;}
+.bottom-nav .nav-icon{width:28px;height:28px;display:block;pointer-events:none;}
+.bottom-nav button:active .nav-icon{transform:scale(.92);}
+.bottom-nav button[aria-current="page"]{background:#5b21b6;color:#fff4df;box-shadow:0 3px 0 #351477;}
+.bottom-nav button:focus-visible,.volume-control input:focus-visible{outline:3px solid #be185d;outline-offset:3px;}
+.nav-page{max-width:1000px;margin:auto;padding:20px;border-radius:24px;background:#ede7f7;color:#211a46;}
+.nav-page h1{font-size:clamp(22px,4vw,32px);margin:8px 0 14px;}.nav-page p{line-height:1.5;}.nav-page .eyebrow{color:#5b21b6;}
+.badge-filters{display:flex;gap:10px;margin:16px 0;}.badge-filters [aria-pressed="true"]{background:#5b21b6;color:#fff4df;}
+.achievement-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.achievement{display:flex;align-items:center;gap:12px;padding:16px;border:2px solid #b5a8d4;border-radius:18px;background:#e0d8ef;min-width:0;}
+.achievement.earned{background:#fff0cf;border-color:#9c6714;}.badge-icon{font-size:34px;flex-shrink:0;}.achievement>div{flex:1;min-width:0;}
+.achievement h2{font-size:17px;margin:0 0 6px;color:#292048;}.achievement p{font-size:14px;margin:0 0 9px;color:#4b4065;}.achievement small{display:block;font-size:13px;font-weight:700;}
+.achievement progress{width:100%;height:10px;accent-color:#5b21b6;}.settings-card{padding:18px;background:#e2daef;border:2px solid #b5a8d4;border-radius:18px;margin:18px 0;}.settings-card h2{font-size:20px;margin:0 0 10px;}
+.settings-card>button{margin:6px 8px 6px 0;}.settings-note{font-size:14px;color:#4b4065;line-height:1.5;}
+.volume-control{display:grid;grid-template-columns:1fr auto;gap:10px;margin:24px 0;}.volume-control label{font-size:16px;font-weight:700;}.volume-control output{font-weight:700;}.volume-control input{grid-column:1/-1;width:100%;height:36px;accent-color:#5b21b6;cursor:pointer;}
+.task-section{margin-top:24px;}.task-section>h2{font-size:20px;margin:0 0 12px;}
+.task-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+.task-card{display:flex;gap:16px;align-items:center;min-width:0;padding:16px;border:2px solid #a294bf;border-radius:20px;background:#e2daef;}
+.task-card img{object-fit:contain;flex:0 0 76px;}.task-card>div{min-width:0;}.task-card h2{font-size:20px;line-height:1.3;margin:6px 0;overflow-wrap:anywhere;}
+.task-card p{font-size:14px;color:#4b4065;margin-bottom:12px;}.task-status{font-size:13px;color:#512293;font-weight:800;}
+.task-card .primary-button{font-size:16px;min-height:48px;padding:10px 18px;gap:8px;}
+.task-empty{padding:16px;border:2px dashed #a294bf;border-radius:18px;background:#e2daef;color:#4b4065;}.task-empty button{margin-top:12px;}
+@media(max-width:760px){.task-list{grid-template-columns:1fr;}}
+@media(max-width:360px){.task-card{padding:12px;gap:10px;}.task-card img{width:56px;height:80px;flex-basis:56px;}}
+@media(max-width:550px){.achievement-grid{grid-template-columns:1fr;}.nav-page{padding:16px;}.bottom-nav button{flex-direction:column;gap:0;font-size:12px;}.achievement{padding:12px;}}
+@media(min-width:900px){.settings-page{max-width:780px;}}
+/* Sticky touch hover must not repeatedly lift a card out from under the finger. */
+@media(hover:none),(prefers-reduced-motion:reduce){
+  .world-card:hover,.world-card.scroll-reveal.is-visible:hover,.world-card:hover .character-world{transform:none;}
+}
+@media(max-width:680px) and (max-height:850px){
+  body[data-bottom-nav="true"] .topbar{min-height:76px;padding-bottom:24px;}
+  body[data-bottom-nav="true"][data-screen="home"] .home-scene .greeting{padding-top:4px;padding-bottom:4px;}
+  body[data-bottom-nav="true"][data-screen="home"] .world-copy{padding-top:5px;padding-bottom:6px;}
+}
+@media(min-width:681px) and (max-height:850px) and (orientation:landscape){
+  body[data-bottom-nav="true"][data-screen="practice"] .activity-card{padding:12px 16px;}
+  body[data-bottom-nav="true"][data-screen="practice"] .activity-heading{margin-bottom:8px;}
+  body[data-bottom-nav="true"][data-screen="practice"] .question-card h1{font-size:26px;margin-top:6px;}
+  body[data-bottom-nav="true"][data-screen="practice"] .choice{min-height:48px;padding:6px 12px;}
+  body[data-bottom-nav="true"][data-screen="practice"] .question-card>.choices{gap:6px;}
+  body[data-bottom-nav="true"][data-screen="practice"] .answer-dock{margin-top:6px;padding-top:6px;}
+}
+@media(min-width:681px) and (max-height:680px) and (orientation:landscape){
+  body[data-bottom-nav="true"][data-screen="practice"] .activity-card{padding-top:8px;padding-bottom:8px;}
+  body[data-bottom-nav="true"][data-screen="practice"] .choice{min-height:44px;}
+}

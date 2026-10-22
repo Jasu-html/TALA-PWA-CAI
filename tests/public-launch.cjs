@@ -48,7 +48,7 @@ async function screenshot(page,name){
     assert.equal(await page.locator('body').getAttribute('data-screen'),'intro');
     await page.locator('[data-action="intro-skip"]').click();
     await page.locator('#learner-name').fill('Ana');await page.locator('#name-form button[type="submit"]').click();
-    await page.locator('header [data-action="dashboard"]').click();await page.locator('[data-action="parent-open"]').click();
+    await page.locator('[data-action="nav-settings"]').click();await page.locator('[data-action="parent-open"]').click();
     await screenshot(page,'parent-'+viewport.width);
     await page.locator('[data-action="toggle-motion"]').click();
     assert.equal(await page.locator('body').getAttribute('data-motion'),'reduce');

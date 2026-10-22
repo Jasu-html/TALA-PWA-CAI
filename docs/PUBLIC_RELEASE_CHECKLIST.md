@@ -2,6 +2,21 @@
 
 Status: **testing/review build, not cleared for public distribution**. Adding terms does not certify legal compliance or eliminate liability. Have a Philippine-qualified lawyer review the actual operator, use case, school arrangements, and final policies. No app has been uploaded or published by this work.
 
+## Classroom milestone (23 October 2026)
+
+Optional Teacher Mode now supports separate profiles and permissions, a local
+PIN/recovery lock, per-learner assignments, detailed local confirmation history,
+quiz checkpoints, CSV and JSON backup/restore. This is not a school-managed legal
+authorization workflow or a central school database. The policy version is now
+2026-10-23.1. New profiles require their own guardian approval; a teacher must not
+claim to be a legal guardian solely to pass the existing consent form.
+
+Before using actual learner records, agree school/controller responsibilities,
+authorization/legal basis, device access, retention/deletion, backup handling and
+incident response with the school/privacy officer. Use demo nicknames for now.
+Classroom storage is not encrypted by the app. PIN hashes protect the UI check,
+not the exported records or localStorage itself. See [classroom scope](CLASSROOM_ROADMAP.md).
+
 ## Implemented foundations
 
 - Animated readiness-based launch screen with reduced-motion behavior, retry on failed startup, and no fabricated loading percentage.

@@ -64,7 +64,7 @@ function setup(saved,revealItems,options={}) {
   const submitName=name=>{nodes['#learner-name'].value=name;for(const fn of handlers.submit)fn({target:{id:'name-form'},preventDefault(){}});};
   return {ctx,nodes,click,enter,one,all,canvasHandlers,timers,timerDelays,observers,submitName,dispatch:(name,event)=>{for(const fn of handlers[name]||[])fn(event);},saved:()=>JSON.parse(value),preferences:()=>JSON.parse(otherStorage.get('tala-public-preferences-v1')||'null')};
 }
-const guardianApproval={version:'2026-10-21.2',guardian:true,terms:true,processing:true};
+const guardianApproval={version:'2026-10-23.2',guardian:true,terms:true,processing:true};
 function submitPublic(env,id){env.dispatch('submit',{target:{id},preventDefault(){}});}
 function passAdultGate(env){
   const [,a,operator,b]=env.nodes['#app'].innerHTML.match(/ano ang (\d+) ([×+]) (\d+)/);

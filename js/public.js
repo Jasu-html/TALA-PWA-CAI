@@ -2,8 +2,8 @@
   const KEY='tala-public-preferences-v1',legal=window.TALA_LEGAL;
   let api,adultUntil=0,adultTarget='parent',origin='start',documentOrigin='start',documentKind='privacy';
   let challenge={a:3,b:4,operator:'×'};
-  const read=()=>{try{return JSON.parse(localStorage.getItem(KEY))||{};}catch{return {};}};
-  const write=value=>{try{localStorage.setItem(KEY,JSON.stringify(value));return true;}catch{api?.toast('Hindi ma-save ang consent. Paki-check kung may available storage at pinapayagan ng browser ang pag-save.');return false;}};
+  const read=()=>{try{return window.TALA_CLASSROOM?.preferences()||JSON.parse(localStorage.getItem(KEY))||{};}catch(error){if(window.TALA_CLASSROOM?.configured())throw error;return {};}};
+  const write=value=>{try{window.TALA_CLASSROOM?.savePreferences(value);localStorage.setItem(KEY,JSON.stringify(value));return true;}catch{api?.toast('Hindi ma-save ang consent. Paki-check kung may available storage at pinapayagan ng browser ang pag-save.');return false;}};
   const accepted=()=>{const d=read();return d.version===legal.version&&d.guardian===true&&d.terms===true&&d.processing===true;};
   const adult=()=>Date.now()<adultUntil;
   const escape=text=>String(text).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -31,11 +31,11 @@
       const returning=accepted()&&api.store().setupComplete;
       return `<div class="start-scene"><div class="start-aurora" aria-hidden="true"></div><div class="start-constellations" aria-hidden="true">${Array.from({length:12},(_,i)=>`<i style="--i:${i};--x:${6+(i*29)%88}%;--y:${5+(i*17)%77}%">✦</i>`).join('')}</div><header class="start-brand"><span class="start-mark" aria-hidden="true">✦</span><strong>TALA</strong><p lang="en">A Voice-Guided Learning App<br>for Grade 1 Learners</p></header><div class="start-main"><span class="start-badge">FILIPINO · GRADE 1</span><h1>Munting hakbang.<br><span>Malaking ningning.</span></h1><div class="start-cast" aria-hidden="true">${['Titik','Likha','Tala','Bilang'].map(name=>api.avatar(name,'character-start',name==='Tala'?'Happy':'Neutral')).join('')}</div><p>${returning?'Tuloy ang paglalakbay, '+escape(api.store().learner)+'!':'Matuto, maglaro, at sumikat kasama ang mga kaibigan ni Tala.'}</p><button class="primary-button start-play" data-action="start-game"><span aria-hidden="true">▶</span> ${returning?'Magpatuloy':'Magsimula'}</button><button class="start-parent" data-action="parent-open">Para sa magulang at guro →</button></div><footer class="start-footer"><div>${button('show-child','Para sa bata','start-link')}${button('show-privacy','Privacy','start-link')}${button('show-terms','Terms of Use','start-link')}${button('show-help','Help','start-link')}</div><small>v${legal.appVersion} · ${legal.releaseStatus==='review'?'Test version':'TALA'}</small></footer></div>`;
     },
-    parentGate(){return frame('Magulang muna',`<p>Pakiabot muna ang device sa magulang o legal guardian bago magpatuloy.</p><form id="adult-gate-form" class="public-form"><label for="adult-answer">Para sa magulang: ano ang ${challenge.a} ${challenge.operator} ${challenge.b}?</label><input id="adult-answer" inputmode="numeric" autocomplete="off" required aria-describedby="adult-gate-note"><p id="adult-gate-note" class="small-note">Simple check lang ito para sa magulang. Hindi nito nabe-verify ang identity o pagiging legal guardian. Hindi sine-save ang sagot.</p><button class="primary-button" type="submit">Magpatuloy</button><p id="public-error" role="alert"></p></form>`);},
+    parentGate(){return frame(adultTarget==='classroom'?'Teacher check':'Magulang muna',`<p>${adultTarget==='classroom'?'Para sa teacher ang classroom setup. Hindi nito pinapalitan ang consent ng magulang para sa learner.':'Pakiabot muna ang device sa magulang o legal guardian bago magpatuloy.'}</p><form id="adult-gate-form" class="public-form"><label for="adult-answer">Para sa ${adultTarget==='classroom'?'teacher':'magulang'}: ano ang ${challenge.a} ${challenge.operator} ${challenge.b}?</label><input id="adult-answer" inputmode="numeric" autocomplete="off" required aria-describedby="adult-gate-note"><p id="adult-gate-note" class="small-note">Simple check lang ito para sa magulang. Hindi nito nabe-verify ang identity o pagiging legal guardian. Hindi sine-save ang sagot.</p><button class="primary-button" type="submit">Magpatuloy</button><p id="public-error" role="alert"></p></form>`);},
     consent(){return frame('Parent consent',`${review()}<p>Walang kailangang account o bayad, at walang ads. Nickname at learning progress ang sine-save sa device para maituloy ang laro. Optional ang microphone.</p><div class="public-links">${button('show-terms','Basahin ang Terms of Use')}${button('show-privacy','Basahin ang Privacy Notice')}${button('show-child','Para sa bata')}</div><form id="legal-consent-form" class="public-form"><label class="check-row"><input id="guardian-confirm" type="checkbox" required><span>Ako ang magulang o legal guardian ng batang gagamit, at may karapatan akong magbigay ng consent para sa kanya.</span></label><label class="check-row"><input id="terms-confirm" type="checkbox" required><span>Nabasa ko at sumasang-ayon ako sa Terms of Use (version ${legal.version}).</span></label><label class="check-row"><input id="processing-confirm" type="checkbox" required><span>Nabasa ko ang Privacy Notice. Pinapayagan kong i-save at gamitin ng TALA ang nickname, progress, at learning results ng bata sa device na ito para sa pag-aaral. Puwede kong bawiin ang consent at i-delete ang data.</span></label><p class="small-note">Hiwalay ang permission para sa voice input. Naka-off muna ang microphone. Kahit hindi ito gamitin, available pa rin ang lahat ng lessons.</p><button class="primary-button" type="submit">Agree at magpatuloy</button>${button('public-cancel','Hindi muna','text-button')}<p id="public-error" role="alert"></p></form>`);},
     legal(){
       const doc=legal.documents[documentKind]||legal.documents.privacy;
-      return frame(doc.title,`${review()}<p class="legal-version">Policy version ${legal.version} · Updated: 21 October 2026</p><p class="legal-intro">${escape(doc.intro)}</p>${doc.sections.map(([title,text])=>`<section class="legal-section"><h2>${escape(title)}</h2><p>${escape(text)}</p></section>`).join('')}<section class="legal-section"><h2>Support at privacy</h2><p>${escape(legal.operator)}</p><div class="contact-list">${contacts()}</div></section>${doc.sources.length?'<section class="legal-section"><h2>Official sources</h2><p>External websites ang mga ito. Magpatulong muna sa magulang bago buksan.</p>'+doc.sources.map(([label,url])=>`<button class="text-button source-link" data-action="open-source" data-url="${escape(url)}">${escape(label)} ↗</button>`).join('')+'</section>':''}`);
+      return frame(doc.title,`${review()}<p class="legal-version">Policy version ${legal.version} · Updated: 23 October 2026</p><p class="legal-intro">${escape(doc.intro)}</p>${doc.sections.map(([title,text])=>`<section class="legal-section"><h2>${escape(title)}</h2><p>${escape(text)}</p></section>`).join('')}<section class="legal-section"><h2>Support at privacy</h2><p>${escape(legal.operator)}</p><div class="contact-list">${contacts()}</div></section>${doc.sources.length?'<section class="legal-section"><h2>Official sources</h2><p>External websites ang mga ito. Magpatulong muna sa magulang bago buksan.</p>'+doc.sources.map(([label,url])=>`<button class="text-button source-link" data-action="open-source" data-url="${escape(url)}">${escape(label)} ↗</button>`).join('')+'</section>':''}`);
     },
     parent(){
       const settings=read();
@@ -69,7 +69,7 @@
     }
     if(id==='delete-data-form'){
       if(document.querySelector('#delete-confirm').value.trim()!=='BURAHIN'){fail('Paki-type ang BURAHIN para i-confirm.');return true;}
-      try{for(const key of [KEY,'tala-pwa-progress-v1','tala-sfx-enabled'])localStorage.removeItem(key);}
+      try{window.TALA_CLASSROOM?.withdrawActive();window.TALA_CLASSROOM?.lock();for(const key of [KEY,'tala-pwa-progress-v1','tala-sfx-enabled','tala-audio-volumes-v1'])localStorage.removeItem(key);}
       catch{fail('Hindi ma-delete ang data. Subukang i-clear ang TALA data sa app o browser settings.');return true;}
       adultUntil=0;api.resetSound();motion();api.go('start');api.toast('Nabawi na ang consent at na-delete ang TALA data sa device na ito.');
     }
@@ -82,12 +82,13 @@
   }
   function exportData(){
     if(!confirm('May nickname at learning results ang file. I-save ito sa safe na lugar at huwag basta i-share. I-download na?'))return;
+    if(window.TALA_FILES){TALA_FILES.save(JSON.stringify({app:'TALA',exportedAt:new Date().toISOString(),progress:api.store(),preferences:read()},null,2),'TALA-local-data.json','application/json').catch(error=>{if(error.code!=='cancelled')api.toast('Hindi ma-export ang data. Subukang muli.');});return;}
     const blob=new Blob([JSON.stringify({app:'TALA',exportedAt:new Date().toISOString(),progress:api.store(),preferences:read()},null,2)],{type:'application/json'});
     const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='TALA-local-data.json';document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
   }
   function handle(button){
     const action=button.dataset.action;
-    if(action==='start-game'){api.tap();startLearning();return true;}
+    if(action==='start-game'){window.TALA_ROLES?.student();api.tap();startLearning();return true;}
     if(action==='parent-open'){api.tap();requestAdult('parent');return true;}
     if(action==='dashboard'&&!adult()){api.tap();requestAdult('dashboard');return true;}
     if(action==='public-back'||action==='public-cancel'){api.tap();back(api.screen());return true;}
@@ -120,7 +121,9 @@
     return false;
   }
   window.TALA_PUBLIC={screens,init(value){api=value;motion();},accepted,handle,handleSubmit,back,
-    needsConsent:screen=>!accepted()&&!['start',...Object.keys(screens)].includes(screen),
+    needsConsent:screen=>!(screen==='customPlay'&&window.TALA_BUILDER?.isPreview())&&!accepted()&&!['start','classroom','builder','teacherSettings',...Object.keys(screens)].includes(screen),
+    lockAdult:()=>{adultUntil=0;motion();},
+    requestTeacherSetup:()=>requestAdult('classroom'),
     voiceAllowed:()=>accepted()&&read().voiceInput===true&&read().voiceVersion===legal.version,
     requestVoice:()=>requestAdult(accepted()?'voicePermission':'consent'),
     reduceMotion:()=>!!read().reduceMotion,

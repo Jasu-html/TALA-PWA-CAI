@@ -5,13 +5,13 @@ The app ID is `com.tala.learning`; the launcher name is **TALA**. The full title
 remains **TALA — A Voice-Guided Learning App for Grade 1 Learners** in the app header.
 This is a debug-signed testing build, not a Play Store release.
 
-The current verified build is `builds/TALA-1.0.16-debug.apk`, approximately **28.18 MiB**,
+The current verified build is `builds/TALA-1.3.0-debug.apk`, approximately **28.24 MiB**,
 with minimum SDK 24 (**Android 7.0+**) and target SDK 36. Android's `apksigner`
 successfully verified its debug signature. Archive verification confirmed all
-**929 public source files**, including **887 catalogued voice recordings**, match the current source.
+**940 public source files**, including **887 catalogued voice recordings**, match the current source.
 This does not replace testing the app on a physical phone.
 
-SHA-256: `aec293d773890c2932fcbe039090c64a773445d3836fa57076e521561efa5392`.
+SHA-256: `448c8a913530c34a1a4fd10fa6378834d9ca27e0aa7c3573eb51d0ab0fa2a1a7`.
 
 ## Build again on Windows
 
@@ -48,6 +48,37 @@ bundled assets directly. The browser PWA keeps its existing service worker.
 The APK has its **own** local progress store; browser/PWA progress does not migrate
 automatically. Clearing app data or uninstalling removes that progress. Android
 backup is disabled to keep learner data from being backed up by this wrapper.
+
+## Update 1.1.0 — first teacher-classroom milestone
+
+Open **Teacher Classroom Mode** on the title screen. A six-digit PIN/recovery
+setup migrates the existing learner to the first profile without inventing old
+attempt history. Teachers can manage separate profiles/sections, archive/search,
+assign one core activity, inspect new attempt records and export CSV/backups.
+Interrupted quizzes resume from a saved checkpoint. Progress and consent are
+isolated per learner; new profiles never inherit guardian/microphone approval.
+
+Classroom backups have validated replacement/preview, not cross-device merging.
+PIN and permissions are not imported. Android uses native document pickers for
+JSON/CSV save and JSON import, with bounded file sizes and no broad storage
+permission. Active-profile reset and entire-classroom deletion require typing.
+Guardian withdrawal affects the active learner, not the rest of the class.
+
+The new privacy version is 2026-10-23.1 and requires renewed guardian approval.
+Teacher setup is not legal guardianship or school authorization. Use demo records
+until the school/privacy review is complete. Local records are not app-encrypted.
+
+All 90 automated tests passed. Real Chrome checks passed for the classroom flow
+at three sizes, existing student layouts at five phone/seven tablet sizes,
+public launch/offline behavior and 51 targeted theme samples. Native file-adapter
+mock/static tests and Android compilation passed. The 933 bundled source files
+and debug signature verified. Actual Android document-provider save/import/cancel
+and real classroom performance still need physical-device testing.
+
+See [Teacher guide](USER_GUIDE.md) and [remaining milestones](docs/CLASSROOM_ROADMAP.md).
+Skill mastery/trends, PDF reports, group assignments, assessment modes, curriculum
+review and multi-device sync are not claimed complete in this first increment.
+Install over the existing debug app; do not uninstall if preserving progress.
 
 ## Update 1.0.16
 

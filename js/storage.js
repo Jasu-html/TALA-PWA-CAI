@@ -3,7 +3,7 @@
   const fresh = () => ({ curriculumVersion:2, learner:'Munting Tala', setupComplete:false, introSeen:false, questOpeningSeen:false, questEndingSeen:false, stars:0, completed:[], attempts:{}, best:{}, results:{}, lastVisit:null });
   function read() {
     try {
-      const raw = JSON.parse(localStorage.getItem(KEY)) || {};
+      const raw = window.TALA_CLASSROOM?.progress() || JSON.parse(localStorage.getItem(KEY)) || {};
       const d = { ...fresh(), ...raw };
       // Existing learners should not be sent through first-run setup after an update.
       const returning = (typeof raw.learner==='string' && raw.learner!=='Munting Tala') || d.completed.length>0;
@@ -21,10 +21,12 @@
         d.curriculumVersion=2;
       }
       return d;
-    } catch { return fresh(); }
+    } catch (error) { if(window.TALA_CLASSROOM?.configured())throw error;return fresh(); }
   }
-  function save(d) {
+  function save(d,completion) {
     d.lastVisit = new Date().toISOString();
+    if(completion)window.TALA_CLASSROOM?.completeProgress(d,completion.id,completion.stars);
+    else window.TALA_CLASSROOM?.saveProgress(d);
     try { localStorage.setItem(KEY, JSON.stringify(d)); }
     catch { window.TALA_UI?.toast('Hindi mai-save ang progreso sa browser na ito.'); }
     return d;
@@ -43,13 +45,16 @@
     },
     complete(id, stars, results = []) {
       const d=read(), previous=d.best[id] || (d.completed.includes(id) ? 5 : 0);
+      const before=window.TALA_NAV?JSON.parse(JSON.stringify(d)):null;
       const earned=Math.max(0, stars-previous);
       if (!d.completed.includes(id)) d.completed.push(id);
       d.best[id]=Math.max(previous,stars); d.stars+=earned;
       d.results[id]=results;
-      d.attempts[id]=(d.attempts[id] || 0)+1; save(d);
+      d.attempts[id]=(d.attempts[id] || 0)+1; save(d,{id,stars});
+      // Compare persisted progress, not clicks or a separate device-wide badge list.
+      try{if(before)window.TALA_NAV.celebrate(before,read());}catch{/* Rewards must never block saving a lesson. */}
       return {earned, stars:d.best[id]};
     },
-    reset() { localStorage.removeItem(KEY); return fresh(); }
+    reset() { window.TALA_NAV?.clearCelebrations();if(window.TALA_CLASSROOM?.configured()){window.TALA_CLASSROOM.resetActive();return read();}localStorage.removeItem(KEY); return fresh(); }
   };
 })();

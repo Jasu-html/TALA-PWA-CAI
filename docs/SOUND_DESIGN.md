@@ -2,6 +2,10 @@
 
 All music and environmental effects are synthesized locally by `js/sfx.js` using Web Audio. No downloads, external music services, voice generation, or additional audio files are required. Nature effects are stylized synthesized textures, not wildlife field recordings. Existing MP3 narration is unchanged.
 
+## Volume controls
+
+**Settings** has independent 0–100% music and SFX sliders. Environmental ambience follows SFX. Preferences persist device-wide under `tala-audio-volumes-v1`; default is 100% of the existing mix, not an added gain boost. Zero mutes that bus. The header sound switch remains a global on/off control. Narration ducking multiplies the selected music/ambience volume rather than resetting it, and MP3 voiceover volume is unchanged. A short gain ramp avoids clicks while dragging a slider.
+
 ## Sound identities
 
 | Screen / world | Music | Arrival and environment |

@@ -1,5 +1,67 @@
 # TALA Progress Tracker
 
+## Teacher / Student separation — 1.3.0 (2026-10-23)
+
+- Role choice at launch; separate teacher Dashboard / Make Activity / Settings navbar. Teacher Home never enters student games; custom preview remains a teacher testing tool.
+- Added dashboard summaries and explicit logout/handoff, removed teacher tools from student Settings, retained PIN/adult consent enforcement and existing data.
+- Compact Home task shortcut, artwork fitted inside its card frames, viewport-filling Tasks with larger assigned activity, and spacious scrollable Settings.
+- Corrected builder cleanup placement so recordings stop on navigation and builder idle locking is actually installed.
+- 101 automated tests, five phone layouts, teacher/student isolation on two phones and a tablet, builder/classroom/guardian workflows and 51 existing contrast samples pass.
+- Guide: [Teacher and Student modes](docs/TEACHER_STUDENT_MODES.md). APK is debug-signed; physical-device testing remains required.
+
+
+## Teacher Lesson Builder — 1.2.0 (2026-10-23)
+
+- Added PIN-protected custom module/stage/level authoring, 1–20 multiple-choice questions, images, hints and optional teacher-recorded/uploaded voiceovers.
+- IndexedDB media storage, drafts, preview, immutable published revisions, custom learner assignments under Mga Gawain and separate completed results.
+- Self-contained media packages preserve revision IDs across devices; classroom backup separately includes custom assignments/results. Active withdrawal clears custom learner data; entire-classroom deletion also clears the lesson library.
+- Added validation, size limits, empty recording checks, 30-second recording cap, microphone cleanup and a fixed Stop recording control. Native picker imports/uploads can resume after PIN unlock.
+- Privacy policy version 2026-10-23.2; new teacher media stays local, not uploaded to AI services.
+- 100 automated tests and end-to-end Chrome builder tests pass, including simulated microphone, cross-context media transfer and offline preview. Existing classroom and guardian/offline launch workflows pass. Physical Android microphone testing still required.
+- Guide: [Teacher Lesson Builder](docs/TEACHER_LESSON_BUILDER.md). No custom interrupted-quiz resume, cloud sync or custom winding map in this milestone.
+
+
+## Compact mobile screens — 1.1.4 (2026-10-23)
+
+- Added `css/fit.css` to reduce decorative spacing, duplicate helper copy and oversized quiz/lesson regions on short phones. No scroll locking or content clipping.
+- Collapsed teacher settings, optional audio guide/test and completed-stage lists. Empty resume cards are no longer shown.
+- 390×780 learner screens fit without vertical scrolling; 360×640 Home reduced from 762 to 652px and quiz from 741 to 654px. Very short phones retain bounded scrolling with readable text and touch targets.
+- 98 automated tests and five phone-size checks passed; tablet learning screens regression-checked. APK 1.1.4 built with all 887 voice recordings.
+
+
+## Four icon-only tabs — 2026-10-23 (1.1.2)
+
+- Added Mga Gawain between Home and Tagumpay. The order is Home / Mga Gawain / Tagumpay / Settings.
+- Created four original inline SVG icons, with accessible labels/tooltips but no visible tab text or emoji. No icon font/CDN/download or external license dependency.
+- Added active-learner assignment, unfinished classroom quiz, and completed core-stage replay cards with character art and safe empty states. Teacher authorization remains unchanged; there is no cross-learner roster exposure.
+- Tests: 97 automated checks, five phone sizes, seven tablet sizes, and classroom assignment workflows at three sizes passed.
+- Built and signature-verified `builds/TALA-1.1.2-debug.apk`; 935 public source files including 887 recordings match source. Physical-phone testing remains necessary.
+
+
+## Bottom navigation and achievements — 2026-10-23 (1.1.1)
+
+- Replaced the header menu with Home / Tagumpay / Settings bottom navigation.
+- Kept teacher reports, PIN access and parent controls available from Settings.
+- Added independent persistent music and SFX/ambience volume sliders; narration unchanged.
+- Added 78 per-learner achievements, including A–Z, star totals, module completion, five-star milestones and Hamon ni Tala. Existing progress counts automatically.
+- Reserved navigation space and compacted short landscape quizzes; fixed oscillating card hover on touch devices.
+- Verified 94 automated tests, five phone sizes, seven tablet sizes, classroom workflows at three sizes, guardian/offline launch, and 51 existing contrast samples.
+- Built and signature-verified `builds/TALA-1.1.1-debug.apk`; 935 bundled public source files and 887 MP3 recordings match source. Physical-device testing still required.
+- Badge catalog: [78 achievements](docs/ACHIEVEMENTS.md).
+
+
+## Teacher classroom milestone — 2026-10-23
+
+- Implemented separate learner profiles, section/search/archive and preserved legacy progress.
+- Added hashed Teacher PIN/recovery, persisted lockout, idle/background locking.
+- Added one current per-student assignment and consent-safe learner switching.
+- Added durable confirmation history, hint/reveal evidence and interrupted quiz resume.
+- Added roster summaries, CSV, validated JSON backup/restore and native document pickers.
+- Added scoped withdrawal/reset and typed entire-classroom deletion.
+- Privacy notice version 2026-10-23.1; school authorization remains a release blocker.
+- Milestone scope, tests and unfinished features: [Classroom roadmap](docs/CLASSROOM_ROADMAP.md).
+- This is the first classroom increment, not completion of the entire original programming guide.
+
 ## Current PWA implementation — 2026-10-21
 
 ### Visual and sound update

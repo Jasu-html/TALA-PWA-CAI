@@ -52,7 +52,7 @@ let browser,server;
     const context=await browser.newContext({viewport,serviceWorkers:'block',reducedMotion:'no-preference'});
     await context.addInitScript(()=>{
       localStorage.setItem('tala-pwa-progress-v1',JSON.stringify({curriculumVersion:2,learner:'Ana',introSeen:true,setupComplete:true,heardGuidance:['home','map:phonics','map:numbers','map:arts','map:values']}));
-      localStorage.setItem('tala-public-preferences-v1',JSON.stringify({version:'2026-10-21.2',guardian:true,terms:true,processing:true}));
+      localStorage.setItem('tala-public-preferences-v1',JSON.stringify({version:'2026-10-23.2',guardian:true,terms:true,processing:true}));
     });
     const page=await context.newPage(),errors=[];page.on('pageerror',error=>errors.push(error.message));
     await page.goto('http://127.0.0.1:4173/');

@@ -17,10 +17,11 @@ let server,browser;
     ? [{width:600,height:960},{width:768,height:1024},{width:800,height:1280},{width:1024,height:768},{width:1280,height:800},{width:1366,height:1024},{width:800,height:600}]
     : [{width:360,height:640},{width:390,height:780},{width:412,height:900},{width:360,height:800},{width:320,height:568}];
   for(const viewport of sizes){
+    if(process.env.TALA_TEST_SIZE&&process.env.TALA_TEST_SIZE!==`${viewport.width}x${viewport.height}`)continue;
     const context=await browser.newContext({viewport,serviceWorkers:'block',reducedMotion:'reduce',isMobile:true,hasTouch:true});
     await context.addInitScript(()=>{
       localStorage.setItem('tala-pwa-progress-v1',JSON.stringify({curriculumVersion:2,learner:'Ana',introSeen:true,setupComplete:true,heardGuidance:['home','map:phonics']}));
-      localStorage.setItem('tala-public-preferences-v1',JSON.stringify({version:'2026-10-21.2',guardian:true,terms:true,processing:true}));
+      localStorage.setItem('tala-public-preferences-v1',JSON.stringify({version:'2026-10-23.2',guardian:true,terms:true,processing:true}));
       HTMLMediaElement.prototype.play=()=>Promise.resolve();
     });
     const page=await context.newPage(),errors=[];page.on('pageerror',error=>errors.push(error.message));
@@ -42,8 +43,9 @@ let server,browser;
       }
       if(['lesson','question'].includes(name)&&viewport.height>=700){
         const bottom=await page.locator('.activity-card').evaluate(el=>el.getBoundingClientRect().bottom);
-        assert.ok(bottom<=viewport.height-20,`${name} needs breathing room below the card: bottom=${bottom}, height=${viewport.height}`);
-        assert.ok(bottom>=viewport.height-70,`${name} should fill the screen instead of leaving a large empty area: bottom=${bottom}, height=${viewport.height}`);
+        const navTop=await page.locator('#bottom-nav').evaluate(el=>el.getBoundingClientRect().top);
+        assert.ok(bottom<=navTop-8,`${name} needs breathing room above navigation: bottom=${bottom}, nav=${navTop}`);
+        assert.ok(bottom>=viewport.height-146,`${name} should fill the screen instead of leaving a large empty area: bottom=${bottom}, height=${viewport.height}`);
       }
       await page.screenshot({path:path.join(output,`${name}-${viewport.width}x${viewport.height}.png`),fullPage:true});
       if(size.scrollHeight>size.height+maxOverflow)console.log(await page.evaluate(()=>[...document.querySelectorAll('.topbar,.screen-listen,.greeting,.world-card,.world-copy,.gentle-note,.home-scene,.quest-card,.story-replay,.activity-card,.flow-top,.intro-card')].map(el=>({class:el.className,height:el.getBoundingClientRect().height,top:el.getBoundingClientRect().top,margin:getComputedStyle(el).margin}))));
@@ -56,13 +58,13 @@ let server,browser;
     await page.locator('[data-action="start-game"]').click();
     // Preserve readable 12px secondary / 16px body text on short phones.
     // Allow bounded scrolling there, never clip content to force a single screen.
-    const homeOverflow=viewport.width===320?220:viewport.height<700?110:20;
+    const homeOverflow=viewport.width===320?296:viewport.height<700?186:20;
     await check('home',homeOverflow);
     if(viewport.height>=700){
       const bottom=await page.locator('.story-replay').evaluate(el=>el.getBoundingClientRect().bottom);
-      assert.ok(bottom>=viewport.height-30&&bottom<=viewport.height+1,`Home must use the available height: bottom=${bottom}, viewport=${viewport.height}`);
+      assert.ok(bottom>=viewport.height-106&&bottom<=viewport.height+1,`Home must use the available height: bottom=${bottom}, viewport=${viewport.height}`);
       const artHeight=await page.locator('.world-art').first().evaluate(el=>el.getBoundingClientRect().height);
-      assert.ok(artHeight>46,'Tall screens should expand the module artwork instead of leaving a bottom gap');
+      assert.ok(artHeight>=46,'Module artwork retains its minimum height with bottom navigation');
     }
     await page.locator('[data-module="phonics"]').click();
     const mapHeight=await page.evaluate(()=>document.documentElement.scrollHeight);assert.ok(mapHeight>2000,'Level trail must remain scrollable');
@@ -81,9 +83,9 @@ let server,browser;
     await page.locator('.map-heading .back-button').click();
     assert.equal(await page.locator('body').getAttribute('data-screen'),'home');
     await page.locator('[data-module="phonics"]').click();
-    await page.locator('[data-level="1"]').click();await check('lesson',viewport.width===320?110:20);
+    await page.locator('[data-level="1"]').click();await check('lesson',viewport.width===320?186:viewport.height<700?96:20);
     assert.equal(await page.locator('.tutorial-disclosure').getAttribute('open'),null);
-    await page.locator('[data-action="practice"]').click();await check('question',viewport.width===320?140:viewport.height<700?50:20);
+    await page.locator('[data-action="practice"]').click();await check('question',viewport.width===320?216:viewport.height<700?126:20);
     const choices=await page.locator('.choice').evaluateAll(elements=>elements.map(el=>{const r=el.getBoundingClientRect();return {left:r.left,top:r.top,bottom:r.bottom,width:r.width};}));
     for(let i=1;i<choices.length;i++){
       assert.ok(Math.abs(choices[i].left-choices[0].left)<1,'Answers must share one vertical column');
@@ -102,7 +104,7 @@ let server,browser;
     await page.evaluate(()=>{TALA_SPEECH.stop();TALA_VISUALS.setMood(document.querySelector('.guide-conversation'),'idle');});
     assert.match(await page.locator('.guide-conversation .character-image').getAttribute('src'),/Titik-Neutral\.png$/);
     await page.locator('[data-choice="0"]').click();
-    await page.locator('header [data-action="dashboard"]').click();
+    await page.locator('[data-action="nav-settings"]').click();
     await page.evaluate(()=>TALA_UI.back());
     assert.equal(await page.locator('body').getAttribute('data-screen'),'practice');
     assert.equal(await page.locator('[data-choice="0"]').getAttribute('aria-pressed'),'true');
@@ -118,7 +120,39 @@ let server,browser;
     await page.locator('[data-action="intro-skip"]').click();
     await page.setViewportSize({width:viewport.width,height:viewport.height+140});
     const resized=await page.locator('.story-replay').evaluate(el=>el.getBoundingClientRect().bottom);
-    assert.ok(resized>=viewport.height+140-30&&resized<=viewport.height+141+(viewport.width===320?120:0),'Home must adapt after the viewport changes without clipping readable content');
+    assert.ok(resized>=viewport.height+140-106&&resized<=viewport.height+141+(viewport.width===320?120:0),`Home must adapt after resizing: bottom=${resized}, height=${viewport.height+140}`);
+    await page.setViewportSize(viewport);
+    assert.deepEqual(await page.locator('#bottom-nav button').evaluateAll(buttons=>buttons.map(b=>b.getAttribute('aria-label'))),['Home','Mga Gawain','Tagumpay','Settings']);
+    assert.equal((await page.locator('#bottom-nav').innerText()).trim(),'');
+    assert.equal(await page.locator('#bottom-nav svg').count(),4);
+    await page.locator('[data-action="nav-tasks"]').click();
+    if(viewport.width<=680)await check('tasks',viewport.height<700?96:20);
+    assert.equal(await page.locator('.task-card').count(),0);
+    assert.ok(await page.locator('[data-action="nav-tasks"][aria-current="page"]').count());
+    await page.screenshot({path:path.join(output,`tasks-empty-${viewport.width}x${viewport.height}.png`),fullPage:true});
+    await page.locator('[data-action="nav-achievements"]').click();
+    assert.equal(await page.locator('.achievement').count(),78);
+    assert.equal(await page.locator('.achievement.earned').count(),0);
+    await page.locator('[data-action="badge-earned"]').click();assert.equal(await page.locator('.achievement').count(),0);
+    await page.locator('[data-action="nav-home"]').click();
+    await page.evaluate(()=>TALA_STORE.complete('phonics:1',1));
+    await page.waitForSelector('.achievement-notice');assert.equal(await page.locator('.achievement-notice').count(),1);
+    assert.match(await page.locator('.achievement-notice').innerText(),/Bagong tagumpay/);
+    await page.screenshot({path:path.join(output,`achievement-popup-${viewport.width}x${viewport.height}.png`),fullPage:true});
+    await page.locator('[data-action="badge-dismiss"]').click();assert.equal(await page.locator('.achievement-notice').count(),0);
+    await page.locator('[data-action="nav-tasks"]').click();assert.equal(await page.locator('[data-action="task-replay"]').count(),1);
+    await page.locator('.tasks-page .compact-disclosure>summary').click();await page.locator('[data-action="task-replay"]').click();assert.equal(await page.locator('body').getAttribute('data-screen'),'lesson');
+    await page.evaluate(()=>TALA_UI.back());assert.equal(await page.locator('body').getAttribute('data-screen'),'tasks');
+    await page.locator('[data-action="nav-achievements"]').click();assert.equal(await page.locator('.achievement.earned').count(),4);
+    await page.locator('[data-action="nav-settings"]').click();
+    if(viewport.width<=680)await check('settings',400); // Settings intentionally uses the full space and may scroll.
+    await page.locator('#volume-music').evaluate(el=>{el.value='30';el.dispatchEvent(new Event('input',{bubbles:true}));});
+    await page.locator('#volume-sfx').evaluate(el=>{el.value='65';el.dispatchEvent(new Event('input',{bubbles:true}));});
+    assert.equal(await page.locator('#volume-music-value').innerText(),'30%');
+    assert.equal(await page.evaluate(()=>TALA_SFX.getVolumes().sfx),.65);
+    await page.locator('[data-action="nav-home"]').click();await page.locator('[data-action="nav-settings"]').click();assert.equal(await page.locator('#volume-music').inputValue(),'30');
+    await page.screenshot({path:path.join(output,`settings-${viewport.width}x${viewport.height}.png`),fullPage:true});
+    await page.reload();await page.waitForSelector('#launch-splash',{state:'detached'});await page.locator('[data-action="start-game"]').click();await page.locator('[data-action="nav-settings"]').click();assert.equal(await page.locator('#volume-sfx').inputValue(),'65');
     assert.deepEqual(errors,[],'No runtime errors');
     await context.close();
   }

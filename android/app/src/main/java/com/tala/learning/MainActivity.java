@@ -19,6 +19,7 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(TalaVoiceInputPlugin.class);
+        registerPlugin(TalaClassroomFilesPlugin.class);
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);

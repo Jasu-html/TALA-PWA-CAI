@@ -1,0 +1,40 @@
+/* Fit by trimming decorative space, never by clipping content or disabling scroll. */
+@media(hover:none),(prefers-reduced-motion:reduce){.choice:hover:not(:disabled){transform:none;}}
+@media(max-width:359px){body[data-screen="home"] .world-copy>strong{font-size:16px;}}
+@media(max-width:680px){
+  .nav-page{padding:14px;}.nav-page h1{margin:4px 0 8px;font-size:22px;}.nav-page>.eyebrow{margin-bottom:6px;}
+  .task-section{margin-top:14px;}.task-section>h2{margin-bottom:8px;font-size:18px;}.task-empty,.task-card{padding:12px;}.task-card img{width:56px;height:76px;flex-basis:56px;}
+  .settings-card{margin:10px 0;padding:12px;}.settings-card h2{font-size:18px;margin-bottom:6px;}.settings-card>p{margin:4px 0;}.volume-control{margin:12px 0;gap:4px;}.volume-control input{height:28px;}.settings-card>button{min-height:44px;padding:10px;font-size:16px;}
+  .audio-help>summary{min-height:44px;padding:10px 0;cursor:pointer;font-weight:700;}.audio-help button{min-height:44px;padding:10px;font-size:16px;}.audio-help p{margin:6px 0;}
+  .compact-disclosure{margin-top:12px;border:2px solid #a294bf;border-radius:16px;background:#e2daef;padding:0 12px;}.compact-disclosure>summary{padding:12px 0;min-height:44px;font-weight:800;cursor:pointer;}.compact-disclosure .settings-card{border:0;padding:0;margin:0 0 10px;}
+}
+@media(max-width:680px) and (max-height:820px){
+  body[data-bottom-nav="true"] .topbar{min-height:68px;padding-bottom:20px;}
+  body[data-screen="home"] .home-scene{padding:8px;}.home-scene .world-grid{gap:8px;}
+  body[data-screen="home"] .greeting p{display:none;}
+  body[data-screen="home"] .world-guide{display:none;}
+  body[data-screen="home"] .quest-card{padding:8px;margin-top:8px;}
+  body[data-screen="home"] .quest-card-avatar{display:none;}
+  body[data-screen="home"] .quest-card-copy{gap:2px;}
+  body[data-screen="home"] .quest-card-copy>span:last-child{font-size:14px;line-height:1.3;}
+  body[data-screen="home"] .story-replay{min-height:44px;margin:0 auto;padding:4px;}
+  body[data-screen="home"] .world-bottom{margin-top:2px;}
+  body[data-screen="home"] .progress-track{margin-top:2px;}
+  body[data-screen="home"] .home-scene .greeting{margin-bottom:2px;}
+  body:is([data-screen="lesson"],[data-screen="practice"]) .screen{padding-bottom:10px;}
+  body:is([data-screen="lesson"],[data-screen="practice"]) .activity-card{padding:10px;}
+  body[data-screen="practice"] .question-card{display:flex;}
+  body[data-screen="practice"] .activity-heading{margin-bottom:4px;}
+  body[data-screen="practice"] .question-progress{margin-bottom:4px;}
+  body[data-screen="practice"] .question-card h1{margin-top:4px;}
+  body[data-screen="practice"] .question-card>.guide-conversation{margin:4px 0;padding:0;}
+  body[data-screen="practice"] .guide-actor .character{width:48px;}
+  body[data-screen="practice"] .question-card .speech-bubble{min-height:80px;padding:8px;}
+  body[data-screen="practice"] .question-card>.choices{gap:6px;align-content:space-evenly;}
+  body[data-screen="practice"] .choice{min-height:44px;padding:6px 12px;}
+  body[data-screen="practice"] .selection-instruction{margin-bottom:4px;}
+  body[data-screen="practice"] .answer-dock{margin-top:4px;padding-top:4px;}
+  body[data-screen="lesson"] .guide-conversation{margin:6px 0;}
+  body[data-screen="lesson"] .teaching-art{min-height:60px;flex-basis:60px;margin:6px 0;}
+  body[data-screen="lesson"] .tutorial-disclosure{margin-top:6px;}
+}
